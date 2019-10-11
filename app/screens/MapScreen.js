@@ -12,24 +12,10 @@ class MapScreen extends Component {
           justifyContent: "center"
         }}
       >
-        <Button
-          title="Show me more of the app"
-          color="#f194ff"
-          onPress={this._showMoreApp}
-        />
         <Text style={{ color: "black" }}>This is the MapScreen</Text>
       </View>
     );
   }
-
-  _showMoreApp = () => {
-    this.props.navigation.navigate("AuthLoading");
-  };
-
-  _signOutAsync = async () => {
-    await AsyncStorage.clear();
-    this.props.navigation.navigate("Auth");
-  };
 }
 
 export default MapScreen;

@@ -1,13 +1,11 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import { View, Text, TextInput } from "react-native";
+
+import Exemplar from "../modules/exemplar/container/Exemplar";
 
 class SearchScreen extends Component {
   render() {
-    return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>This is the SearchScreen</Text>
-      </View>
-    );
+    return <Exemplar />;
   }
 }
 
