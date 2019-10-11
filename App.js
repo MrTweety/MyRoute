@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Component, useState } from "react";
 import { AppLoading } from "expo";
 import { Asset } from "expo-asset";
 import * as Font from "expo-font";
@@ -7,25 +7,37 @@ import { Ionicons, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import AppNavigator from "./app/navigation/AppNavigator";
 
+import { Provider } from "react-redux";
+import { initStore } from "./app/redux/store";
+
+const store = initStore();
+
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
 
-  if (!isLoadingComplete && !props.skipLoadingScreen) {
-    return (
-      <AppLoading
-        startAsync={loadResourcesAsync}
-        onError={handleLoadingError}
-        onFinish={() => handleFinishLoading(setLoadingComplete)}
-      />
-    );
-  } else {
-    return (
-      <View style={styles.container}>
-        {Platform.OS === "ios" && <StatusBar barStyle="default" />}
-        <AppNavigator />
-      </View>
-    );
-  }
+  const renderLoading = () => (
+    <AppLoading
+      startAsync={loadResourcesAsync}
+      onError={handleLoadingError}
+      onFinish={() => handleFinishLoading(setLoadingComplete)}
+    />
+  );
+
+  const renderNavigator = () => (
+    <View style={styles.container}>
+      {Platform.OS === "ios" && <StatusBar barStyle="default" />}
+      <AppNavigator />
+    </View>
+  );
+
+  const renderLoadingg = () => {
+    if (!isLoadingComplete && !props.skipLoadingScreen) {
+      return renderLoading();
+    } else {
+      return renderNavigator();
+    }
+  };
+  return <Provider store={store}>{renderLoadingg()}</Provider>;
 }
 
 async function loadResourcesAsync() {
@@ -52,9 +64,6 @@ function handleFinishLoading(setLoadingComplete) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    // alignItems: 'center', // #CzysteZło
-    justifyContent: "center"
+    flex: 1
   }
 });
