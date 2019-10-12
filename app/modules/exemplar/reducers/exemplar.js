@@ -1,13 +1,13 @@
-import { combineReducers } from "redux";
+// import { combineReducers } from "redux";
 
 import { TEST_ACTION, SET_TEXT, SET_TITLE } from "../actions/exemplar";
 
 const myDefaultState = {
-  text: " ",
+  text: "",
   title: ""
 };
 
-const test = (state = {}, action) => {
+export const testReducer = (state = {}, action) => {
   switch (action.type) {
     case TEST_ACTION: {
       return action.payload;
@@ -17,12 +17,7 @@ const test = (state = {}, action) => {
   }
 };
 
-const defaultState = {
-  text: "",
-  title: ""
-};
-
-const content = (state = myDefaultState, action) => {
+export const exampleReducer = (state = myDefaultState, action) => {
   switch (action.type) {
     case SET_TEXT: {
       return { ...state, text: action.payload };
@@ -35,7 +30,7 @@ const content = (state = myDefaultState, action) => {
   }
 };
 
-export default combineReducers({
-  test,
-  content
-});
+// export default combineReducers({
+//   test,
+//   exemplar
+// });

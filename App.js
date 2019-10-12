@@ -8,9 +8,9 @@ import { Ionicons, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import AppNavigator from "./app/navigation/AppNavigator";
 
 import { Provider } from "react-redux";
-import { initStore } from "./app/redux/store";
+import store from "./app/redux/store";
 
-const store = initStore();
+// const store = configureStore();
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
