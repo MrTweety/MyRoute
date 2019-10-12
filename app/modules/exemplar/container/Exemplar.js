@@ -1,34 +1,20 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { setTitle, setText } from "../actions/exemplar";
+import { setTitle, setText, stateKey } from "../actions/exemplar";
+import { exampleReducer } from "../reducers/exemplar";
 import Exemplar from "../components/Exemplar";
 
-class ExemplarPage extends Component {
-  render() {
-    const { setTitle, setText, title, text } = this.props;
-    return (
-      <Exemplar
-        setTitle={setTitle}
-        setText={setText}
-        title={title}
-        text={text}
-      />
-    );
-  }
-}
+import { injectReducer } from "../../../redux/store";
 
-ExemplarPage.propTypes = {
-  setTitle: PropTypes.func,
-  setText: PropTypes.func,
-  title: PropTypes.string,
-  text: PropTypes.string
+injectReducer(stateKey, exampleReducer);
+
+const mapStateToProps = state => {
+  return {
+    title: state[stateKey].title,
+    text: state[stateKey].text
+  };
 };
-
-const mapStateToProps = state => ({
-  title: state.content.title,
-  text: state.content.text
-});
 
 const mapDispatchToProps = dispatch => ({
   setTitle: title => dispatch(setTitle(title)),
@@ -38,4 +24,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ExemplarPage);
+)(Exemplar);

@@ -29,10 +29,10 @@ class Exemplar extends Component {
 }
 
 Exemplar.propTypes = {
-  setTitle: PropTypes.func,
-  setText: PropTypes.func,
-  title: PropTypes.string,
-  text: PropTypes.string
+  setTitle: PropTypes.func.isRequired,
+  setText: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired
 };
 
 export default Exemplar;
