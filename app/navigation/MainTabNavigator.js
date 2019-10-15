@@ -134,7 +134,7 @@ const ProfileScreenStack = createStackNavigator(
   { headerLayoutPreset: "center" }
 );
 
-export default MainBottomTabNavigator = createMaterialBottomTabNavigator(
+export default MainTabNavigator = createMaterialBottomTabNavigator(
   {
     Home: {
       screen: HomeScreenStack,
