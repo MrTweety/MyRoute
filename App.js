@@ -10,8 +10,6 @@ import AppNavigator from "./app/navigation/AppNavigator";
 import { Provider } from "react-redux";
 import store from "./app/redux/store";
 
-// const store = configureStore();
-
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
 
