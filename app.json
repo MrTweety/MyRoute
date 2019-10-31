@@ -18,7 +18,18 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyAeVbVEmVO39XupfYNPEmb5iQM31bEEeCg"
+      }
+    },
+    "android": {
+      "package": "com.myroute.myroute",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAeVbVEmVO39XupfYNPEmb5iQM31bEEeCg"
+        }
+      }
     }
   }
 }
