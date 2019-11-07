@@ -10,6 +10,21 @@ import AppNavigator from "./app/navigation/AppNavigator";
 import { Provider } from "react-redux";
 import store from "./app/redux/store";
 
+if (__DEV__) {
+  global.XMLHttpRequest = global.originalXMLHttpRequest
+    ? global.originalXMLHttpRequest
+    : global.XMLHttpRequest;
+  global.FormData = global.originalFormData
+    ? global.originalFormData
+    : global.FormData;
+  global.Blob = global.originalBlob ? global.originalBlob : global.Blob;
+  global.FileReader = global.originalFileReader
+    ? global.originalFileReader
+    : global.FileReader;
+}
+
+// const store = configureStore();
+
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
 
