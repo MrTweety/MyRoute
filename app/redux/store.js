@@ -1,11 +1,11 @@
 import { createStore, compose, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
+import { createLogger } from "redux-logger";
+import callApi from "../middleware/callApi";
 
-import rootReducer from "../modules/exemplar/reducers/exemplar";
 import { createReducer } from "./reducer";
 
-import { createLogger } from "redux-logger";
 /*
   TODO: 
     logger powinien być wyłaczony dla PROD,
@@ -18,7 +18,7 @@ const logger = createLogger({
 
 const returnMiddleware = () =>
   composeWithDevTools(
-    applyMiddleware(thunk, logger)
+    applyMiddleware(thunk, callApi, logger)
     // other store enhancers if any
   );
 
