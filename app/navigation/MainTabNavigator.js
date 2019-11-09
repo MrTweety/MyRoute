@@ -3,7 +3,6 @@ import React from "react";
 import { createStackNavigator } from "react-navigation-stack";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { createMaterialTopTabNavigator } from "react-navigation-tabs";
-// import { Ionicons, Entypo, MaterialCommunityIcons } from "@expo/vector-icons"; //TODO: Replace for Icon
 import { CookieText } from "../components/CookieText";
 import Icons from "../components/Icon";
 
@@ -87,7 +86,6 @@ const SettingsScreenTopTabNavigator = createMaterialTopTabNavigator(
             size={26}
             color={tintColor}
           />
-          // <Ionicons name={"md-settings"} size={26} color={tintColor} />
         )
       }
     },
@@ -96,7 +94,6 @@ const SettingsScreenTopTabNavigator = createMaterialTopTabNavigator(
       navigationOptions: {
         tabBarLabel: "Language",
         tabBarIcon: ({ tintColor }) => (
-          // <Entypo name={"language"} size={26} color={tintColor} />
           <Icons type="entypo" name="language" size={26} color={tintColor} />
         )
       }
@@ -135,13 +132,6 @@ const ProfileScreenStack = createStackNavigator(
         return {
           title: routeName,
           headerRight: (
-            // <Ionicons
-            //   style={{ paddingRight: 10 }}
-            //   onPress={() => navigation.navigate("SettingsStack")}
-            //   name="md-settings"
-            //   size={30}
-            //   color="black"
-            // />
             <Icons
               type="ionicons"
               name="md-settings"
@@ -179,7 +169,6 @@ export default MainTabNavigator = createMaterialBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: "Home",
         tabBarIcon: ({ tintColor }) => (
-          // <Ionicons name={"ios-home"} size={26} color={tintColor} />
           <Icons type="ionicons" name="ios-home" size={26} color={tintColor} />
         )
       }
@@ -195,11 +184,6 @@ export default MainTabNavigator = createMaterialBottomTabNavigator(
             size={26}
             color={tintColor}
           />
-          // <MaterialCommunityIcons
-          //   name={"map-search"}
-          //   size={26}
-          //   color={tintColor}
-          // />
         )
       }
     },
@@ -208,7 +192,6 @@ export default MainTabNavigator = createMaterialBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: "Map",
         tabBarIcon: ({ tintColor }) => (
-          // <Ionicons name={"md-map"} size={26} color={tintColor} />
           <Icons type="ionicons" name="md-map" size={26} color={tintColor} />
         )
       }
@@ -218,7 +201,6 @@ export default MainTabNavigator = createMaterialBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: "Profile",
         tabBarIcon: ({ tintColor }) => (
-          // <Ionicons name={"md-person"} size={26} color={tintColor} />
           <Icons type="ionicons" name="md-person" size={26} color={tintColor} />
         )
       }
@@ -227,11 +209,11 @@ export default MainTabNavigator = createMaterialBottomTabNavigator(
   {
     initialRouteName: "Home",
     shifting: false, //Color for the tab bar when the tab corresponding to the screen is active. Used for the ripple effect. This is only supported when shifting is true.
-    labeled: true,
+    labeled: false,
     activeColor: "#222",
     inactiveColor: "grey",
     barStyle: {
-      backgroundColor: "#f2f2f2",
+      backgroundColor: "white", //"#f2f2f2",
       height: 54
     }
   }
