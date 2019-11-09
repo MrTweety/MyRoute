@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import {
   Ionicons,
   FontAwesome,
@@ -28,4 +29,12 @@ export default Icon = ({ type, ...props }) => {
   const IconComponent = getTypeIcon(type);
 
   return <IconComponent {...props} />;
+};
+
+Icon.defaultProps = {
+  type: "material"
+};
+
+Icon.propTypes = {
+  type: PropTypes.string
 };
