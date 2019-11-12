@@ -4,7 +4,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { createMaterialTopTabNavigator } from "react-navigation-tabs";
 import { CookieText } from "../components/CookieText";
-import Icons from "../components/Icon";
+import Icon from "../components/Icon";
 
 import HomeScreen from "../screens/HomeScreen";
 import SearchScreen from "../screens/SearchScreen";
@@ -19,7 +19,7 @@ const HomeScreenStack = createStackNavigator(
       navigationOptions: () => {
         return {
           headerLeft: (
-            <Icons
+            <Icon
               type="font-awesome"
               name="location-arrow"
               size={30}
@@ -38,7 +38,7 @@ const HomeScreenStack = createStackNavigator(
             </CookieText>
           ),
           headerRight: (
-            <Icons
+            <Icon
               type="ionicons"
               name="ios-send"
               size={30}
@@ -80,7 +80,7 @@ const SettingsScreenTopTabNavigator = createMaterialTopTabNavigator(
       navigationOptions: {
         tabBarLabel: "Settings",
         tabBarIcon: ({ tintColor }) => (
-          <Icons
+          <Icon
             type="ionicons"
             name="md-settings"
             size={26}
@@ -94,7 +94,7 @@ const SettingsScreenTopTabNavigator = createMaterialTopTabNavigator(
       navigationOptions: {
         tabBarLabel: "Language",
         tabBarIcon: ({ tintColor }) => (
-          <Icons type="entypo" name="language" size={26} color={tintColor} />
+          <Icon type="entypo" name="language" size={26} color={tintColor} />
         )
       }
     }
@@ -132,7 +132,7 @@ const ProfileScreenStack = createStackNavigator(
         return {
           title: routeName,
           headerRight: (
-            <Icons
+            <Icon
               type="ionicons"
               name="md-settings"
               size={30}
@@ -149,7 +149,7 @@ const ProfileScreenStack = createStackNavigator(
       navigationOptions: {
         tabBarLabel: "Settings",
         tabBarIcon: ({ tintColor }) => (
-          <Icons
+          <Icon
             type="ionicons"
             name="md-settings"
             size={26}
@@ -169,7 +169,7 @@ export default MainTabNavigator = createMaterialBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: "Home",
         tabBarIcon: ({ tintColor }) => (
-          <Icons type="ionicons" name="ios-home" size={26} color={tintColor} />
+          <Icon type="ionicons" name="ios-home" size={26} color={tintColor} />
         )
       }
     },
@@ -178,7 +178,7 @@ export default MainTabNavigator = createMaterialBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: "Search",
         tabBarIcon: ({ tintColor }) => (
-          <Icons
+          <Icon
             type="material-community"
             name="map-search"
             size={26}
@@ -192,7 +192,7 @@ export default MainTabNavigator = createMaterialBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: "Map",
         tabBarIcon: ({ tintColor }) => (
-          <Icons type="ionicons" name="md-map" size={26} color={tintColor} />
+          <Icon type="ionicons" name="md-map" size={26} color={tintColor} />
         )
       }
     },
@@ -201,7 +201,7 @@ export default MainTabNavigator = createMaterialBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: "Profile",
         tabBarIcon: ({ tintColor }) => (
-          <Icons type="ionicons" name="md-person" size={26} color={tintColor} />
+          <Icon type="ionicons" name="md-person" size={26} color={tintColor} />
         )
       }
     }
@@ -212,9 +212,13 @@ export default MainTabNavigator = createMaterialBottomTabNavigator(
     labeled: false,
     activeColor: "#222",
     inactiveColor: "grey",
+    height: 42,
     barStyle: {
       backgroundColor: "white", //"#f2f2f2",
-      height: 54
+      height: 44,
+      paddingBottom: 2,
+      marginBottom: 6,
+      alignItems: "center"
     }
   }
 );
