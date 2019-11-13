@@ -14,25 +14,28 @@ import * as Location from "expo-location";
 import route from "./cord";
 
 const { width, height } = Dimensions.get("window");
-const imgSrc = require("../assets/imgMock/3.jpg");
 console.log("MG-log: route", route.coords[1]);
 console.log("MG-log: route length", route.coords.length);
 
+const images = {
+  "../assets/imgMock/1.jpg": require("../assets/imgMock/1.jpg"),
+  "../assets/imgMock/2.jpg": require("../assets/imgMock/2.jpg"),
+  "../assets/imgMock/3.jpg": require("../assets/imgMock/3.jpg"),
+  "../assets/imgMock/7.jpg": require("../assets/imgMock/7.jpg")
+};
 export default class MapScreen extends Component {
   animatedValue = new Animated.Value(0);
 
-  state = { liked: false };
+  state = { imgSrc: false };
 
-  toggleLike = () => {
-    this.setState(state => {
-      const newLiked = !state.liked;
-      return { liked: newLiked };
+  setImgSrc = imgSrc => {
+    this.setState({
+      imgSrc
     });
-    // this.showImage();
   };
 
-  showImage = () => {
-    this.toggleLike();
+  showImage = imgSrc => {
+    this.setImgSrc(imgSrc, true);
     Animated.sequence([
       // Animated.spring(this.animatedValue, {
       //   toValue: 1,
@@ -58,7 +61,7 @@ export default class MapScreen extends Component {
       })
     ]).start(() => {
       console.log("end animation");
-      this.toggleLike();
+      this.setImgSrc(null);
     });
   };
 
@@ -86,6 +89,11 @@ export default class MapScreen extends Component {
       // opacity: this.animatedValue,
     };
 
+    var imgSource = this.state.imgSrc
+      ? this.state.imgSrc
+      : "../assets/imgMock/1.jpg";
+    console.log("MG-log: MapScreen -> renderOverlay -> imgSource", imgSource);
+
     return (
       <Animated.View style={[styles.overlay, animatedStyle]}>
         {/* <Image
@@ -99,7 +107,7 @@ export default class MapScreen extends Component {
             width={width}
             height={width}
             resizeMode="contain"
-            source={imgSrc}
+            source={images[this.state.imgSrc || "../assets/imgMock/7.jpg"]}
           />
         </Animated.View>
       </Animated.View>
@@ -136,24 +144,32 @@ export default class MapScreen extends Component {
             fillColor={"#fff"}
             zIndex={1}
           />
+          {route.coords &&
+            route.coords.map(coord => {
+              if (coord.image) {
+                console.log("MG-log: render -> coord", coord);
+                return (
+                  <MapView.Marker
+                    key={coord._id}
+                    coordinate={coord}
+                    title="hfhfgh"
+                    description="{marker.description}"
+                  />
+                );
+              }
+            })}
           {/* Animating polyline */}
           {/* <AnimatingPolylineComponent Direction={route.coords.reverse()} /> */}
           <AnimatingPolylineComponent
             Direction={route.coords}
-            toggleLike={this.showImage}
-            isPause={this.state.liked}
+            showImage={this.showImage}
+            isPause={this.state.imgSrc}
           />
 
           <MapView.Polyline
             coordinates={route.coords}
             strokeWidth={2}
             strokeColor={"#666"}
-          />
-
-          <MapView.Marker
-            coordinate={route.coords[10]}
-            title="hfhfgh"
-            description="{marker.description}"
           />
         </MapView>
         {this.renderOverlay()}
@@ -181,6 +197,7 @@ class AnimatingPolylineComponent extends Component {
   }
 
   animatePolylineStart = () => {
+    console.log(!this.props.isPause);
     if (!this.props.isPause) {
       if (this.state.polylinePath.length <= this.props.Direction.length) {
         const Direction = this.props.Direction;
@@ -198,7 +215,7 @@ class AnimatingPolylineComponent extends Component {
         const newCords = Direction[this.state.polylinePath2.length];
         if (newCords && newCords.image) {
           // console.log("MG-log: AnimatingPolylineComponent -> animatePolylineStart -> newCords", newCords)
-          this.props.toggleLike();
+          this.props.showImage(newCords.image);
         }
 
         const polylinePath2 = [...this.state.polylinePath2, { ...newCords }];

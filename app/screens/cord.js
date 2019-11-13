@@ -274,7 +274,8 @@ export default JSON.parse(`{
       "longitude": 19.8229456,
       "altitude": 256.5836618495386,
       "heading": 24.300264358520508,
-      "timestamp": "2019-11-09T19:23:10.000Z"
+      "timestamp": "2019-11-09T19:23:10.000Z",
+      "image":"../assets/imgMock/1.jpg"
     },
     {
       "_id": "5dc7127f9d704c004e15f1bb",
@@ -338,8 +339,7 @@ export default JSON.parse(`{
       "longitude": 19.8244503,
       "altitude": 255.1484928686461,
       "heading": 11.64140796661377,
-      "timestamp": "2019-11-09T19:23:34.000Z",
-      "image":"../assets/imgMock/7.jpg"
+      "timestamp": "2019-11-09T19:23:34.000Z"
 
     },
     {
