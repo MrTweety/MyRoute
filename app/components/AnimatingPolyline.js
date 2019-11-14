@@ -11,12 +11,13 @@ import {
 import MapView from "react-native-maps";
 import * as Location from "expo-location";
 
-import route from "../assets/imgMock/cord";
+import rs from "../assets/imgMock/cords";
 
 const { width, height } = Dimensions.get("window");
-console.log("MG-log: route", route.coords[1]);
-console.log("MG-log: route length", route.coords.length);
+const ASPECT_RATIO = width / height;
 
+const LATITUDE_DELTA = 0.0099;
+const LONGITUDE_DELTA = LATITUDE_DELTA;
 const images = {
   "../assets/imgMock/1.jpg": require("../assets/imgMock/1.jpg"),
   "../assets/imgMock/2.jpg": require("../assets/imgMock/2.jpg"),
@@ -27,6 +28,8 @@ export default class AnimatingPolyline extends Component {
   animatedValue = new Animated.Value(0);
 
   state = { imgSrc: false };
+
+  route = rs[this.props.nrRoute || 0];
 
   setImgSrc = imgSrc => {
     this.setState({
@@ -60,7 +63,7 @@ export default class AnimatingPolyline extends Component {
         // userNativeDriver: true
       })
     ]).start(() => {
-      console.log("end animation");
+      //   console.log("end animation");
       this.setImgSrc(null);
     });
   };
@@ -89,11 +92,6 @@ export default class AnimatingPolyline extends Component {
       // opacity: this.animatedValue,
     };
 
-    var imgSource = this.state.imgSrc
-      ? this.state.imgSrc
-      : "../assets/imgMock/1.jpg";
-    console.log("MG-log: MapScreen -> renderOverlay -> imgSource", imgSource);
-
     return (
       <Animated.View style={[styles.overlay, animatedStyle]}>
         {/* <Image
@@ -114,21 +112,37 @@ export default class AnimatingPolyline extends Component {
     );
   };
 
+  mapViewRef = React.createRef();
+
+  componentDidMount() {
+    const mapView = this.mapViewRef.current;
+    if (mapView) {
+      mapView.animateCamera({
+        center: {
+          ...this.route.coords[parseInt(this.route.coords.length / 2) - 2]
+        },
+        ...this.route.coords[parseInt(this.route.coords.length / 2) - 2],
+        zoom: 15
+      });
+    }
+  }
+
   render() {
     return (
       <View style={{ flex: 1 }}>
         <MapView
-          style={{ flex: 1 }}
-          initialRegion={{
-            ...route.coords[parseInt(route.coords.length / 2)],
-            latitudeDelta: 0.047 / 4,
-            longitudeDelta: 0.017 / 4
-          }}
+          ref={this.mapViewRef}
+          style={{ width: width, height: width }}
+          //   initialRegion={{
+          //     ...this.route.coords[parseInt(this.route.coords.length / 2)],
+          //     latitudeDelta: LATITUDE_DELTA,
+          //     longitudeDelta: LONGITUDE_DELTA
+          //   }}
           provider="google"
           liteMode
         >
           <MapView.Circle
-            center={route.coords[1]}
+            center={this.route.coords[1]}
             radius={20}
             strokeColor={"#484848"}
             strokeWidth={5}
@@ -137,17 +151,17 @@ export default class AnimatingPolyline extends Component {
           />
           {/* Destination Circle */}
           <MapView.Circle
-            center={route.coords[route.coords.length - 1]}
+            center={this.route.coords[this.route.coords.length - 1]}
             radius={20}
             strokeColor={"#484848"}
             strokeWidth={5}
             fillColor={"#fff"}
             zIndex={1}
           />
-          {route.coords &&
-            route.coords.map(coord => {
+          {this.route.coords &&
+            this.route.coords.map(coord => {
               if (coord.image) {
-                console.log("MG-log: render -> coord", coord);
+                // console.log("MG-log: render -> coord", coord);
                 return (
                   <MapView.Marker
                     key={coord._id}
@@ -159,15 +173,15 @@ export default class AnimatingPolyline extends Component {
               }
             })}
           {/* Animating polyline */}
-          {/* <AnimatingPolylineComponent Direction={route.coords.reverse()} /> */}
+          {/* <AnimatingPolylineComponent Direction={this.route.coords.reverse()} /> */}
           <AnimatingPolylineComponent
-            Direction={route.coords}
+            Direction={this.route.coords}
             showImage={this.showImage}
             isPause={this.state.imgSrc}
           />
 
           <MapView.Polyline
-            coordinates={route.coords}
+            coordinates={this.route.coords}
             strokeWidth={2}
             strokeColor={"#666"}
           />
@@ -180,7 +194,7 @@ export default class AnimatingPolyline extends Component {
 
 class AnimatingPolylineComponent extends Component {
   state = {
-    polylinePath: this.props.Direction, //route.coords.reverse()
+    polylinePath: this.props.Direction, //this.route.coords.reverse()
     polylinePath2: []
   };
 
@@ -197,7 +211,7 @@ class AnimatingPolylineComponent extends Component {
   }
 
   animatePolylineStart = () => {
-    console.log(!this.props.isPause);
+    // console.log(!this.props.isPause);
     if (!this.props.isPause) {
       if (this.state.polylinePath.length <= this.props.Direction.length) {
         const Direction = this.props.Direction;

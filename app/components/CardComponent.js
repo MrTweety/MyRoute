@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
 import Icon from "./Icon";
+import AnimatingPolyline from "./AnimatingPolyline";
 
 const { width, height } = Dimensions.get("window");
 
@@ -15,15 +16,15 @@ export default class CardComponent extends Component {
     cardImgHeight: width
   };
   componentDidMount() {
-    const img = Image.resolveAssetSource(images[this.props.imageNr]);
-    const imgWidth = img.width;
-    // console.log("MG-log: CardComponent -> componentDidMount -> imgWidth", imgWidth)
-    const imgHeight = img.height;
-    // console.log("MG-log: CardComponent -> componentDidMount -> imgHeight", imgHeight)
-    if (imgWidth > imgHeight) {
-      const cardImgHeight = (imgHeight * width) / imgWidth;
-      this.setState({ cardImgHeight });
-    }
+    // const img = Image.resolveAssetSource(images[this.props.imageNr]);
+    // const imgWidth = img.width;
+    // // console.log("MG-log: CardComponent -> componentDidMount -> imgWidth", imgWidth)
+    // const imgHeight = img.height;
+    // // console.log("MG-log: CardComponent -> componentDidMount -> imgHeight", imgHeight)
+    // if (imgWidth > imgHeight) {
+    //   const cardImgHeight = (imgHeight * width) / imgWidth;
+    //   this.setState({ cardImgHeight });
+    // }
   }
   render() {
     return (
@@ -54,16 +55,15 @@ export default class CardComponent extends Component {
             />
           </View>
         </View>
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <Image
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          {/* <Image
             style={{ flex: 1 }}
             width={width}
             height={this.state.cardImgHeight}
             resizeMode="contain"
             source={images[this.props.imageNr || 1]}
-          />
+          /> */}
+          <AnimatingPolyline nrRoute={this.props.imageNr} />
         </View>
         <View style={styles.icons}>
           <Icon

@@ -9,12 +9,12 @@ class HomeScreen extends Component {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView>
-          <CardComponent userName="User1" imageNr={1} />
-          <CardComponent heart="heart" imageNr={2} />
-          <CardComponent userName="MyRoteSupport" heart="heart" imageNr={3} />
-          <CardComponent userName="testMyRote" imageNr={7} />
-          <CardComponent imageNr={3} />
-          <CardComponent imageNr={1} />
+          <CardComponent userName="User1" imageNr={0} />
+          <CardComponent heart="heart" imageNr={1} />
+          <CardComponent userName="MyRoteSupport" heart="heart" imageNr={2} />
+          {/* <CardComponent userName="testMyRote" imageNr={7} /> */}
+          {/* <CardComponent imageNr={3} /> */}
+          {/* <CardComponent imageNr={1} /> */}
         </ScrollView>
       </SafeAreaView>
     );
