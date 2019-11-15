@@ -7,31 +7,7 @@ import {
   ViewPropTypes
 } from "react-native";
 import PropTypes from "prop-types";
-
-import {
-  Ionicons,
-  FontAwesome,
-  MaterialIcons,
-  Entypo,
-  MaterialCommunityIcons
-} from "@expo/vector-icons";
-
-const getTypeIcon = type => {
-  switch (type) {
-    case "material":
-      return MaterialIcons;
-    case "material-community":
-      return MaterialCommunityIcons;
-    case "ionicons":
-      return Ionicons;
-    case "entypo":
-      return Entypo;
-    case "font-awesome":
-      return FontAwesome;
-    default:
-      return MaterialIcons;
-  }
-};
+import Icon from "./Icon";
 
 export default BubbleButton = ({
   children,
@@ -44,8 +20,6 @@ export default BubbleButton = ({
   title,
   titleStyle
 }) => {
-  const IconComponent = getTypeIcon(icon && icon.type);
-
   return (
     <TouchableOpacity
       onPress={() => onPress()}
@@ -60,7 +34,8 @@ export default BubbleButton = ({
         />
       )}
       {!loading && icon && (
-        <IconComponent
+        <Icon
+          type={icon.type}
           name={icon.name}
           size={icon.size || 25}
           color={icon.color || "black"}
@@ -81,7 +56,7 @@ BubbleButton.propTypes = {
   children: PropTypes.node,
   disabled: PropTypes.bool,
   icon: PropTypes.shape({
-    name: PropTypes.string,
+    name: PropTypes.string.isRequired,
     type: PropTypes.string,
     size: PropTypes.number,
     color: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
