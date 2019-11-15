@@ -21,10 +21,7 @@ export const CALL_API = "Call API";
 
 // A Redux middleware that interprets actions with CALL_API info specified.
 // Performs the call and promises when such actions are dispatched.
-/*
-TODO: dispatch -> (func callApi -> params)
 
-*/
 export default store => next => action => {
   const callAPI = action[CALL_API];
   if (typeof callAPI === "undefined") {
@@ -41,11 +38,6 @@ export default store => next => action => {
   if (typeof endpoint !== "string") {
     throw new Error("Specify a string endpoint URL.");
   }
-  //hmm probably not needed,
-
-  //   if (!fetchParams) {
-  //     throw new Error('Specify one of the fetch params.')
-  //   }
 
   if (!Array.isArray(types) || types.length !== 3) {
     throw new Error("Expected an array of three action types.");
