@@ -23,8 +23,6 @@ if (__DEV__) {
     : global.FileReader;
 }
 
-// const store = configureStore();
-
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
 
