@@ -14,7 +14,7 @@ import "./i18n";
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
 
-  const renderLoading = () => (
+  const loading = () => (
     <AppLoading
       startAsync={loadResourcesAsync}
       onError={handleLoadingError}
@@ -29,15 +29,14 @@ export default function App(props) {
     </View>
   );
 
-  const renderLoadingg = () => {
-    //serio?
+  const renderLoading = () => {
     if (!isLoadingComplete && !props.skipLoadingScreen) {
-      return renderLoading();
+      return loading();
     } else {
       return renderNavigator();
     }
   };
-  return <Provider store={store}>{renderLoadingg()}</Provider>;
+  return <Provider store={store}>{renderLoading()}</Provider>;
 }
 
 async function loadResourcesAsync() {

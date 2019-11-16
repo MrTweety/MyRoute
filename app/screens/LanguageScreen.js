@@ -24,8 +24,7 @@ class LanguageScreen extends Component {
     return (
       <View style={{ flex: 1 }}>
         <Text>This is the LanguageScreen</Text>
-        <Text>Current language: {this.state.currentLanguage}</Text> //to do
-        wyjebania, narazie jest do testów
+        <Text>Current language: {this.state.currentLanguage}</Text>
         <Text>available languages: {this.state.allLanguages}</Text>
         <>
           {this.state.allLanguages.map(language => {
@@ -50,19 +49,19 @@ class LanguageScreen extends Component {
 
 const styles = StyleSheet.create({
   textPrimary: {
-    fontSize: 17,
+    fontSize: 18,
     justifyContent: "flex-start",
     fontWeight: "bold",
     color: "#000000"
   },
   textSecondary: {
-    fontSize: 15,
+    fontSize: 16,
     justifyContent: "flex-start",
     fontWeight: "normal",
     color: "#808080"
   },
   padding: {
-    marginLeft: 8,
+    marginLeft: 10,
     marginTop: 12
   }
 });
