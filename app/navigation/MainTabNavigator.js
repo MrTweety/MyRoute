@@ -13,6 +13,8 @@ import MapScreen from "../screens/MapScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 
+import i18next from "i18next";
+
 const HomeScreenStack = createStackNavigator(
   {
     HomeStack: {
@@ -109,7 +111,7 @@ const ProfileScreenStack = createStackNavigator(
       navigationOptions: ({ navigation }) => {
         const { routeName } = navigation.state;
         return {
-          title: routeName,
+          title: i18next.t(`home.welcome`),
           headerRight: (
             <Ionicons
               style={{ paddingRight: 10 }}
