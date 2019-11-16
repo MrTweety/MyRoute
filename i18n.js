@@ -1,4 +1,3 @@
-import { Localization } from "expo";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import commonPL from "./app/assets/translations/pl/common";
@@ -24,9 +23,8 @@ const resources = {
 i18n.use(initReactI18next).init({
   resources,
   lng: "pl",
-  fallbackLng: "en",
+  fallbackLng: ["en", "pl"],
   interpolation: {
     escapeValue: false
-  },
-  cleanCode: true
+  }
 });

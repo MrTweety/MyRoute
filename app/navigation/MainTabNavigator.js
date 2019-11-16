@@ -48,10 +48,8 @@ const SearchScreenStack = createStackNavigator(
     SearchStack: {
       screen: SearchScreen,
       navigationOptions: ({ navigation }) => {
-        const { routeName } = navigation.state;
-
         return {
-          title: routeName
+          title: i18next.t("common.search")
         };
       }
     }
@@ -72,11 +70,13 @@ const SettingsScreenTopTabNavigator = createMaterialTopTabNavigator(
     },
     Language: {
       screen: LanguageScreen,
-      navigationOptions: {
-        tabBarLabel: "Language",
-        tabBarIcon: ({ tintColor }) => (
-          <Entypo name={"language"} size={26} color={tintColor} />
-        )
+      navigationOptions: () => {
+        return {
+          headerTitle: "Language",
+          tabBarIcon: ({ tintColor }) => (
+            <Entypo name={"language"} size={26} color={tintColor} />
+          )
+        };
       }
     }
   },
@@ -86,7 +86,7 @@ const SettingsScreenTopTabNavigator = createMaterialTopTabNavigator(
     navigationOptions: ({ navigation }) => {
       const { routeName } = navigation.state.routes[navigation.state.index];
       return {
-        headerTitle: routeName
+        title: i18next.t(`common.${routeName}`)
       };
     },
     tabBarOptions: {
@@ -109,9 +109,8 @@ const ProfileScreenStack = createStackNavigator(
     ProfileStack: {
       screen: ProfileScreen,
       navigationOptions: ({ navigation }) => {
-        const { routeName } = navigation.state;
         return {
-          title: i18next.t(`home.welcome`),
+          title: i18next.t("common.profile"),
           headerRight: (
             <Ionicons
               style={{ paddingRight: 10 }}

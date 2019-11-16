@@ -2,13 +2,9 @@
   "search": "Szukaj",
   "continue": "Kontynuuj",
   "save": "Zapisz",
-  "language": "Język",
-  "router": {
-    "home": "Dom",
-    "search": "Szukaj",
-    "map": "Mapy",
-    "profile": "Profil"
-  },
+  "Language": "Język",
+  "Settings": "Ustawienia",
+  "profile": "Profil",
   "languages": {
     "en": "Angielski",
     "pl": "Polski"
