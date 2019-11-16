@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { CookieText } from "../components/CookieText";
+import { withTranslation } from "react-i18next";
 
 class HomeScreen extends Component {
   render() {
+    const { t } = this.props;
     return (
       <View
         style={{
@@ -23,7 +25,7 @@ class HomeScreen extends Component {
           }}
         >
           <Text style={{ fontSize: 20, fontWeight: "bold", paddingBottom: 20 }}>
-            Welcome in Driving Test!
+            {t("home.welcome")}
           </Text>
           <View style={{ paddingTop: 40 }}>
             <CookieText style={styles.mytext}>
@@ -39,7 +41,7 @@ class HomeScreen extends Component {
   }
 }
 
-export default HomeScreen;
+export default withTranslation()(HomeScreen);
 
 const styles = StyleSheet.create({
   mytext: {

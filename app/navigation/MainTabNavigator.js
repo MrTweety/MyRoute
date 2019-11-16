@@ -8,6 +8,7 @@ import { CookieText } from "../components/CookieText";
 
 import HomeScreen from "../screens/HomeScreen";
 import SearchScreen from "../screens/SearchScreen";
+import LanguageScreen from "../screens/LanguageScreen";
 import MapScreen from "../screens/MapScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import SettingsScreen from "../screens/SettingsScreen";
@@ -68,7 +69,7 @@ const SettingsScreenTopTabNavigator = createMaterialTopTabNavigator(
       }
     },
     Language: {
-      screen: SettingsScreen,
+      screen: LanguageScreen,
       navigationOptions: {
         tabBarLabel: "Language",
         tabBarIcon: ({ tintColor }) => (
@@ -134,7 +135,7 @@ const ProfileScreenStack = createStackNavigator(
   { headerLayoutPreset: "center" }
 );
 
-export default MainTabNavigator = createMaterialBottomTabNavigator(
+const MainTabNavigator = createMaterialBottomTabNavigator(
   {
     Home: {
       screen: HomeScreenStack,
@@ -180,7 +181,7 @@ export default MainTabNavigator = createMaterialBottomTabNavigator(
   {
     initialRouteName: "Search",
     shifting: false, //Color for the tab bar when the tab corresponding to the screen is active. Used for the ripple effect. This is only supported when shifting is true.
-    labeled: true,
+    labeled: false,
     activeColor: "#222",
     inactiveColor: "grey",
     barStyle: {
@@ -189,3 +190,5 @@ export default MainTabNavigator = createMaterialBottomTabNavigator(
     }
   }
 );
+
+export default MainTabNavigator;

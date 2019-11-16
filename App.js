@@ -9,6 +9,7 @@ import AppNavigator from "./app/navigation/AppNavigator";
 
 import { Provider } from "react-redux";
 import store from "./app/redux/store";
+import "./i18n";
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
@@ -29,6 +30,7 @@ export default function App(props) {
   );
 
   const renderLoadingg = () => {
+    //serio?
     if (!isLoadingComplete && !props.skipLoadingScreen) {
       return renderLoading();
     } else {

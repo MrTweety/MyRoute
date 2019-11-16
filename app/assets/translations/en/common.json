@@ -1,0 +1,16 @@
+{
+  "search": "Search",
+  "continue": "Continue",
+  "save": "Save",
+  "language": "Language",
+  "router": {
+    "home": "Home",
+    "search": "Search",
+    "map": "Map",
+    "profile": "Profile"
+  },
+  "languages": {
+    "en": "English",
+    "pl": "Polish"
+  }
+}
