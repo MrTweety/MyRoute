@@ -49,7 +49,7 @@ const SearchScreenStack = createStackNavigator(
       screen: SearchScreen,
       navigationOptions: ({ navigation }) => {
         return {
-          title: i18next.t("common.search")
+          title: navigation.getParam("title")
         };
       }
     }

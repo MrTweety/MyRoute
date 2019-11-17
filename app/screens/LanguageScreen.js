@@ -4,17 +4,32 @@ import i18next from "i18next";
 
 class LanguageScreen extends Component {
   state = {
-    currentLanguage: i18next.language,
     allLanguages: i18next.languages
   };
+
+  componentDidMount() {
+    this.updateTitle();
+  }
+
+  componentDidUpdate() {
+    this.updateTitle();
+  }
+
+  updateTitle() {
+    const { getParam, setParams } = this.props.navigation;
+    const prevTitle = getParam("title");
+    const newTitle = i18next.t("common.Language");
+
+    if (prevTitle !== newTitle) {
+      setParams({ title: newTitle });
+    }
+  }
 
   changeLanguage(language) {
     i18next
       .changeLanguage(language)
       .then(() => {
-        this.setState({
-          currentLanguage: language
-        });
+        this.updateTitle();
       })
       .catch(error => console.log("Change language error", error));
   }
@@ -23,9 +38,6 @@ class LanguageScreen extends Component {
     const en = i18next.getFixedT("en");
     return (
       <View style={{ flex: 1 }}>
-        <Text>This is the LanguageScreen</Text>
-        <Text>Current language: {this.state.currentLanguage}</Text>
-        <Text>available languages: {this.state.allLanguages}</Text>
         <>
           {this.state.allLanguages.map(language => {
             return (
