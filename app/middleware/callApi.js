@@ -1,11 +1,18 @@
 const API_ROOT = "https://myroutet.azurewebsites.net";
 
 // Fetches an API response, the result JSON .
-const callApi = (endpoint, fetchParams) => {
+const callApi = (endpoint, data, method = "POST", headers = {}) => {
   const fullUrl =
     endpoint.indexOf(API_ROOT) === -1 ? API_ROOT + endpoint : endpoint;
 
-  return fetch(fullUrl, { ...fetchParams }).then(response =>
+  return fetch(fullUrl, {
+    method,
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+      ...headers
+    }
+  }).then(response =>
     response.json().then(json => {
       if (!response.ok) {
         return Promise.reject(json);
@@ -28,8 +35,8 @@ export default store => next => action => {
     return next(action);
   }
 
-  let { endpoint } = callAPI;
-  const { types, fetchParams } = callAPI;
+  let { data, endpoint, method, headers } = callAPI;
+  const { types } = callAPI;
 
   if (typeof endpoint === "function") {
     endpoint = endpoint(store.getState());
@@ -39,6 +46,10 @@ export default store => next => action => {
     throw new Error("Specify a string endpoint URL.");
   }
 
+  if (typeof method !== "string") {
+    throw new Error("Specify a string method URL.");
+  }
+
   if (!Array.isArray(types) || types.length !== 3) {
     throw new Error("Expected an array of three action types.");
   }
@@ -46,42 +57,17 @@ export default store => next => action => {
     throw new Error("Expected action types to be strings.");
   }
 
-  const actionWith = data => {
-    const finalAction = Object.assign({}, action, data);
+  const actionWith = payload => {
+    const finalAction = Object.assign({}, action, payload);
     delete finalAction[CALL_API];
     return finalAction;
   };
-
   const [requestType, successType, failureType] = types;
-  next(
-    actionWith({
-      type: requestType,
-      isFetching: true,
-      isFetch: false,
-      error: null
-    })
-  );
-  return callApi(endpoint, fetchParams).then(
+
+  next(actionWith({ type: requestType }));
+  return callApi(endpoint, data, method, headers).then(
     response =>
-      next(
-        actionWith({
-          type: successType,
-          data: response.data,
-          isFetching: false,
-          isFetch: true,
-          error: null,
-          lastUpdated: new Date().getTime()
-        })
-      ),
-    error =>
-      next(
-        actionWith({
-          type: failureType,
-          isFetching: false,
-          isFetch: false,
-          error: error.message || "Something bad happened"
-          // lastUpdated: new Date().getTime()
-        })
-      )
+      next(actionWith(Object.assign(response, { type: successType }))),
+    error => next(actionWith(Object.assign(error, { type: failureType })))
   );
 };

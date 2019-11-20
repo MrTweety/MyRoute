@@ -11,12 +11,10 @@ export const saveRoute = bodyParams => {
     [CALL_API]: {
       types: [SAVE_ROUTE_REQUEST, SAVE_ROUTE_SUCCESS, SAVE_ROUTE_FAILURE],
       endpoint: "/routes",
-      fetchParams: {
-        method: "POST",
-        body: JSON.stringify(bodyParams),
-        headers: {
-          "Content-Type": "application/json"
-        }
+      method: "POST",
+      data: bodyParams,
+      headers: {
+        "Content-Type": "application/json"
       }
     }
   };
