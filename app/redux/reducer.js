@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { testReducer } from "../modules/exemplar/reducers/exemplar";
+import { testReducer } from "../modules/_common/reducers/exemplar";
 
 const staticReducers = {
   test: testReducer
