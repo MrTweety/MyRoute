@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, AsyncStorage } from "react-native";
 import PropTypes from "prop-types";
-import { getSavedItem, STORAGE_KEY_USER_TIME } from "../services/storage";
+import { getSavedItem, STORAGE_KEY_USER_TIME } from "../../../services/storage";
 
 export default class TimerView extends Component {
   time = 0;
