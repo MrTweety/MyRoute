@@ -10,8 +10,8 @@ import * as Permissions from "expo-permissions";
 import * as TaskManager from "expo-task-manager";
 import { activateKeepAwake, deactivateKeepAwake } from "expo-keep-awake";
 
-import MapPanel from "../../../components/MapPanel";
-import DialogInput from "../../../components/MyDialogImputs";
+import MapPanel from "../../_common/components/MapPanel";
+import DialogInput from "../../_common/components/MyDialogImputs";
 
 import { locationEventsEmitter, taskEventName } from "../locationEventsEmitter";
 import backgroundTask from "../backgroundTask";

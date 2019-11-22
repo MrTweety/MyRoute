@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, TextInput } from "react-native";
 import styles from "./Exemplar.style";
-import TextArea from "../../../components/TextArea";
+import TextArea from "./TextArea";
 import PropTypes from "prop-types";
 import { withTranslation } from "react-i18next";
 

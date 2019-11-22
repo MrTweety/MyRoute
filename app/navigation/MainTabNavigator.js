@@ -3,8 +3,8 @@ import React from "react";
 import { createStackNavigator } from "react-navigation-stack";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { createMaterialTopTabNavigator } from "react-navigation-tabs";
-import { CookieText } from "../components/CookieText";
-import Icon from "../components/Icon";
+import { CookieText } from "../modules/_common/components/CookieText";
+import Icon from "../modules/_common/components/Icon";
 
 import HomeScreen from "../screens/HomeScreen";
 import SearchScreen from "../screens/SearchScreen";

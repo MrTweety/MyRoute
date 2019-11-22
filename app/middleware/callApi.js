@@ -18,7 +18,6 @@ const callApi = (endpoint, data, method = "POST", headers = {}) => {
         return Promise.reject(json);
       }
 
-      // return Object.assign({}, json);
       return json;
     })
   );

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { CookieText } from "../components/CookieText";
+import { CookieText } from "../modules/_common/components/CookieText";
 import { withTranslation } from "react-i18next";
 
 class HomeScreen extends Component {
