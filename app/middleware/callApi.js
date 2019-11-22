@@ -65,9 +65,15 @@ export default store => next => action => {
   const [requestType, successType, failureType] = types;
 
   next(actionWith({ type: requestType }));
-  return callApi(endpoint, data, method, headers).then(
-    response =>
-      next(actionWith(Object.assign(response, { type: successType }))),
-    error => next(actionWith(Object.assign(error, { type: failureType })))
-  );
+  return callApi(endpoint, data, method, headers)
+    .then(
+      response =>
+        next(
+          actionWith(
+            Object.assign({ response: { ...response } }, { type: successType })
+          )
+        ),
+      error => next(actionWith(Object.assign(error, { type: failureType })))
+    )
+    .catch(error => next(actionWith({ type: failureType, error })));
 };
