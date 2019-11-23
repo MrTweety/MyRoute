@@ -1,5 +1,7 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import { AppLoading } from "expo";
+import * as SecureStore from "expo-secure-store";
+import i18n from "i18next";
 import { Asset } from "expo-asset";
 import * as Font from "expo-font";
 import { StyleSheet, StatusBar, Platform, View } from "react-native";
@@ -22,6 +24,13 @@ export default function App(props) {
     />
   );
 
+  const language = async () => {
+    const language = await SecureStore.getItemAsync("savedLanguage");
+    if (language !== null) {
+      await i18n.changeLanguage(language);
+    }
+  };
+
   const renderNavigator = () => (
     <View style={styles.container}>
       {Platform.OS === "ios" && <StatusBar barStyle="default" />}
@@ -30,6 +39,7 @@ export default function App(props) {
   );
 
   const renderLoading = () => {
+    language();
     if (!isLoadingComplete && !props.skipLoadingScreen) {
       return loading();
     } else {
