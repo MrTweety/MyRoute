@@ -3,8 +3,8 @@ import React from "react";
 import { createStackNavigator } from "react-navigation-stack";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 import { createMaterialTopTabNavigator } from "react-navigation-tabs";
-import { Ionicons, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import { CookieText } from "../components/CookieText";
+import Icon from "../components/Icon";
 
 import HomeScreen from "../screens/HomeScreen";
 import SearchScreen from "../screens/SearchScreen";
@@ -21,15 +21,32 @@ const HomeScreenStack = createStackNavigator(
       screen: HomeScreen,
       navigationOptions: () => {
         return {
+          headerLeft: (
+            <Icon
+              type="font-awesome"
+              name="location-arrow"
+              size={30}
+              style={{ margin: 0, paddingLeft: 20, paddingRight: 0 }}
+            />
+          ),
           headerTitle: (
             <CookieText
               style={{
                 fontSize: 40,
-                padding: 10
+                paddingLeft: 0,
+                margin: 0
               }}
             >
               My Route
             </CookieText>
+          ),
+          headerRight: (
+            <Icon
+              type="ionicons"
+              name="ios-send"
+              size={30}
+              style={{ margin: 0, paddingRight: 20 }}
+            />
           )
         };
       }
@@ -64,7 +81,12 @@ const SettingsScreenTopTabNavigator = createMaterialTopTabNavigator(
       navigationOptions: {
         tabBarLabel: "Settings",
         tabBarIcon: ({ tintColor }) => (
-          <Ionicons name={"md-settings"} size={26} color={tintColor} />
+          <Icon
+            type="ionicons"
+            name="md-settings"
+            size={26}
+            color={tintColor}
+          />
         )
       }
     },
@@ -112,12 +134,13 @@ const ProfileScreenStack = createStackNavigator(
         return {
           title: i18next.t("common.profile"),
           headerRight: (
-            <Ionicons
-              style={{ paddingRight: 10 }}
-              onPress={() => navigation.navigate("SettingsStack")}
+            <Icon
+              type="ionicons"
               name="md-settings"
               size={30}
               color="black"
+              style={{ paddingRight: 10 }}
+              onPress={() => navigation.navigate("SettingsStack")}
             />
           )
         };
@@ -128,7 +151,12 @@ const ProfileScreenStack = createStackNavigator(
       navigationOptions: {
         tabBarLabel: "Settings",
         tabBarIcon: ({ tintColor }) => (
-          <Ionicons name={"md-settings"} size={26} color={tintColor} />
+          <Icon
+            type="ionicons"
+            name="md-settings"
+            size={26}
+            color={tintColor}
+          />
         )
       }
     }
@@ -143,7 +171,7 @@ const MainTabNavigator = createMaterialBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: "Home",
         tabBarIcon: ({ tintColor }) => (
-          <Ionicons name={"ios-home"} size={26} color={tintColor} />
+          <Icon type="ionicons" name="ios-home" size={26} color={tintColor} />
         )
       }
     },
@@ -152,8 +180,9 @@ const MainTabNavigator = createMaterialBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: "Search",
         tabBarIcon: ({ tintColor }) => (
-          <MaterialCommunityIcons
-            name={"map-search"}
+          <Icon
+            type="material-community"
+            name="map-search"
             size={26}
             color={tintColor}
           />
@@ -165,7 +194,7 @@ const MainTabNavigator = createMaterialBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: "Map",
         tabBarIcon: ({ tintColor }) => (
-          <Ionicons name={"md-map"} size={26} color={tintColor} />
+          <Icon type="ionicons" name="md-map" size={26} color={tintColor} />
         )
       }
     },
@@ -174,19 +203,19 @@ const MainTabNavigator = createMaterialBottomTabNavigator(
       navigationOptions: {
         tabBarLabel: "Profile",
         tabBarIcon: ({ tintColor }) => (
-          <Ionicons name={"md-person"} size={26} color={tintColor} />
+          <Icon type="ionicons" name="md-person" size={26} color={tintColor} />
         )
       }
     }
   },
   {
-    initialRouteName: "Search",
+    initialRouteName: "Home",
     shifting: false, //Color for the tab bar when the tab corresponding to the screen is active. Used for the ripple effect. This is only supported when shifting is true.
     labeled: false,
     activeColor: "#222",
     inactiveColor: "grey",
     barStyle: {
-      backgroundColor: "#f2f2f2",
+      backgroundColor: "white", //"#f2f2f2",
       height: 54
     }
   }
