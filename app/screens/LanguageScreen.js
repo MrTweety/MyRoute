@@ -35,7 +35,6 @@ class LanguageScreen extends Component {
   }
 
   render() {
-    const en = i18next.getFixedT("en");
     return (
       <View style={{ flex: 1 }}>
         <>
@@ -44,7 +43,9 @@ class LanguageScreen extends Component {
               <View key={language} style={styles.padding}>
                 <TouchableOpacity onPress={() => this.changeLanguage(language)}>
                   <Text style={styles.textPrimary}>
-                    {en(`common.languages.${language}`)}
+                    {i18next.getFixedT(language)(
+                      `common.languages.${language}`
+                    )}
                   </Text>
                   <Text style={styles.textSecondary}>
                     {i18next.t(`common.languages.${language}`)}
