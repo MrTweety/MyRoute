@@ -96,7 +96,7 @@ const SettingsScreenTopTabNavigator = createMaterialTopTabNavigator(
         return {
           headerTitle: "Language",
           tabBarIcon: ({ tintColor }) => (
-            <Entypo name={"language"} size={26} color={tintColor} />
+            <Icon type="entypo" name={"language"} size={26} color={tintColor} />
           )
         };
       }
