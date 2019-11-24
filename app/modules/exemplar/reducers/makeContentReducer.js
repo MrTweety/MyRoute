@@ -27,31 +27,33 @@ export const makeContentReducer = (
 
   switch (action.type) {
     case types[0]:
-      return Object.assign(state, {
+      return {
+        ...state,
         ...keyState,
         isFetching: true,
         fetchingError: false,
         error: null
-      });
+      };
     case types[1]:
       const data = mapResponseToStore(action.response, action);
-      return Object.assign(state, {
+      return {
         ...keyState,
         data,
         isFetching: false,
         fetchedAt: new Date().getTime(),
         fetchingError: false,
         error: null
-      });
+      };
 
     case types[2]:
-      return Object.assign(state, {
+      return {
+        ...state,
         data: false,
         isFetching: false,
         fetchingError: true,
         error: action.error,
         errorCode: action.errorCode
-      });
+      };
 
     default:
       return state;

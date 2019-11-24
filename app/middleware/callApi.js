@@ -18,7 +18,8 @@ const callApi = (endpoint, data, method = "POST", headers = {}) => {
         return Promise.reject(json);
       }
 
-      return Object.assign({}, json);
+      // return Object.assign({}, json);
+      return json;
     })
   );
 };
@@ -70,7 +71,7 @@ export default store => next => action => {
       response =>
         next(
           actionWith(
-            Object.assign({ response: { ...response } }, { type: successType })
+            Object.assign({ response: response }, { type: successType })
           )
         ),
       error => next(actionWith(Object.assign(error, { type: failureType })))
