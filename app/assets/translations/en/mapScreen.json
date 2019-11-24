@@ -1,0 +1,8 @@
+{
+  "duration": "duration",
+  "distance": "distance",
+  "stopSave": "Stop and save",
+  "trackName": "Track name",
+  "discardQuestion": "Do you want to discard this track?",
+  "stopInformation": "Recording will be stopped."
+}

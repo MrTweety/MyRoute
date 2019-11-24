@@ -408,85 +408,89 @@ export default class MapScreen extends React.Component {
     );
   }
 
-  render = () => (
-    <View style={styles.container}>
-      {// TODO: Obsługa blędów (logger blędów ) (do wyświetlania informacji dla uzytkownika)
-      this.state.error ? (
-        <Text style={styles.errorText}>{this.state.error}</Text>
-      ) : null}
+  render() {
+    const { t } = this.props;
+    return (
+      <View style={styles.container}>
+        {// TODO: Obsługa blędów (logger blędów ) (do wyświetlania informacji dla uzytkownika)
+        this.state.error ? (
+          <Text style={styles.errorText}>{this.state.error}</Text>
+        ) : null}
 
-      {!!this.state.initialRegion && (
-        <MapView
-          style={{ flex: 1 }}
-          legalLabelInsets={{ bottom: 200 }}
-          showsUserLocation={true}
-          showsMyLocationButton={false}
-          showsScale={true}
-          ref={this.mapViewRef}
-          initialRegion={this.state.initialRegion}
-          provider="google"
-          onUserLocationChange={() => {
-            this.state.centerStates.isCenter &&
-              !this.state.error &&
-              this.onCenterMap();
+        {!!this.state.initialRegion && (
+          <MapView
+            style={{ flex: 1 }}
+            legalLabelInsets={{ bottom: 200 }}
+            showsUserLocation={true}
+            showsMyLocationButton={false}
+            showsScale={true}
+            ref={this.mapViewRef}
+            initialRegion={this.state.initialRegion}
+            provider="google"
+            onUserLocationChange={() => {
+              this.state.centerStates.isCenter &&
+                !this.state.error &&
+                this.onCenterMap();
+            }}
+            onPanDrag={() => {
+              this.setNoCenter();
+            }}
+          >
+            {this.renderPolyline()}
+          </MapView>
+        )}
+
+        <MapPanel
+          ref={this.mapPanelRef}
+          onCenterMap={this.handlerSetCenter}
+          togglePause={this.togglePause}
+          toggleTracking={this.toggleTracking}
+          centerStates={this.state.centerStates}
+          isPause={this.state.isPause}
+          isTracking={this.state.isTracking}
+          distance={this.state.distance}
+          t={t}
+        />
+
+        <DialogInput
+          isDialogVisible={this.state.isDialogVisible_StopDecision}
+          title={t("map.stopSave")}
+          message={t("map.trackName")}
+          hintInput={t("map.trackName")}
+          initValueTextInput={t("map.trackName")}
+          submitInput={inputText => {
+            this.stopAndSaveDialog(inputText);
           }}
-          onPanDrag={() => {
-            this.setNoCenter();
+          closeDialog={() => {
+            this.showSaveDialog(false);
           }}
+          opcionalAction={() => {
+            this.showDiscard(true);
+          }}
+          opcionalTextVisible={true}
+          cancelText={t("common.cancel")}
+          submitText={t("common.save")}
+          opcionalText={t("common.discard")}
         >
-          {this.renderPolyline()}
-        </MapView>
-      )}
+          <View style={{ marginBottom: 20 }} />
+        </DialogInput>
 
-      <MapPanel
-        ref={this.mapPanelRef}
-        onCenterMap={this.handlerSetCenter}
-        togglePause={this.togglePause}
-        toggleTracking={this.toggleTracking}
-        centerStates={this.state.centerStates}
-        isPause={this.state.isPause}
-        isTracking={this.state.isTracking}
-        distance={this.state.distance}
-      />
-
-      <DialogInput
-        isDialogVisible={this.state.isDialogVisible_StopDecision}
-        title={"Stop and save"}
-        message={"Track name"}
-        hintInput={"Track name"}
-        initValueTextInput={"Track name"}
-        submitInput={inputText => {
-          this.stopAndSaveDialog(inputText);
-        }}
-        closeDialog={() => {
-          this.showSaveDialog(false);
-        }}
-        opcionalAction={() => {
-          this.showDiscard(true);
-        }}
-        opcionalTextVisible={true}
-        cancelText={"Cancel"}
-        submitText={"SAVE"}
-        opcionalText={"DISCARD"}
-      >
-        <View style={{ marginBottom: 20 }} />
-      </DialogInput>
-
-      <DialogInput
-        isDialogVisible={this.state.isDialogVisible_DiscardDecision}
-        title={"Do you want to discard this track?"}
-        message={"Recording will be stopped."}
-        textInputVisible={false}
-        submitInput={() => {
-          this.discard();
-        }}
-        closeDialog={() => {
-          this.showDiscard(false);
-        }}
-        submitText={"DISCARD"}
-      />
-    </View>
-  );
+        <DialogInput
+          isDialogVisible={this.state.isDialogVisible_DiscardDecision}
+          title={t("map.discardQuestion")}
+          message={t("map.stopInformation")}
+          textInputVisible={false}
+          submitInput={() => {
+            this.discard();
+          }}
+          closeDialog={() => {
+            this.showDiscard(false);
+          }}
+          submitText={t("common.discard")}
+        />
+      </View>
+    );
+  }
 }
 // define backgroundTask
 TaskManager.defineTask(LOCATION_TASK_NAME, backgroundTask);
