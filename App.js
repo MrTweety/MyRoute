@@ -13,6 +13,19 @@ import { Provider } from "react-redux";
 import store from "./app/redux/store";
 import "./i18n";
 
+if (__DEV__) {
+  global.XMLHttpRequest = global.originalXMLHttpRequest
+    ? global.originalXMLHttpRequest
+    : global.XMLHttpRequest;
+  global.FormData = global.originalFormData
+    ? global.originalFormData
+    : global.FormData;
+  global.Blob = global.originalBlob ? global.originalBlob : global.Blob;
+  global.FileReader = global.originalFileReader
+    ? global.originalFileReader
+    : global.FileReader;
+}
+
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
 

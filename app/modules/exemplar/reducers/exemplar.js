@@ -29,8 +29,3 @@ export const exampleReducer = (state = myDefaultState, action) => {
       return state;
   }
 };
-
-// export default combineReducers({
-//   test,
-//   exemplar
-// });
