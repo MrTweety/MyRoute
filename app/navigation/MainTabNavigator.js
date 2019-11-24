@@ -8,9 +8,12 @@ import Icon from "../components/Icon";
 
 import HomeScreen from "../screens/HomeScreen";
 import SearchScreen from "../screens/SearchScreen";
+import LanguageScreen from "../screens/LanguageScreen";
 import MapScreen from "../screens/MapScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import SettingsScreen from "../screens/SettingsScreen";
+
+import i18next from "i18next";
 
 const HomeScreenStack = createStackNavigator(
   {
@@ -62,10 +65,8 @@ const SearchScreenStack = createStackNavigator(
     SearchStack: {
       screen: SearchScreen,
       navigationOptions: ({ navigation }) => {
-        const { routeName } = navigation.state;
-
         return {
-          title: routeName
+          title: navigation.getParam("title")
         };
       }
     }
@@ -90,12 +91,14 @@ const SettingsScreenTopTabNavigator = createMaterialTopTabNavigator(
       }
     },
     Language: {
-      screen: SettingsScreen,
-      navigationOptions: {
-        tabBarLabel: "Language",
-        tabBarIcon: ({ tintColor }) => (
-          <Icon type="entypo" name="language" size={26} color={tintColor} />
-        )
+      screen: LanguageScreen,
+      navigationOptions: () => {
+        return {
+          headerTitle: "Language",
+          tabBarIcon: ({ tintColor }) => (
+            <Icon type="entypo" name={"language"} size={26} color={tintColor} />
+          )
+        };
       }
     }
   },
@@ -105,7 +108,7 @@ const SettingsScreenTopTabNavigator = createMaterialTopTabNavigator(
     navigationOptions: ({ navigation }) => {
       const { routeName } = navigation.state.routes[navigation.state.index];
       return {
-        headerTitle: routeName
+        title: i18next.t(`common.${routeName}`)
       };
     },
     tabBarOptions: {
@@ -128,9 +131,8 @@ const ProfileScreenStack = createStackNavigator(
     ProfileStack: {
       screen: ProfileScreen,
       navigationOptions: ({ navigation }) => {
-        const { routeName } = navigation.state;
         return {
-          title: routeName,
+          title: i18next.t("common.profile"),
           headerRight: (
             <Icon
               type="ionicons"
@@ -162,7 +164,7 @@ const ProfileScreenStack = createStackNavigator(
   { headerLayoutPreset: "center" }
 );
 
-export default MainTabNavigator = createMaterialBottomTabNavigator(
+const MainTabNavigator = createMaterialBottomTabNavigator(
   {
     Home: {
       screen: HomeScreenStack,
@@ -218,3 +220,5 @@ export default MainTabNavigator = createMaterialBottomTabNavigator(
     }
   }
 );
+
+export default MainTabNavigator;

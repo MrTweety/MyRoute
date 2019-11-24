@@ -1,5 +1,7 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import { AppLoading } from "expo";
+import * as SecureStore from "expo-secure-store";
+import i18n from "i18next";
 import { Asset } from "expo-asset";
 import * as Font from "expo-font";
 import { StyleSheet, StatusBar, Platform, View } from "react-native";
@@ -9,6 +11,7 @@ import AppNavigator from "./app/navigation/AppNavigator";
 
 import { Provider } from "react-redux";
 import store from "./app/redux/store";
+import "./i18n";
 
 if (__DEV__) {
   global.XMLHttpRequest = global.originalXMLHttpRequest
@@ -26,13 +29,20 @@ if (__DEV__) {
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
 
-  const renderLoading = () => (
+  const loading = () => (
     <AppLoading
       startAsync={loadResourcesAsync}
       onError={handleLoadingError}
       onFinish={() => handleFinishLoading(setLoadingComplete)}
     />
   );
+
+  const language = async () => {
+    const language = await SecureStore.getItemAsync("savedLanguage");
+    if (language !== null) {
+      await i18n.changeLanguage(language);
+    }
+  };
 
   const renderNavigator = () => (
     <View style={styles.container}>
@@ -41,14 +51,15 @@ export default function App(props) {
     </View>
   );
 
-  const renderLoadingg = () => {
+  const renderLoading = () => {
+    language();
     if (!isLoadingComplete && !props.skipLoadingScreen) {
-      return renderLoading();
+      return loading();
     } else {
       return renderNavigator();
     }
   };
-  return <Provider store={store}>{renderLoadingg()}</Provider>;
+  return <Provider store={store}>{renderLoading()}</Provider>;
 }
 
 async function loadResourcesAsync() {

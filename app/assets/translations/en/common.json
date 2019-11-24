@@ -1,0 +1,13 @@
+{
+  "search": "Search",
+  "continue": "Continue",
+  "save": "Save",
+  "Language": "Language",
+  "Settings": "Settings",
+  "profile": "Profile",
+  "languages": {
+    "en": "English",
+    "pl": "Polish",
+    "fr": "French"
+  }
+}
