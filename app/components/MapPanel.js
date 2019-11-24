@@ -35,7 +35,8 @@ export default class MapPanel extends Component {
       isPause,
       onCenterMap,
       togglePause,
-      toggleTracking
+      toggleTracking,
+      t
     } = this.props;
 
     isTracking && this.animatedToggleTracking();
@@ -101,7 +102,7 @@ export default class MapPanel extends Component {
                     {...this.props}
                   />
                   <Text style={{ fontSize: 14, textAlign: "center" }}>
-                    duration
+                    {t("map.duration")}
                   </Text>
                 </View>
                 <View>
@@ -118,7 +119,7 @@ export default class MapPanel extends Component {
                     km
                   </Text>
                   <Text style={{ fontSize: 14, textAlign: "center" }}>
-                    distance
+                    {t("map.distance")}
                   </Text>
                 </View>
               </View>
@@ -185,7 +186,8 @@ MapPanel.propTypes = {
   isPause: PropTypes.bool.isRequired,
   isTracking: PropTypes.bool.isRequired,
   togglePause: PropTypes.func.isRequired,
-  toggleTracking: PropTypes.func.isRequired
+  toggleTracking: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired
 };
 
 const styles = StyleSheet.create({

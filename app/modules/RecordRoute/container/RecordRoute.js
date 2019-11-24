@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { saveRoute, stateKey } from "../actions/saveRoute";
 import saveRouteReducer from "../reducers/saveRoute";
 import RecordRoute from "../components/RecordRoute";
+import { withTranslation } from "react-i18next";
 
 import { injectReducer } from "../../../redux/store";
 
@@ -16,7 +17,9 @@ const mapDispatchToProps = {
   saveRoute
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RecordRoute);
+export default withTranslation()(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(RecordRoute)
+);

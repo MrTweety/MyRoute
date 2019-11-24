@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import * as SecureStore from "expo-secure-store";
+import { setSaveItem, SAVED_LANGUAGE } from "../services/secureStorage";
 import i18next from "i18next";
 
 class LanguageScreen extends Component {
@@ -31,7 +31,7 @@ class LanguageScreen extends Component {
       .changeLanguage(language)
       .then(() => {
         this.updateTitle();
-        SecureStore.setItemAsync("savedLanguage", language);
+        setSaveItem(SAVED_LANGUAGE, language);
       })
       .catch(error => console.log("Change language error", error));
   }

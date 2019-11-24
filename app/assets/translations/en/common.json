@@ -5,6 +5,8 @@
   "Language": "Language",
   "Settings": "Settings",
   "profile": "Profile",
+  "cancel": "Cancel",
+  "discard": "Discard",
   "languages": {
     "en": "English",
     "pl": "Polish",
