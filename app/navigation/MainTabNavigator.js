@@ -214,9 +214,13 @@ const MainTabNavigator = createMaterialBottomTabNavigator(
     labeled: false,
     activeColor: "#222",
     inactiveColor: "grey",
+    height: 42,
     barStyle: {
       backgroundColor: "white", //"#f2f2f2",
-      height: 54
+      height: 44,
+      paddingBottom: 2,
+      marginBottom: 6,
+      alignItems: "center"
     }
   }
 );

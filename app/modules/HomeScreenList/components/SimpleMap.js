@@ -1,0 +1,186 @@
+import React, { Component } from "react";
+import { StyleSheet, View, Image, Dimensions, Animated } from "react-native";
+import PropTypes from "prop-types";
+
+import MapView from "react-native-maps";
+import AnimatingPolyline from "./AnimatingPolyline";
+
+const { width, height } = Dimensions.get("window");
+
+export default class SimpleMap extends Component {
+  animatedValue = new Animated.Value(0);
+
+  state = { imgSrc: false };
+
+  setImgSrc = imgSrc => {
+    this.setState({ imgSrc });
+  };
+
+  showImage = imgSrc => {
+    this.setImgSrc(imgSrc);
+    Animated.sequence([
+      // Animated.spring(this.animatedValue, {
+      //   toValue: 1,
+      //   speed: 20,
+      //   // useNativeDriver: true
+      // }),
+      // Animated.spring(this.animatedValue, {
+      //   toValue: 0,
+      //   speed: 20
+      //   // userNativeDriver: true
+      // })
+
+      Animated.timing(this.animatedValue, {
+        toValue: 1,
+        duration: 500
+        // useNativeDriver: true
+      }),
+      Animated.timing(this.animatedValue, {
+        toValue: 0,
+        duration: 500,
+        delay: 1000
+        // userNativeDriver: true
+      })
+    ]).start(() => {
+      //   end animation callback
+      this.setImgSrc(null);
+    });
+  };
+
+  renderOverlay = () => {
+    const imageStyles = {
+      opacity: this.animatedValue,
+      transform: [
+        {
+          scale: this.animatedValue.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0.7, 1]
+          })
+        }
+      ]
+    };
+
+    //mapa is not clickable
+    const bgColor = this.animatedValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: ["rgba(255,255,255,0)", "rgba(255,255,255,0.8)"]
+    });
+
+    const animatedStyle = {
+      backgroundColor: bgColor
+      // opacity: this.animatedValue,
+    };
+
+    return (
+      <Animated.View style={[styles.overlay, animatedStyle]}>
+        <Animated.View style={{ ...imageStyles }}>
+          <Image
+            style={{ width: width }}
+            // style={{ flex: 1 }}
+            width={width}
+            height={width}
+            resizeMode="contain"
+            source={{ uri: this.state.imgSrc }}
+          />
+        </Animated.View>
+      </Animated.View>
+    );
+  };
+
+  mapViewRef = React.createRef();
+
+  componentDidMount() {
+    const { coords } = this.props;
+    const mapView = this.mapViewRef.current;
+    if (mapView) {
+      mapView.animateCamera({
+        center: {
+          ...coords[parseInt(coords.length / 2) - 2]
+        },
+        ...coords[parseInt(coords.length / 2) - 2],
+        zoom: 15
+      });
+    }
+  }
+
+  componentDidUpdate() {
+    const { coords } = this.props;
+    const mapView = this.mapViewRef.current;
+    if (mapView) {
+      mapView.animateCamera({
+        center: {
+          ...coords[parseInt(coords.length / 2) - 2]
+        },
+        ...coords[parseInt(coords.length / 2) - 2],
+        zoom: 15
+      });
+    }
+  }
+
+  render() {
+    const { coords, shouldAnimation } = this.props;
+    return (
+      <View style={{ flex: 1 }}>
+        <MapView
+          ref={this.mapViewRef}
+          style={{ width: width, height: width }}
+          provider="google"
+          liteMode
+        >
+          <MapView.Circle
+            center={coords[1]}
+            radius={20}
+            strokeColor={"#484848"}
+            strokeWidth={5}
+            fillColor={"#fff"}
+            zIndex={1}
+          />
+          <MapView.Circle
+            center={coords[coords.length - 1]}
+            radius={20}
+            strokeColor={"#484848"}
+            strokeWidth={5}
+            fillColor={"#fff"}
+            zIndex={1}
+          />
+          {coords &&
+            coords.map(coord => {
+              if (coord.image) {
+                return <MapView.Marker key={coord._id} coordinate={coord} />;
+              }
+            })}
+          <AnimatingPolyline
+            coords={coords}
+            showImage={this.showImage}
+            isPause={!!this.state.imgSrc}
+            shouldAnimation={shouldAnimation}
+          />
+
+          <MapView.Polyline
+            coordinates={coords}
+            strokeWidth={2}
+            strokeColor={"#666"}
+          />
+        </MapView>
+        {this.renderOverlay()}
+      </View>
+    );
+  }
+}
+
+SimpleMap.propTypes = {
+  coords: PropTypes.arrayOf(PropTypes.object).isRequired,
+  shouldAnimation: PropTypes.bool
+};
+
+const styles = StyleSheet.create({
+  overlay: {
+    position: "absolute",
+    alignItems: "center",
+    justifyContent: "center",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0
+  }
+});

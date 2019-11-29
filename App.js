@@ -5,7 +5,7 @@ import { Asset } from "expo-asset";
 import * as Font from "expo-font";
 import { StyleSheet, StatusBar, Platform, View } from "react-native";
 import { Ionicons, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
-
+import ErrorBoundary from "./app/modules/_common/components/ErrorBoundary";
 import AppNavigator from "./app/navigation/AppNavigator";
 import { getSavedItem, SAVED_LANGUAGE } from "./app/services/secureStorage";
 
@@ -13,18 +13,16 @@ import { Provider } from "react-redux";
 import store from "./app/redux/store";
 import "./i18n";
 
-if (__DEV__) {
-  global.XMLHttpRequest = global.originalXMLHttpRequest
-    ? global.originalXMLHttpRequest
-    : global.XMLHttpRequest;
-  global.FormData = global.originalFormData
-    ? global.originalFormData
-    : global.FormData;
-  global.Blob = global.originalBlob ? global.originalBlob : global.Blob;
-  global.FileReader = global.originalFileReader
-    ? global.originalFileReader
-    : global.FileReader;
-}
+global.XMLHttpRequest = global.originalXMLHttpRequest
+  ? global.originalXMLHttpRequest
+  : global.XMLHttpRequest;
+global.FormData = global.originalFormData
+  ? global.originalFormData
+  : global.FormData;
+global.Blob = global.originalBlob ? global.originalBlob : global.Blob;
+global.FileReader = global.originalFileReader
+  ? global.originalFileReader
+  : global.FileReader;
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
@@ -59,7 +57,11 @@ export default function App(props) {
       return renderNavigator();
     }
   };
-  return <Provider store={store}>{renderLoading()}</Provider>;
+  return (
+    <Provider store={store}>
+      <ErrorBoundary>{renderLoading()}</ErrorBoundary>
+    </Provider>
+  );
 }
 
 async function loadResourcesAsync() {

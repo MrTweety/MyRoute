@@ -1,8 +1,3 @@
-/*
- * w przyszłosci zmienie folder exemplar na common
- * app/components -> common/components
- */
-
 export const makeContentReducer = (
   types,
   dataKey,

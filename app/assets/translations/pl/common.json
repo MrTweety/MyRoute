@@ -1,4 +1,5 @@
 {
+  "errorBoundary": "Coś sie zjebało. Sorry.",
   "search": "Szukaj",
   "continue": "Kontynuuj",
   "save": "Zapisz",
@@ -11,5 +12,8 @@
     "en": "Angielski",
     "pl": "Polski",
     "fr": "Francuski"
-  }
+  },
+  "fetchError": "Błąd pobierania.",
+  "tryAgain": "Spróbuj ponownie...",
+  "more": "...więcej"
 }
