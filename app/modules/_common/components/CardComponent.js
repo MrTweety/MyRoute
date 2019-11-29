@@ -6,6 +6,8 @@ import UserItem from "./UserItem";
 import DescriptionItem from "./DescriptionItem";
 import CommentList from "../../CommentList/components/CommentList";
 
+import createGpx from "../../../services/createGpx";
+
 import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import isRoute from "../propTypes/isRoute";
@@ -27,6 +29,21 @@ class CardComponent extends Component {
     //   this.setState({ cardImgHeight });
     // }
   }
+
+  saveGPX = () => {
+    const { route } = this.props;
+    const { _id, comments, coords, startDate } = route;
+    const description = route.name;
+    try {
+      const gpx = createGpx(coords, {
+        activityName: description,
+        startTime: startDate
+      });
+      console.log(gpx);
+    } catch (error) {
+      console.log("MG-log: saveGPX -> error", error);
+    }
+  };
 
   render() {
     const { t, route, shouldAnimation, navigation } = this.props;
@@ -67,12 +84,21 @@ class CardComponent extends Component {
               })
             }
           />
+
+          <Icon
+            type="ionicons"
+            name="ios-save"
+            size={30}
+            color="black"
+            style={styles.icon}
+            onPress={() => this.saveGPX()}
+          />
         </View>
         <View style={{ marginLeft: 10 }}>
           <Text>101 likes</Text>
         </View>
 
-        <CommentList comments={comments} simpleView={true} />
+        {/* <CommentList comments={comments} simpleView={true} /> */}
 
         <View
           style={{

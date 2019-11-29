@@ -35,6 +35,7 @@ export default class SimpleMap extends Component {
   };
 
   renderOverlay = () => {
+    const { imgSrc } = this.state;
     const imageStyles = {
       opacity: this.animatedValue,
       transform: [
@@ -65,7 +66,7 @@ export default class SimpleMap extends Component {
             width={width}
             height={width}
             resizeMode="contain"
-            source={{ uri: this.state.imgSrc }}
+            source={{ uri: imgSrc }}
           />
         </Animated.View>
       </Animated.View>
@@ -104,6 +105,8 @@ export default class SimpleMap extends Component {
 
   render() {
     const { coords, shouldAnimation } = this.props;
+    const { imgSrc } = this.state;
+
     return (
       <View style={{ flex: 1 }}>
         <MapView
@@ -137,7 +140,7 @@ export default class SimpleMap extends Component {
           <AnimatingPolyline
             coords={coords}
             showImage={this.showImage}
-            isPause={!!this.state.imgSrc}
+            isPause={!!imgSrc}
             shouldAnimation={shouldAnimation}
           />
 
@@ -147,7 +150,7 @@ export default class SimpleMap extends Component {
             strokeColor={"#666"}
           />
         </MapView>
-        {this.renderOverlay()}
+        {!!imgSrc && this.renderOverlay()}
       </View>
     );
   }

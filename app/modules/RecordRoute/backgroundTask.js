@@ -22,7 +22,8 @@ export default async ({ data: { locations }, error }) => {
         longitude: coords.longitude,
         altitude: coords.altitude,
         heading: coords.heading,
-        timestamp: timestamp
+        timestamp: timestamp,
+        speed: coords.speed
       }));
       if (__DEV__ && 0)
         console.log(`Received new locations at ${new Date()}:`, locations);
