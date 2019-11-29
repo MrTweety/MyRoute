@@ -3,7 +3,13 @@ import { AppLoading } from "expo";
 import i18n from "i18next";
 import { Asset } from "expo-asset";
 import * as Font from "expo-font";
-import { StyleSheet, StatusBar, Platform, View } from "react-native";
+import {
+  StyleSheet,
+  StatusBar,
+  Platform,
+  View,
+  KeyboardAvoidingView
+} from "react-native";
 import { Ionicons, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import ErrorBoundary from "./app/modules/_common/components/ErrorBoundary";
 import AppNavigator from "./app/navigation/AppNavigator";
@@ -57,9 +63,12 @@ export default function App(props) {
       return renderNavigator();
     }
   };
+  //TODO: replace KeyboardAvoidingView
   return (
     <Provider store={store}>
-      <ErrorBoundary>{renderLoading()}</ErrorBoundary>
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
+        <ErrorBoundary>{renderLoading()}</ErrorBoundary>
+      </KeyboardAvoidingView>
     </Provider>
   );
 }

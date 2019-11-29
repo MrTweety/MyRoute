@@ -29,25 +29,16 @@ class CardComponent extends Component {
   }
 
   render() {
-    const { t, route, shouldAnimation } = this.props;
+    const { t, route, shouldAnimation, navigation } = this.props;
     const { _id, comments, coords } = route;
     const description = route.name;
 
     return (
       <View style={styles.container}>
         <UserItem {...this.props} />
-        {this.props.shouldAnimation && (
-          <DescriptionItem description={description} />
-        )}
+        <DescriptionItem description={description} />
 
         <View style={{ justifyContent: "center", alignItems: "center" }}>
-          {/* <Image
-            style={{ flex: 1 }}
-            width={width}
-            height={this.state.cardImgHeight}
-            resizeMode="contain"
-            source={images[this.props.imageNr || 1]}
-          /> */}
           <SimpleMap
             coords={coords}
             nrRoute={this.props.imageNr}
@@ -68,13 +59,20 @@ class CardComponent extends Component {
             size={30}
             color="black"
             style={styles.icon}
+            onPress={() =>
+              navigation.navigate("CommentStack", {
+                _id,
+                comments,
+                description
+              })
+            }
           />
         </View>
         <View style={{ marginLeft: 10 }}>
           <Text>101 likes</Text>
         </View>
 
-        <CommentList comments={comments} />
+        <CommentList comments={comments} simpleView={true} />
 
         <View
           style={{
@@ -119,6 +117,7 @@ CardComponent.propTypes = {
   t: PropTypes.func.isRequired,
   route: isRoute.isRequired,
   shouldAnimation: PropTypes.bool
+  // navigation: PropTypes.node
 };
 
 const styles = StyleSheet.create({

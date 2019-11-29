@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import MapView from "react-native-maps";
 import AnimatingPolyline from "./AnimatingPolyline";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 export default class SimpleMap extends Component {
   animatedValue = new Animated.Value(0);
@@ -19,30 +19,17 @@ export default class SimpleMap extends Component {
   showImage = imgSrc => {
     this.setImgSrc(imgSrc);
     Animated.sequence([
-      // Animated.spring(this.animatedValue, {
-      //   toValue: 1,
-      //   speed: 20,
-      //   // useNativeDriver: true
-      // }),
-      // Animated.spring(this.animatedValue, {
-      //   toValue: 0,
-      //   speed: 20
-      //   // userNativeDriver: true
-      // })
-
       Animated.timing(this.animatedValue, {
         toValue: 1,
         duration: 500
-        // useNativeDriver: true
       }),
       Animated.timing(this.animatedValue, {
         toValue: 0,
         duration: 500,
         delay: 1000
-        // userNativeDriver: true
       })
     ]).start(() => {
-      //   end animation callback
+      // end animation callback
       this.setImgSrc(null);
     });
   };
@@ -68,7 +55,6 @@ export default class SimpleMap extends Component {
 
     const animatedStyle = {
       backgroundColor: bgColor
-      // opacity: this.animatedValue,
     };
 
     return (
@@ -76,7 +62,6 @@ export default class SimpleMap extends Component {
         <Animated.View style={{ ...imageStyles }}>
           <Image
             style={{ width: width }}
-            // style={{ flex: 1 }}
             width={width}
             height={width}
             resizeMode="contain"

@@ -19,7 +19,18 @@ export default function Comment({ comment, simpleView }) {
     );
   };
 
-  return renderSimpleView();
+  const renderComment = () => {
+    return (
+      <View style={{ marginHorizontal: !parens ? 10 : 20, marginTop: 5 }}>
+        <Text>
+          <Text style={{ fontWeight: "900" }}>{author.name} </Text>
+          {commentStr}
+        </Text>
+      </View>
+    );
+  };
+
+  return simpleView ? renderSimpleView() : renderComment();
 }
 
 Comment.defaultProps = {

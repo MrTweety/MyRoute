@@ -103,7 +103,8 @@ class HomeScreenList extends Component {
   //******************************************************* */
 
   render() {
-    const { t, homeRoutes } = this.props;
+    const { t, homeRoutes, navigation } = this.props;
+    // console.log("MG-log: HomeScreenList -> render -> homeRoutes", this.props.navigation)
     const { viewableItemsMap } = this.state;
     if (!homeRoutes)
       if (homeRoutes === null || homeRoutes === undefined) {
@@ -131,6 +132,7 @@ class HomeScreenList extends Component {
                 key={index}
                 route={item}
                 imageNr={0}
+                navigation={navigation}
               />
             );
           }}
