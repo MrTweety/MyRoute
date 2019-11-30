@@ -7,6 +7,8 @@
   "profile": "Profile",
   "cancel": "Cancel",
   "discard": "Discard",
+  "signIn": "Sign In",
+  "signUp": "Sign Up",
   "languages": {
     "en": "English",
     "pl": "Polish",
