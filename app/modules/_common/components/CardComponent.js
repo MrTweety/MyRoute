@@ -1,10 +1,21 @@
 import React, { Component } from "react";
-import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Dimensions,
+  Share,
+  PermissionsAndroid
+} from "react-native";
 import Icon from "./Icon";
 import SimpleMap from "../../HomeScreenList/components/SimpleMap";
 import UserItem from "./UserItem";
 import DescriptionItem from "./DescriptionItem";
 import CommentList from "../../CommentList/components/CommentList";
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
+import * as Permissions from "expo-permissions";
 
 import createGpx from "../../../services/createGpx";
 
@@ -15,6 +26,19 @@ import isRoute from "../propTypes/isRoute";
 const { width, height } = Dimensions.get("window");
 
 class CardComponent extends Component {
+  static navigationOptions = () => {
+    return {
+      headerRight: (
+        <Icon
+          type="ionicons"
+          name="ios-send"
+          size={30}
+          style={{ margin: 0, paddingRight: 20 }}
+        />
+      )
+    };
+  };
+
   state = {
     cardImgHeight: width
   };
@@ -30,16 +54,85 @@ class CardComponent extends Component {
     // }
   }
 
-  saveGPX = () => {
+  saveGPXDrive = async () => {
     const { route } = this.props;
     const { _id, comments, coords, startDate } = route;
     const description = route.name;
     try {
-      const gpx = createGpx(coords, {
+      var gpx = createGpx(coords, {
         activityName: description,
         startTime: startDate
       });
+
+      const gpxFile = await FileSystem.writeAsStringAsync(
+        FileSystem.documentDirectory + "myroute.gpx",
+        gpx
+      );
       console.log(gpx);
+      const gpxFileStatus = await FileSystem.getInfoAsync(
+        FileSystem.documentDirectory + "myroute.gpx"
+      );
+      console.log(
+        "MG-log: CardComponent -> saveGPX -> catalog2",
+        gpxFileStatus
+      );
+
+      const sharing = await Sharing.shareAsync(
+        FileSystem.documentDirectory + "myroute.gpx",
+        { mimeType: "text/xml", dialogTitle: "dupa" }
+      );
+      console.log("MG-log: CardComponent -> saveGPX -> Sharing", sharing);
+      console.log(
+        "MG-log: CardComponent -> saveGPX -> documentDirectory",
+        FileSystem.documentDirectory
+      );
+    } catch (error) {
+      console.log("MG-log: saveGPX -> error", error);
+    }
+  };
+
+  saveGPX = async () => {
+    const { route } = this.props;
+    const { _id, comments, coords, startDate } = route;
+    const description = route.name;
+    try {
+      var gpx = createGpx(coords, {
+        activityName: description,
+        startTime: startDate
+      });
+
+      const gpxFile = await FileSystem.writeAsStringAsync(
+        FileSystem.documentDirectory + "myroute.gpx",
+        gpx
+      );
+      console.log(gpx);
+      const gpxFileStatus = await FileSystem.getInfoAsync(
+        FileSystem.documentDirectory + "myroute.gpx"
+      );
+      console.log(
+        "MG-log: CardComponent -> saveGPX -> catalog2",
+        gpxFileStatus
+      );
+
+      const result = await Share.share({
+        title:
+          "React Native | A framework for building native apps using React",
+        url:
+          "data:text/xml;harset=utf-8," +
+          FileSystem.documentDirectory +
+          "myroute.gpx"
+        // FileSystem.documentDirectory + "myroute.gpx",
+      });
+
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
     } catch (error) {
       console.log("MG-log: saveGPX -> error", error);
     }
@@ -91,7 +184,7 @@ class CardComponent extends Component {
             size={30}
             color="black"
             style={styles.icon}
-            onPress={() => this.saveGPX()}
+            onPress={() => this.saveGPXDrive()}
           />
         </View>
         <View style={{ marginLeft: 10 }}>

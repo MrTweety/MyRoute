@@ -45,8 +45,8 @@ const assertArgValidity = (coords, options) => {
   }
 };
 
-export default function createGpx(waypoints, options = {}) {
-  assertArgValidity(waypoints, options);
+export default function createGpx(coords, options = {}) {
+  assertArgValidity(coords, options);
 
   // Define default settings and merge in any user-defined options that override the defaults.
   const defaultSettings = {
@@ -120,16 +120,16 @@ export default function createGpx(waypoints, options = {}) {
   // Add a `<trkseg>` element to `<trk>`.
   const trkseg = trk.ele("trkseg");
 
-  // Loop through the waypoints and ensure that each one has a key for both latitude and longitude
+  // Loop through the coords and ensure that each one has a key for both latitude and longitude
   // (as defined by the `latKey` and `lonKey` settings).
-  waypoints.forEach(point => {
+  coords.forEach(point => {
     if (
       !{}.hasOwnProperty.call(point, latKey) ||
       !{}.hasOwnProperty.call(point, lonKey)
     ) {
       throw new Error(
         "createGpx expected to find properties for latitude and longitude on all GPS " +
-          "points, but at least one point did not have both. Did you pass an array of waypoints " +
+          "points, but at least one point did not have both. Did you pass an array of coords " +
           "(where every point has a latitude and longitude) as the first argument when you called " +
           "the function? These properties are pretty essential to a well-formed GPX file. If they " +
           "are found using property names different than in the default settings, you can " +
@@ -171,10 +171,8 @@ export default function createGpx(waypoints, options = {}) {
     if ({}.hasOwnProperty.call(point, extKey)) {
       const extensions = trkpt
         .ele("extensions")
-        .ele("gpxtpx:TrackPointExtension");
-      Object.keys(point[extKey]).forEach(ext => {
-        extensions.ele(`gpxtpx:${ext}`, point[extKey][ext]);
-      });
+        .ele("gpxtpx:TrackPointExtension")
+        .ele(`gpxtpx:${extKey}`, point[extKey]);
     }
   });
 

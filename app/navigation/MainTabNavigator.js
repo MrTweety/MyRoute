@@ -13,13 +13,15 @@ import MapScreen from "../screens/MapScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import CommentScreen from "../screens/CommentScreen";
+import GpxScreen from "../screens/GpxScreen";
+
 import i18next from "i18next";
 
 const HomeScreenStack = createStackNavigator(
   {
     HomeStack: {
       screen: HomeScreen,
-      navigationOptions: () => {
+      navigationOptions: ({ navigation }) => {
         return {
           headerLeft: (
             <>
@@ -57,6 +59,7 @@ const HomeScreenStack = createStackNavigator(
               name="ios-send"
               size={30}
               style={{ margin: 0, paddingRight: 20 }}
+              onPress={() => navigation.navigate("GPXStack")}
             />
           )
         };
@@ -68,7 +71,18 @@ const HomeScreenStack = createStackNavigator(
         headerTitle: i18next.t("common.comments")
       }),
       headerLayoutPreset: "center"
+    },
+    GPXStack: {
+      screen: GpxScreen,
+      navigationOptions: () => ({
+        headerTitle: i18next.t("common.comments")
+      }),
+      headerLayoutPreset: "center"
     }
+    // ViewSaveMap:{screen: ViewSaveMapScreen,
+    // navigationOptions in ViewSaveMap.js
+    // },
+
     // ViewSaveMap:{screen: ViewSaveMapScreen,
     // navigationOptions in ViewSaveMap.js
     // },
