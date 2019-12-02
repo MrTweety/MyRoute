@@ -1,18 +1,16 @@
+import * as DocumentPicker from "expo-document-picker";
+import * as FileSystem from "expo-file-system";
 import React, { Component } from "react";
 import {
   Alert,
-  Image,
-  Text,
-  View,
-  Switch,
   Button,
-  TouchableOpacity,
+  Image,
   SafeAreaView,
   ScrollView,
-  StyleSheet
+  StyleSheet,
+  Text,
+  View
 } from "react-native";
-import * as DocumentPicker from "expo-document-picker";
-import * as FileSystem from "expo-file-system";
 import DomSelector from "react-native-dom-parser";
 
 // import tj from "@mapbox/togeojson";
@@ -35,9 +33,105 @@ export default class GpxScreen extends Component {
     }
   };
 
-  node = null;
-
   async readDocumentAs() {
+    try {
+      FileSystem.documentDirectory + "myroute.gpx";
+      // const res = await FileSystem.readAsStringAsync(document.uri);
+      const res = await FileSystem.readAsStringAsync(
+        FileSystem.documentDirectory + "myroute.gpx"
+      );
+      console.log("MG-log: GpxScreen -> readDocumentAs -> res", res);
+
+      this.rootNode = DomSelector(res);
+      // console.log(
+      // "MG-log: GpxScreen -> readDocumentAs -> document",
+      // this.rootNode.children[0].children[1]
+      // );
+      console.log("test");
+
+      // var node = this.rootNode.getElementsByTagName("gpx");
+      // node = node.children[0].getElementsByTagName("trk");
+      var node = this.rootNode.getElementsByTagName("trkpt");
+      this.getCoords(node);
+      console.log(
+        "node:",
+        node[0].getElementsByTagName("gpxtpx:altitude")[0].children[0].text
+      );
+      console.log("test2");
+    } catch (error) {
+      console.log("MG-log: GpxScreen -> readDocumentAs -> error", error);
+    }
+
+    return null;
+  }
+
+  getCoords(trkpt) {
+    if (!Array.isArray(trkpt)) {
+      throw new Error("trkpt should be an Array!!!");
+    }
+
+    newTrkpt = trkpt.map(node => {
+      // latitude: coords.latitude,
+      // longitude: coords.longitude,
+      // altitude: coords.altitude,
+      // heading: coords.heading,
+      // timestamp: timestamp,
+      // speed: coords.speed
+
+      const latitude = node.attributes.lat;
+      // console.log("MG-log: GpxScreen -> getCoords -> latitude", latitude)
+
+      const longitude = node.attributes.lon;
+      // console.log("MG-log: GpxScreen -> getCoords -> longitude", longitude)
+
+      const altitude = node.getElementsByTagName("gpxtpx:altitude")[0]
+        .children[0].text;
+      // console.log("MG-log: GpxScreen -> getCoords -> altitude", altitude)
+
+      const heading = node.getElementsByTagName("ele")[0].children[0].text;
+      // console.log("MG-log: GpxScreen -> getCoords -> heading", heading)
+
+      const timestamp = this.getValueFromElement(
+        node.getElementsByTagName("time")
+      );
+      console.log("MG-log: GpxScreen -> getCoords -> timestamp", timestamp);
+      console.log(
+        "MG-log: GpxScreen -> getCoords -> timestamp",
+        new Date(timestamp).getTime()
+      );
+
+      const speed = this.getValueFromElement(
+        node.getElementsByTagName("speed")
+      );
+      console.log("MG-log: GpxScreen -> getCoords -> speed", speed);
+      // this.getValueFromElement(node.getElementsByTagName("time"));
+      // this.getValueFromElement(node.getElementsByTagName("speed"));
+      // node.children.map(chil=>{
+      // console.log("MG-log: GpxScreen -> getCoords -> chil.name", chil.tagName) })
+    });
+  }
+
+  getValueFromElement(elementArray) {
+    if (!Array.isArray(elementArray)) {
+      throw new Error("trkpt should be an Array!!!");
+    }
+
+    if (
+      !elementArray.length ||
+      !{}.hasOwnProperty.call(elementArray[0], "children") ||
+      !elementArray[0].children.length
+    ) {
+      return null;
+    }
+    // console.log("MG-log: GpxScreen -> getValueFromElement -> elementArray[0]", elementArray[0])
+    // console.log("MG-log: GpxScreen -> getValueFromElement -> elementArray[0].children[0]", elementArray[0].children[0])
+    // console.log("MG-log: GpxScreen -> getValueFromElement -> elementArray[0].children[0].text", elementArray[0].children[0].text)
+    return elementArray[0].children[0].text;
+  }
+
+  ///////////////////////////////////////
+
+  async readDocumentAsV1() {
     // const { document } = this.state;
     // if (!document) {
     //   return null;
@@ -50,9 +144,9 @@ export default class GpxScreen extends Component {
       );
       console.log("MG-log: GpxScreen -> readDocumentAs -> res", res);
 
-      // console.log("MG-log: GpxScreen -> readDocumentAs -> res", res);
+      console.log("MG-log: GpxScreen -> readDocumentAs -> res", res);
       // const res2 = res.replace(/ /g, "")
-      // console.log("MG-log: GpxScreen -> readDocumentAs -> res2", res2)
+      console.log("MG-log: GpxScreen -> readDocumentAs -> res2", res2);
 
       // const res3 = res.replace(/\\n/g, '')
 
@@ -62,20 +156,24 @@ export default class GpxScreen extends Component {
         this.rootNode.children[0].children[1]
       );
       console.log(Object.keys(this.rootNode.children[0]));
-      // console.log("MG-log: readDocumentAs -> rootNode", JSON.stringify({gpx:res.replace(/ /g, "")}).replace(/\\n/g, ''));
-      await this.rootNodeMap(this.rootNode);
+      // await this.rootNodeMap(this.rootNode);
 
       console.log(
         "MG-log: GpxScreen -> readDocumentAs -> rootNode",
         this.geoJson
       );
-      // console.log("MG-log: GpxScreen -> readDocumentAs -> rootNode", this.rootNode)
+
+      console.log(
+        "MG-log: GpxScreen -> readDocumentAs -> rootNode",
+        this.rootNode
+      );
 
       // rootNode.children.map(rs => console.log("1"));
     } catch (error) {}
 
     return null;
   }
+
   geoJson = {
     cosrds: []
   };
@@ -101,13 +199,13 @@ export default class GpxScreen extends Component {
         // expected output: "Mangoes and papayas are $2.79 a pound."
         break;
       default:
-      // console.log(
-      //   "MG-log: GpxScreen -> aaaa -> obj.attributes",
-      //   obj.attributes
-      // );
+        console.log(
+          "MG-log: GpxScreen -> aaaa -> obj.attributes",
+          obj.attributes
+        );
 
-      // this.newObj = { ...this.newObj, ...obj.attributes };
-      // console.log("MG-log: GpxScreen -> aaaa -> obj.attributes", this.newObj);
+        // this.newObj = { ...this.newObj, ...obj.attributes };
+        console.log("MG-log: GpxScreen -> aaaa -> obj.attributes", this.newObj);
       // break;
     }
     console.log("test2");
