@@ -25,6 +25,7 @@ class HomeScreenList extends Component {
 
   componentDidMount() {
     if (this.props.fetchRoutes) {
+      console.log("MG-log: HomeScreenList -> componentDidMount -> fetchRoutes");
       this.props.fetchRoutes();
     }
   }
@@ -32,9 +33,13 @@ class HomeScreenList extends Component {
   async componentDidUpdate(prevProps, prevState) {
     if (
       this.props.fetchRoutes &&
-      prevState.refreshing !== this.state.refreshing
+      prevState.refreshing !== this.state.refreshing &&
+      this.state.refreshing === true
     ) {
       await this.props.fetchRoutes();
+      console.log(
+        "MG-log: HomeScreenList -> componentDidUpdate -> fetchRoutes"
+      );
       this.setState({ refreshing: false });
     }
   }
