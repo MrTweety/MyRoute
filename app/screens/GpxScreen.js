@@ -71,44 +71,48 @@ export default class GpxScreen extends Component {
     }
 
     newTrkpt = trkpt.map(node => {
-      // latitude: coords.latitude,
-      // longitude: coords.longitude,
-      // altitude: coords.altitude,
-      // heading: coords.heading,
-      // timestamp: timestamp,
-      // speed: coords.speed
-
       const latitude = node.attributes.lat;
-      // console.log("MG-log: GpxScreen -> getCoords -> latitude", latitude)
+      // console.log("MG-log: GpxScreen -> getCoords -> latitude", latitude);
 
       const longitude = node.attributes.lon;
-      // console.log("MG-log: GpxScreen -> getCoords -> longitude", longitude)
+      // console.log("MG-log: GpxScreen -> getCoords -> longitude", longitude);
 
-      const altitude = node.getElementsByTagName("gpxtpx:altitude")[0]
-        .children[0].text;
-      // console.log("MG-log: GpxScreen -> getCoords -> altitude", altitude)
+      const altitude = this.getValueFromElement(
+        node.getElementsByTagName("gpxtpx:altitude")
+      );
+      //  node.getElementsByTagName("gpxtpx:altitude")[0]
+      //   .children[0].text;
+      // console.log("MG-log: GpxScreen -> getCoords -> altitude", altitude);
 
-      const heading = node.getElementsByTagName("ele")[0].children[0].text;
-      // console.log("MG-log: GpxScreen -> getCoords -> heading", heading)
+      const heading = this.getValueFromElement(
+        node.getElementsByTagName("ele")
+      );
+      // console.log("MG-log: GpxScreen -> getCoords -> heading", heading);
 
       const timestamp = this.getValueFromElement(
         node.getElementsByTagName("time")
       );
-      console.log("MG-log: GpxScreen -> getCoords -> timestamp", timestamp);
-      console.log(
-        "MG-log: GpxScreen -> getCoords -> timestamp",
-        new Date(timestamp).getTime()
-      );
+      // console.log("MG-log: GpxScreen -> getCoords -> timestamp", timestamp);
+      // console.log(
+      //   "MG-log: GpxScreen -> getCoords -> timestamp",
+      //   new Date(timestamp).getTime()
+      // );
 
       const speed = this.getValueFromElement(
         node.getElementsByTagName("speed")
       );
-      console.log("MG-log: GpxScreen -> getCoords -> speed", speed);
-      // this.getValueFromElement(node.getElementsByTagName("time"));
-      // this.getValueFromElement(node.getElementsByTagName("speed"));
-      // node.children.map(chil=>{
-      // console.log("MG-log: GpxScreen -> getCoords -> chil.name", chil.tagName) })
+      // console.log("MG-log: GpxScreen -> getCoords -> speed", speed);
+
+      return {
+        latitude,
+        longitude,
+        altitude,
+        heading,
+        timestamp,
+        speed
+      };
     });
+    console.log("MG-log: GpxScreen -> getCoords -> newTrkpt", newTrkpt);
   }
 
   getValueFromElement(elementArray) {
@@ -126,7 +130,12 @@ export default class GpxScreen extends Component {
     // console.log("MG-log: GpxScreen -> getValueFromElement -> elementArray[0]", elementArray[0])
     // console.log("MG-log: GpxScreen -> getValueFromElement -> elementArray[0].children[0]", elementArray[0].children[0])
     // console.log("MG-log: GpxScreen -> getValueFromElement -> elementArray[0].children[0].text", elementArray[0].children[0].text)
-    return elementArray[0].children[0].text;
+    const obj = elementArray[0].children[0];
+    if (!{}.hasOwnProperty.call(obj, "children")) {
+      return elementArray[0].children[0].text;
+    } else {
+      return this.getValueFromElement(obj.getElementsByTagName(obj.tagName));
+    }
   }
 
   ///////////////////////////////////////
