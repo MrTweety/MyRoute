@@ -12,15 +12,25 @@ import {
   View
 } from "react-native";
 import DomSelector from "react-native-dom-parser";
-
-// import tj from "@mapbox/togeojson";
-
+import SimpleCardComponent from "../modules/_common/components/SimpleCardComponent";
 export default class GpxScreen extends Component {
   state = {
-    copyToCache: true
+    document: null,
+    copyToCache: true,
+    error: false,
+    savedRoute: false
   };
 
-  _openPicker = async () => {
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.document !== this.state.document) {
+      console.log(
+        "MG-log: GpxScreen -> componentDidUpdate -> componentDidUpdate"
+      );
+      this.readDocumentAsString();
+    }
+  }
+
+  openPicker = async () => {
     const result = await DocumentPicker.getDocumentAsync({
       copyToCacheDirectory: this.state.copyToCache
     });
@@ -33,36 +43,58 @@ export default class GpxScreen extends Component {
     }
   };
 
-  async readDocumentAs() {
+  async readDocumentAsString() {
     try {
       FileSystem.documentDirectory + "myroute.gpx";
-      // const res = await FileSystem.readAsStringAsync(document.uri);
-      const res = await FileSystem.readAsStringAsync(
-        FileSystem.documentDirectory + "myroute.gpx"
-      );
+      const res = await FileSystem.readAsStringAsync(this.state.document.uri);
+      // const res = await FileSystem.readAsStringAsync(
+      //   FileSystem.documentDirectory + "myroute.gpx"
+      // );
       console.log("MG-log: GpxScreen -> readDocumentAs -> res", res);
 
-      this.rootNode = DomSelector(res);
-      // console.log(
-      // "MG-log: GpxScreen -> readDocumentAs -> document",
-      // this.rootNode.children[0].children[1]
-      // );
-      console.log("test");
+      var rootNode = DomSelector(res);
 
-      // var node = this.rootNode.getElementsByTagName("gpx");
-      // node = node.children[0].getElementsByTagName("trk");
-      var node = this.rootNode.getElementsByTagName("trkpt");
-      this.getCoords(node);
+      var xml = rootNode.getElementsByTagName("?xml");
+      if (!xml[0]) {
+        throw new Error("not xml");
+      }
+      if (!xml[0].attributes || xml[0].attributes.encoding !== "UTF-8") {
+        throw new Error("use UTF-8 encoding");
+      }
+      var trk = rootNode.getElementsByTagName("trk");
+      var name = " ";
+      if (trk[0]) {
+        name = this.getValueFromElement(trk[0].getElementsByTagName("name"));
+      }
+
+      var node = rootNode.getElementsByTagName("trkpt");
+      let coords = this.getCoords(node);
       console.log(
-        "node:",
-        node[0].getElementsByTagName("gpxtpx:altitude")[0].children[0].text
+        "MG-log: GpxScreen -> readDocumentAsString -> coords",
+        coords
       );
-      console.log("test2");
+      this.setState({
+        savedRoute: {
+          name,
+          startDate: coords[0].timestamp,
+          endDate: coords[coords.length - 1].timestamp,
+          coords
+        },
+        error: false
+      });
+      return;
     } catch (error) {
-      console.log("MG-log: GpxScreen -> readDocumentAs -> error", error);
+      this.setState({ error: error.message, savedRoute: false });
+      console.log(
+        "MG-log: GpxScreen -> readDocumentAs -> error",
+        error.message
+      );
+      return;
     }
-
-    return null;
+  }
+  _parseFloat(str) {
+    let num = parseFloat(str);
+    return typeof num === "number" ? num : str;
   }
 
   getCoords(trkpt) {
@@ -70,49 +102,38 @@ export default class GpxScreen extends Component {
       throw new Error("trkpt should be an Array!!!");
     }
 
-    newTrkpt = trkpt.map(node => {
+    let coords = trkpt.map(node => {
+      if (!(node.attributes && node.attributes.lat && node.attributes.lon)) {
+        throw new Error("error node.attributes.lat or node.attributes.lon");
+      }
       const latitude = node.attributes.lat;
-      // console.log("MG-log: GpxScreen -> getCoords -> latitude", latitude);
-
       const longitude = node.attributes.lon;
-      // console.log("MG-log: GpxScreen -> getCoords -> longitude", longitude);
-
       const altitude = this.getValueFromElement(
         node.getElementsByTagName("gpxtpx:altitude")
       );
-      //  node.getElementsByTagName("gpxtpx:altitude")[0]
-      //   .children[0].text;
-      // console.log("MG-log: GpxScreen -> getCoords -> altitude", altitude);
-
       const heading = this.getValueFromElement(
         node.getElementsByTagName("ele")
       );
-      // console.log("MG-log: GpxScreen -> getCoords -> heading", heading);
-
       const timestamp = this.getValueFromElement(
         node.getElementsByTagName("time")
       );
-      // console.log("MG-log: GpxScreen -> getCoords -> timestamp", timestamp);
-      // console.log(
-      //   "MG-log: GpxScreen -> getCoords -> timestamp",
-      //   new Date(timestamp).getTime()
-      // );
-
       const speed = this.getValueFromElement(
         node.getElementsByTagName("speed")
       );
-      // console.log("MG-log: GpxScreen -> getCoords -> speed", speed);
+      const image = this.getValueFromElement(node.getElementsByTagName("url"));
 
       return {
-        latitude,
-        longitude,
-        altitude,
-        heading,
-        timestamp,
-        speed
+        latitude: this._parseFloat(latitude),
+        longitude: this._parseFloat(longitude),
+        altitude: this._parseFloat(altitude),
+        heading: this._parseFloat(heading),
+        timestamp: this._parseFloat(timestamp),
+        speed: speed,
+        image
       };
     });
-    console.log("MG-log: GpxScreen -> getCoords -> newTrkpt", newTrkpt);
+
+    return coords;
   }
 
   getValueFromElement(elementArray) {
@@ -127,126 +148,52 @@ export default class GpxScreen extends Component {
     ) {
       return null;
     }
-    // console.log("MG-log: GpxScreen -> getValueFromElement -> elementArray[0]", elementArray[0])
-    // console.log("MG-log: GpxScreen -> getValueFromElement -> elementArray[0].children[0]", elementArray[0].children[0])
-    // console.log("MG-log: GpxScreen -> getValueFromElement -> elementArray[0].children[0].text", elementArray[0].children[0].text)
-    const obj = elementArray[0].children[0];
-    if (!{}.hasOwnProperty.call(obj, "children")) {
+
+    const element = elementArray[0].children[0];
+
+    if (!{}.hasOwnProperty.call(element, "children")) {
       return elementArray[0].children[0].text;
     } else {
-      return this.getValueFromElement(obj.getElementsByTagName(obj.tagName));
+      return this.getValueFromElement(
+        element.getElementsByTagName(element.tagName)
+      );
     }
   }
 
-  ///////////////////////////////////////
-
-  async readDocumentAsV1() {
-    // const { document } = this.state;
-    // if (!document) {
-    //   return null;
-    // }
-    try {
-      FileSystem.documentDirectory + "myroute.gpx";
-      // const res = await FileSystem.readAsStringAsync(document.uri);
-      const res = await FileSystem.readAsStringAsync(
-        FileSystem.documentDirectory + "myroute.gpx"
+  checkError() {
+    if (this.state.error) {
+      return (
+        <View>
+          <Text>{this.state.error}</Text>
+          <Text>try again</Text>
+        </View>
       );
-      console.log("MG-log: GpxScreen -> readDocumentAs -> res", res);
-
-      console.log("MG-log: GpxScreen -> readDocumentAs -> res", res);
-      // const res2 = res.replace(/ /g, "")
-      console.log("MG-log: GpxScreen -> readDocumentAs -> res2", res2);
-
-      // const res3 = res.replace(/\\n/g, '')
-
-      this.rootNode = await DomSelector(res);
-      console.log(
-        "MG-log: GpxScreen -> readDocumentAs -> document",
-        this.rootNode.children[0].children[1]
-      );
-      console.log(Object.keys(this.rootNode.children[0]));
-      // await this.rootNodeMap(this.rootNode);
-
-      console.log(
-        "MG-log: GpxScreen -> readDocumentAs -> rootNode",
-        this.geoJson
-      );
-
-      console.log(
-        "MG-log: GpxScreen -> readDocumentAs -> rootNode",
-        this.rootNode
-      );
-
-      // rootNode.children.map(rs => console.log("1"));
-    } catch (error) {}
-
-    return null;
+    }
+    return (
+      <View>
+        {this.renderSavedRoute()}
+        {this.renderDocument()}
+      </View>
+    );
   }
 
-  geoJson = {
-    cosrds: []
-  };
-  lastTag = "";
-
-  newObj = {};
-
-  aaaa(obj) {
-    console.log("test");
-    switch (this.lastTag) {
-      case undefined:
-        console.log("Oranges are $0.59 a pound.");
-        break;
-      case "<gpxtpx:altitude>":
-        if (!obj.tagName) {
-          this.newObj = { ...this.newObj, altitude: obj.text };
-        } else {
-          this.newObj = { ...this.newObj, ...obj.attributes };
-        }
-        break;
-      case "Papayas":
-        console.log("Mangoes and papayas are $2.79 a pound.");
-        // expected output: "Mangoes and papayas are $2.79 a pound."
-        break;
-      default:
-        console.log(
-          "MG-log: GpxScreen -> aaaa -> obj.attributes",
-          obj.attributes
-        );
-
-        // this.newObj = { ...this.newObj, ...obj.attributes };
-        console.log("MG-log: GpxScreen -> aaaa -> obj.attributes", this.newObj);
-      // break;
+  renderSavedRoute() {
+    if (!this.state.savedRoute) {
+      return null;
     }
-    console.log("test2");
-    if (obj.tagName) {
-      this.lastTag = obj.text;
-    }
-    if (this.lastTag === "<gpxtpx:altitude>" && !obj.tagName) {
-      console.log("test3");
-      this.geoJson.cosrds.push(this.newObj);
-      this.newObj = {};
-    }
+
+    return (
+      <SimpleCardComponent
+        route={{ _id: "none", comments: [], ...this.state.savedRoute }}
+        shouldAnimation={true}
+      />
+    );
   }
 
-  rootNodeMap(rootNode) {
-    rootNode.children.map(rs => {
-      rs.tagName && console.log(rs.text);
-      this.aaaa(rs);
-      if ({}.hasOwnProperty.call(rs, "children")) {
-        this.rootNodeMap(rs);
-      }
-    });
-  }
-
-  _renderDocument() {
+  renderDocument() {
     if (!this.state.document) {
       return null;
     }
-    console.log(
-      "MG-log: GpxScreen -> _renderDocument -> this.state.document",
-      this.state.document
-    );
-    this.readDocumentAs();
     return (
       <View>
         {this.state.document.name.match(/\.(png|jpg)$/gi) ? (
@@ -268,15 +215,15 @@ export default class GpxScreen extends Component {
   }
 
   render() {
-    this.readDocumentAs();
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView style={styles.scrollView}>
           <View
             style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
           >
-            <Button onPress={this._openPicker} title="Open document picker" />
+            <Button onPress={this.openPicker} title="Open document picker" />
           </View>
+          {this.checkError()}
         </ScrollView>
       </SafeAreaView>
     );
@@ -288,6 +235,6 @@ const styles = StyleSheet.create({
     flex: 1
   },
   scrollView: {
-    marginHorizontal: 10
+    marginHorizontal: 0
   }
 });

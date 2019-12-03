@@ -132,9 +132,11 @@ export default class SimpleMap extends Component {
             zIndex={1}
           />
           {coords &&
-            coords.map(coord => {
+            coords.map((coord, index) => {
               if (coord.image) {
-                return <MapView.Marker key={coord._id} coordinate={coord} />;
+                return (
+                  <MapView.Marker key={coord._id || index} coordinate={coord} />
+                );
               }
             })}
           <AnimatingPolyline
