@@ -11,10 +11,14 @@ import {
   Text,
   View
 } from "react-native";
+import { connect } from "react-redux";
+import { withTranslation } from "react-i18next";
+
 import DomSelector from "react-native-dom-parser";
 import { saveRoute } from "../modules/RecordRoute/actions/saveRoute";
 import SimpleCardComponent from "../modules/_common/components/SimpleCardComponent";
-export default class GpxScreen extends Component {
+
+class GpxScreen extends Component {
   state = {
     document: null,
     copyToCache: true,
@@ -32,7 +36,7 @@ export default class GpxScreen extends Component {
   }
 
   async saveImportRoute() {
-    const save = await saveRoute(this.state.savedRoute);
+    const save = await this.props.saveRoute(this.state.savedRoute);
     console.log("MG-log: GpxScreen -> saveRoute -> save", save);
   }
 
@@ -245,6 +249,21 @@ export default class GpxScreen extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {};
+};
+
+const mapDispatchToProps = {
+  saveRoute
+};
+
+export default withTranslation()(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(GpxScreen)
+);
 
 const styles = StyleSheet.create({
   container: {

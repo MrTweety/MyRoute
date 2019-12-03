@@ -17,7 +17,8 @@ import isRoute from "../../_common/propTypes/isRoute";
 
 class HomeScreenList extends Component {
   state = {
-    viewableItemsMap: new Map()
+    viewableItemsMap: new Map(),
+    refreshing: false
   };
 
   refCardsArray = [];
@@ -28,8 +29,13 @@ class HomeScreenList extends Component {
     }
   }
 
-  componentDidUpdate() {
-    if (this.props.homeRoutes) {
+  async componentDidUpdate(prevProps, prevState) {
+    if (
+      this.props.fetchRoutes &&
+      prevState.refreshing !== this.state.refreshing
+    ) {
+      await this.props.fetchRoutes();
+      this.setState({ refreshing: false });
     }
   }
 
@@ -72,6 +78,9 @@ class HomeScreenList extends Component {
         imageNr={0}
       />
     ));
+  };
+  handleRefresh = () => {
+    this.setState({ refreshing: true });
   };
 
   //******************************************************* */
@@ -125,6 +134,8 @@ class HomeScreenList extends Component {
           data={homeRoutes}
           keyExtractor={item => item._id}
           extraData={viewableItemsMap}
+          refreshing={this.state.refreshing}
+          onRefresh={this.handleRefresh}
           renderItem={({ item, index }) => {
             return (
               <CardComponent
