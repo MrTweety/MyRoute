@@ -12,6 +12,7 @@ import {
   View
 } from "react-native";
 import DomSelector from "react-native-dom-parser";
+import { saveRoute } from "../modules/RecordRoute/actions/saveRoute";
 import SimpleCardComponent from "../modules/_common/components/SimpleCardComponent";
 export default class GpxScreen extends Component {
   state = {
@@ -28,6 +29,11 @@ export default class GpxScreen extends Component {
       );
       this.readDocumentAsString();
     }
+  }
+
+  async saveImportRoute() {
+    const save = await saveRoute(this.state.savedRoute);
+    console.log("MG-log: GpxScreen -> saveRoute -> save", save);
   }
 
   openPicker = async () => {
@@ -183,10 +189,20 @@ export default class GpxScreen extends Component {
     }
 
     return (
-      <SimpleCardComponent
-        route={{ _id: "none", comments: [], ...this.state.savedRoute }}
-        shouldAnimation={true}
-      />
+      <View>
+        <SimpleCardComponent
+          route={{ _id: "none", comments: [], ...this.state.savedRoute }}
+          shouldAnimation={true}
+        />
+        <Icon
+          type="ionicons"
+          name="ios-save"
+          size={30}
+          color="black"
+          style={styles.icon}
+          onPress={() => this.saveImportRoute()}
+        />
+      </View>
     );
   }
 

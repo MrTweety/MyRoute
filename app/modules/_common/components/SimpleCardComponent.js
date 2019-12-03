@@ -20,16 +20,6 @@ class SimpleCardComponent extends Component {
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <SimpleMap coords={coords} shouldAnimation={shouldAnimation} />
         </View>
-        <View style={styles.icons}>
-          <Icon
-            type="ionicons"
-            name="ios-save"
-            size={30}
-            color="black"
-            style={styles.icon}
-            onPress={() => {}}
-          />
-        </View>
       </View>
     );
   }
