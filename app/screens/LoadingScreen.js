@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { View, ActivityIndicator, StatusBar, AsyncStorage } from "react-native";
+import { View, ActivityIndicator, StatusBar } from "react-native";
+import { getSavedItem, SAVED_JWT_TOKEN } from "../services/secureStorage";
 
 class LoadingScreen extends Component {
   componentDidMount() {
@@ -7,7 +8,7 @@ class LoadingScreen extends Component {
   }
 
   checkIfLoggedIn = async () => {
-    const userToken = await AsyncStorage.getItem("userToken");
+    const userToken = await getSavedItem(SAVED_JWT_TOKEN);
     this.props.navigation.navigate(userToken ? "AppNavigator" : "Auth");
   };
 

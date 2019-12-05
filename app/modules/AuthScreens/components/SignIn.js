@@ -4,8 +4,11 @@ import {
   Text,
   TouchableOpacity,
   View,
-  TextInput
+  TextInput,
+  KeyboardAvoidingView
 } from "react-native";
+import { LOGIN_SUCCESS } from "../actions/login";
+import { setSaveItem, SAVED_JWT_TOKEN } from "../../../services/secureStorage";
 import Logo from "../../_common/components/Logo";
 
 class SignIn extends Component {
@@ -30,12 +33,21 @@ class SignIn extends Component {
     });
   };
 
-  login = async () => {
-    const a = await this.props.login({
-      login: this.state.login,
-      password: this.state.password
-    });
-    console.log(a);
+  login = () => {
+    this.props
+      .login({
+        login: this.state.login,
+        password: this.state.password
+      })
+      .then(response => {
+        console.log("\n\n\n", response, "\n\n\n");
+        if (response.type === LOGIN_SUCCESS) {
+          console.log("zalogowano!!!\n\n\n", response.response);
+          setSaveItem(SAVED_JWT_TOKEN, response.response.token);
+        } else {
+          console.log("Nie udało się zalogować");
+        }
+      });
   };
 
   render() {
@@ -44,7 +56,7 @@ class SignIn extends Component {
       <>
         <View style={styles.container}>
           <Logo position="top" />
-          <View style={styles.form}>
+          <KeyboardAvoidingView style={styles.form} behavior="padding" enabled>
             <TextInput
               style={styles.inputField}
               placeholder="Login"
@@ -58,7 +70,8 @@ class SignIn extends Component {
             <TouchableOpacity style={styles.button} onPress={this.login}>
               <Text>{t("common.signIn")}</Text>
             </TouchableOpacity>
-          </View>
+          </KeyboardAvoidingView>
+          <Text onPress={this.wyjdz}>elo</Text>
         </View>
       </>
     );
@@ -87,8 +100,9 @@ const styles = StyleSheet.create({
   },
   form: {
     flex: 1,
-    justifyContent: "center",
-    width: "80%"
+    justifyContent: "flex-end",
+    width: "80%",
+    marginBottom: 20
   }
 });
 

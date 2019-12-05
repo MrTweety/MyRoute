@@ -1,23 +1,16 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  AsyncStorage,
-  Text
-} from "react-native";
+import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import PropTypes from "prop-types";
 import { withTranslation } from "react-i18next";
 import Logo from "../modules/_common/components/Logo";
 
 const LoginScreen = ({ navigation, t }) => {
-  _signInAsync = async () => {
-    await AsyncStorage.setItem("userToken", "abc");
-    navigation.navigate("SignInScreen");
+  const SignIn = () => {
+    navigation.navigate("SignIn");
   };
 
-  _SignUp = () => {
-    navigation.navigate("SignUpScreen");
+  const SignUp = () => {
+    navigation.navigate("SignUp");
   };
 
   return (
@@ -32,12 +25,12 @@ const LoginScreen = ({ navigation, t }) => {
         }}
       >
         <View style={styles.buttonWrapper}>
-          <TouchableOpacity style={styles.button} onPress={this._signInAsync}>
+          <TouchableOpacity style={styles.button} onPress={SignIn}>
             <Text>{t("common.signIn")}</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.buttonWrapper}>
-          <TouchableOpacity style={styles.button} onPress={this._SignUp}>
+          <TouchableOpacity style={styles.button} onPress={SignUp}>
             <Text>{t("common.signUp")}</Text>
           </TouchableOpacity>
         </View>

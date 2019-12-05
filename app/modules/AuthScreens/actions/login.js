@@ -12,10 +12,7 @@ export const login = bodyParams => {
       types: [LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE],
       endpoint: "/user/login",
       method: "POST",
-      data: bodyParams,
-      headers: {
-        "Content-Type": "application/json"
-      }
+      data: bodyParams
     }
   };
 };

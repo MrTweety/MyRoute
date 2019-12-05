@@ -1,15 +1,22 @@
 // const API_ROOT = "https://myroutet.azurewebsites.net";
-const API_ROOT = "localhost:8080";
+const API_ROOT = "http://172.18.0.1:8080";
 
 // Fetches an API response, the result JSON .
 const callApi = (endpoint, data, method = "POST", headers = {}) => {
   const fullUrl =
     endpoint.indexOf(API_ROOT) === -1 ? API_ROOT + endpoint : endpoint;
+
+  console.log("\n\n[callApi]: request url: ", fullUrl);
+  console.log("[callApi]: request body: ", data);
+  console.log("[callApi]: request method: ", method);
+  console.log("[callApi]: request headers: ", headers, "\n\n");
+
   return fetch(fullUrl, {
     method,
     body: JSON.stringify(data),
     headers: {
       "Content-Type": "application/json",
+      //token here
       ...headers
     }
   }).then(response =>
