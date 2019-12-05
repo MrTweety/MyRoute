@@ -42,97 +42,37 @@ class CardComponent extends Component {
   state = {
     cardImgHeight: width
   };
-  componentDidMount() {
-    // const img = Image.resolveAssetSource(images[this.props.imageNr]);
-    // const imgWidth = img.width;
-    // // console.log("MG-log: CardComponent -> componentDidMount -> imgWidth", imgWidth)
-    // const imgHeight = img.height;
-    // // console.log("MG-log: CardComponent -> componentDidMount -> imgHeight", imgHeight)
-    // if (imgWidth > imgHeight) {
-    //   const cardImgHeight = (imgHeight * width) / imgWidth;
-    //   this.setState({ cardImgHeight });
-    // }
-  }
 
   saveGPXDrive = async () => {
     const { route } = this.props;
     const { _id, comments, coords, startDate } = route;
     const description = route.name;
+    const routeFilePath =
+      FileSystem.documentDirectory + `${route._id}-MyRoute.gpx`;
     try {
       var gpx = createGpx(coords, {
         activityName: description,
         startTime: startDate
       });
 
-      const gpxFile = await FileSystem.writeAsStringAsync(
-        FileSystem.documentDirectory + "myroute.gpx",
-        gpx
-      );
+      const gpxFile = await FileSystem.writeAsStringAsync(routeFilePath, gpx);
       console.log(gpx);
-      const gpxFileStatus = await FileSystem.getInfoAsync(
-        FileSystem.documentDirectory + "myroute.gpx"
-      );
+      const gpxFileStatus = await FileSystem.getInfoAsync(routeFilePath);
       console.log(
         "MG-log: CardComponent -> saveGPX -> catalog2",
         gpxFileStatus
       );
 
-      const sharing = await Sharing.shareAsync(
-        FileSystem.documentDirectory + "myroute.gpx",
-        { mimeType: "text/xml", dialogTitle: "dupa" }
-      );
+      const sharing = await Sharing.shareAsync(routeFilePath, {
+        mimeType: "text/xml",
+        dialogTitle: "save GPX",
+        UTI: "XML"
+      });
       console.log("MG-log: CardComponent -> saveGPX -> Sharing", sharing);
       console.log(
         "MG-log: CardComponent -> saveGPX -> documentDirectory",
         FileSystem.documentDirectory
       );
-    } catch (error) {
-      console.log("MG-log: saveGPX -> error", error);
-    }
-  };
-
-  saveGPX = async () => {
-    const { route } = this.props;
-    const { _id, comments, coords, startDate } = route;
-    const description = route.name;
-    try {
-      var gpx = createGpx(coords, {
-        activityName: description,
-        startTime: startDate
-      });
-
-      const gpxFile = await FileSystem.writeAsStringAsync(
-        FileSystem.documentDirectory + "myroute.gpx",
-        gpx
-      );
-      console.log(gpx);
-      const gpxFileStatus = await FileSystem.getInfoAsync(
-        FileSystem.documentDirectory + "myroute.gpx"
-      );
-      console.log(
-        "MG-log: CardComponent -> saveGPX -> catalog2",
-        gpxFileStatus
-      );
-
-      const result = await Share.share({
-        title:
-          "React Native | A framework for building native apps using React",
-        url:
-          "data:text/xml;harset=utf-8," +
-          FileSystem.documentDirectory +
-          "myroute.gpx"
-        // FileSystem.documentDirectory + "myroute.gpx",
-      });
-
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          // shared with activity type of result.activityType
-        } else {
-          // shared
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // dismissed
-      }
     } catch (error) {
       console.log("MG-log: saveGPX -> error", error);
     }

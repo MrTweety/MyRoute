@@ -15,7 +15,11 @@ import { connect } from "react-redux";
 import { withTranslation } from "react-i18next";
 
 import DomSelector from "react-native-dom-parser";
-import { saveRoute } from "../modules/RecordRoute/actions/saveRoute";
+import {
+  saveRoute,
+  SAVE_ROUTE_SUCCESS,
+  SAVE_ROUTE_FAILURE
+} from "../modules/RecordRoute/actions/saveRoute";
 import SimpleCardComponent from "../modules/_common/components/SimpleCardComponent";
 
 class GpxScreen extends Component {
@@ -37,7 +41,14 @@ class GpxScreen extends Component {
 
   async saveImportRoute() {
     const save = await this.props.saveRoute(this.state.savedRoute);
-    console.log("MG-log: GpxScreen -> saveRoute -> save", save);
+    console.log("MG-log: GpxScreen -> saveRoute -> save", save.type);
+
+    if (save.type === SAVE_ROUTE_SUCCESS) {
+      this.props.navigation.goBack();
+    }
+    if (save.type === SAVE_ROUTE_FAILURE) {
+      this.setState({ error: save.message });
+    }
   }
 
   openPicker = async () => {
@@ -55,7 +66,6 @@ class GpxScreen extends Component {
 
   async readDocumentAsString() {
     try {
-      FileSystem.documentDirectory + "myroute.gpx";
       const res = await FileSystem.readAsStringAsync(this.state.document.uri);
       // const res = await FileSystem.readAsStringAsync(
       //   FileSystem.documentDirectory + "myroute.gpx"
@@ -203,7 +213,7 @@ class GpxScreen extends Component {
           name="ios-save"
           size={30}
           color="black"
-          style={styles.icon}
+          style={{ paddingLeft: 10 }}
           onPress={() => this.saveImportRoute()}
         />
       </View>

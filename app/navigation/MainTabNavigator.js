@@ -75,7 +75,7 @@ const HomeScreenStack = createStackNavigator(
     GPXStack: {
       screen: GpxScreen,
       navigationOptions: () => ({
-        headerTitle: i18next.t("common.comments")
+        headerTitle: i18next.t("common.import")
       }),
       headerLayoutPreset: "center"
     }
