@@ -1,3 +1,4 @@
 {
-  "welcome": "Welcome in My Route!"
+  "welcome": "Welcome in My Route!",
+  "noData": "You don't have any Routes"
 }

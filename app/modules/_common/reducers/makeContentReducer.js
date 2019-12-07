@@ -1,8 +1,3 @@
-/*
- * w przyszłosci zmienie folder exemplar na common
- * app/components -> common/components
- */
-
 export const makeContentReducer = (
   types,
   dataKey,
@@ -51,7 +46,7 @@ export const makeContentReducer = (
         data: false,
         isFetching: false,
         fetchingError: true,
-        error: action.error,
+        error: action.message,
         errorCode: action.errorCode
       };
 

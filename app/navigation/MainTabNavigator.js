@@ -12,7 +12,7 @@ import LanguageScreen from "../screens/LanguageScreen";
 import MapScreen from "../screens/MapScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import SettingsScreen from "../screens/SettingsScreen";
-
+import CommentScreen from "../screens/CommentScreen";
 import i18next from "i18next";
 
 const HomeScreenStack = createStackNavigator(
@@ -22,23 +22,23 @@ const HomeScreenStack = createStackNavigator(
       navigationOptions: () => {
         return {
           headerLeft: (
-            <Icon
-              type="font-awesome"
-              name="location-arrow"
-              size={30}
-              style={{ margin: 0, paddingLeft: 20, paddingRight: 0 }}
-            />
-          ),
-          headerTitle: (
-            <CookieText
-              style={{
-                fontSize: 40,
-                paddingLeft: 0,
-                margin: 0
-              }}
-            >
-              My Route
-            </CookieText>
+            <>
+              <Icon
+                type="font-awesome"
+                name="location-arrow"
+                size={30}
+                style={{ margin: 0, paddingLeft: 20, paddingRight: 0 }}
+              />
+              <CookieText
+                style={{
+                  fontSize: 40,
+                  paddingLeft: 10,
+                  margin: 0
+                }}
+              >
+                My Route
+              </CookieText>
+            </>
           ),
           headerRight: (
             <Icon
@@ -50,13 +50,18 @@ const HomeScreenStack = createStackNavigator(
           )
         };
       }
+    },
+    CommentStack: {
+      screen: CommentScreen,
+      navigationOptions: () => ({
+        headerTitle: i18next.t("common.comments")
+      }),
+      headerLayoutPreset: "center"
     }
-    // ViewSaveMap:{screen: ViewSaveMapScreen,
-    // navigationOptions in ViewSaveMap.js
-    // },
   },
   {
-    initialRouteName: "HomeStack"
+    initialRouteName: "HomeStack",
+    headerLayoutPreset: "center"
   }
 );
 
@@ -214,9 +219,13 @@ const MainTabNavigator = createMaterialBottomTabNavigator(
     labeled: false,
     activeColor: "#222",
     inactiveColor: "grey",
+    height: 42,
     barStyle: {
       backgroundColor: "white", //"#f2f2f2",
-      height: 54
+      height: 44,
+      paddingBottom: 2,
+      marginBottom: 6,
+      alignItems: "center"
     }
   }
 );
