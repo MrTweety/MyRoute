@@ -3,9 +3,14 @@ import { AppLoading } from "expo";
 import i18n from "i18next";
 import { Asset } from "expo-asset";
 import * as Font from "expo-font";
-import { StyleSheet, StatusBar, Platform, View } from "react-native";
+import {
+  StyleSheet,
+  StatusBar,
+  Platform,
+  View,
+  KeyboardAvoidingView
+} from "react-native";
 import { Ionicons, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
-
 import AppNavigator from "./app/navigation/AppNavigator";
 import { getSavedItem, SAVED_LANGUAGE } from "./app/services/secureStorage";
 
@@ -59,7 +64,14 @@ export default function App(props) {
       return renderNavigator();
     }
   };
-  return <Provider store={store}>{renderLoading()}</Provider>;
+
+  return (
+    <Provider store={store}>
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
+        {renderLoading()}
+      </KeyboardAvoidingView>
+    </Provider>
+  );
 }
 
 async function loadResourcesAsync() {

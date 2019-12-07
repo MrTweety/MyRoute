@@ -1,4 +1,5 @@
 {
+  "errorBoundary": "Something went wrong.",
   "search": "Search",
   "continue": "Continue",
   "save": "Save",
@@ -11,5 +12,9 @@
     "en": "English",
     "pl": "Polish",
     "fr": "French"
-  }
+  },
+  "fetchError": "Fetch Error.",
+  "tryAgain": "Try again...",
+  "more": "...more",
+  "comments": "Comments"
 }
