@@ -8,19 +8,22 @@ import {
   KeyboardAvoidingView
 } from "react-native";
 import Logo from "../../_common/components/Logo";
+import { REGISTER_SUCCESS } from "../actions/register";
+import { setSaveItem, SAVED_JWT_TOKEN } from "../../../services/secureStorage";
 
 class SignUp extends Component {
   state = {
     isLogoVisible: true,
+    registerState: "",
     login: "",
     password: "",
     name: "",
     email: ""
   };
 
-  navigateToLogin() {
-    this.props.navigation.navigate("SignUp");
-  }
+  navigateToSignIn = () => {
+    this.props.navigation.navigate("SignIn");
+  };
 
   handleLoginChange = login => {
     this.setState({
@@ -48,7 +51,8 @@ class SignUp extends Component {
 
   hideLogo = () => {
     this.setState({
-      isLogoVisible: false
+      isLogoVisible: false,
+      registerState: ""
     });
   };
 
@@ -58,8 +62,28 @@ class SignUp extends Component {
     });
   };
 
+  register = () => {
+    this.props
+      .register({
+        login: this.state.login,
+        password: this.state.password,
+        name: this.state.name,
+        mail: this.state.email
+      })
+      .then(response => {
+        console.log(response);
+        if (response.type !== REGISTER_SUCCESS) {
+          this.setState({
+            registerState: response.message
+          });
+        } else {
+          setSaveItem(SAVED_JWT_TOKEN, response.response.token);
+          this.props.navigation.navigate("AppNavigator");
+        }
+      });
+  };
+
   render() {
-    console.log(this.props.navigation);
     const formData = [
       {
         onChangeText: this.handleEmailChange,
@@ -83,6 +107,11 @@ class SignUp extends Component {
     return (
       <>
         <View style={styles.container}>
+          {this.state.registerState.length !== 0 && (
+            <View>
+              <Text>{this.state.registerState}</Text>
+            </View>
+          )}
           {this.state.isLogoVisible && <Logo position="top" />}
           <KeyboardAvoidingView style={styles.form} behavior="padding" enabled>
             {formData.map(data => (
@@ -95,11 +124,13 @@ class SignUp extends Component {
                 onSubmitEditing={this.showLogo}
               />
             ))}
-            <TouchableOpacity style={styles.button} onPress={this.login}>
-              <Text>{t("common.signIn")}</Text>
+            <TouchableOpacity style={styles.button} onPress={this.register}>
+              <Text>{t("common.signUp")}</Text>
             </TouchableOpacity>
           </KeyboardAvoidingView>
-          <Text onPress={this.navigateToLogin}>Juz mam konto</Text>
+          <View style={{ marginBottom: 10 }}>
+            <Text onPress={this.navigateToSignIn}>Juz mam konto</Text>
+          </View>
         </View>
       </>
     );

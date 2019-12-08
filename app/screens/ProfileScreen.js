@@ -1,7 +1,17 @@
 import React, { Component } from "react";
-import { View, Text, Button, AsyncStorage } from "react-native";
+import { View, Text, Button } from "react-native";
+import { deleteSavedItem, SAVED_JWT_TOKEN } from "../services/secureStorage";
 
 class ProfileScreen extends Component {
+  _showMoreApp = () => {
+    this.props.navigation.navigate("Other");
+  };
+
+  _signOutAsync = async () => {
+    deleteSavedItem(SAVED_JWT_TOKEN);
+    this.props.navigation.navigate("Auth");
+  };
+
   render() {
     return (
       <View
@@ -26,15 +36,6 @@ class ProfileScreen extends Component {
       </View>
     );
   }
-
-  _showMoreApp = () => {
-    this.props.navigation.navigate("Other");
-  };
-
-  _signOutAsync = async () => {
-    await AsyncStorage.clear();
-    this.props.navigation.navigate("Auth");
-  };
 }
 
 export default ProfileScreen;

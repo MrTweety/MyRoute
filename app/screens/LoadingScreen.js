@@ -9,6 +9,7 @@ class LoadingScreen extends Component {
 
   checkIfLoggedIn = async () => {
     const userToken = await getSavedItem(SAVED_JWT_TOKEN);
+    console.log(userToken);
     this.props.navigation.navigate(userToken ? "AppNavigator" : "Auth");
   };
 

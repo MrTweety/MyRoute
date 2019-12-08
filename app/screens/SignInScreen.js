@@ -7,7 +7,7 @@ class SignInScreen extends Component {
   render() {
     return (
       <>
-        <SignIn navigation={this.props.navigation} />
+        <SignIn />
       </>
     );
   }

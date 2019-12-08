@@ -4,6 +4,7 @@ import { login, stateKey } from "../actions/login";
 import signInReducer from "../reducers/SignIn";
 import SignIn from "../components/SignIn";
 import { withTranslation } from "react-i18next";
+import { withNavigation } from "react-navigation";
 
 import { injectReducer } from "../../../redux/store";
 
@@ -18,8 +19,10 @@ const mapDispatchToProps = {
 };
 
 export default withTranslation()(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(SignIn)
+  withNavigation(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(SignIn)
+  )
 );

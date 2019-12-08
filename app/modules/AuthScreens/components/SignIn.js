@@ -17,9 +17,13 @@ class SignIn extends Component {
     password: ""
   };
 
-  wyjdz() {
+  navigateToLogin = () => {
+    this.props.navigation.navigate("Login");
+  };
+
+  navigateToMain = () => {
     this.props.navigation.navigate("AppNavigator");
-  }
+  };
 
   handleLoginChange = login => {
     this.setState({
@@ -44,6 +48,7 @@ class SignIn extends Component {
         if (response.type === LOGIN_SUCCESS) {
           console.log("zalogowano!!!\n\n\n", response.response);
           setSaveItem(SAVED_JWT_TOKEN, response.response.token);
+          this.navigateToMain();
         } else {
           console.log("Nie udało się zalogować");
         }
@@ -71,7 +76,9 @@ class SignIn extends Component {
               <Text>{t("common.signIn")}</Text>
             </TouchableOpacity>
           </KeyboardAvoidingView>
-          <Text onPress={this.wyjdz}>elo</Text>
+          <View style={{ marginBottom: 10 }}>
+            <Text onPress={this.navigateToLogin}>Nie mam konta</Text>
+          </View>
         </View>
       </>
     );
