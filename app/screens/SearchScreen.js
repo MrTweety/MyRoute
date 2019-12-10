@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { withTranslation } from "react-i18next";
-
+import HeatMap from "../modules/HeatMap/container/HeatMap";
 import Exemplar from "../modules/_common/container/Exemplar";
+
 class SearchScreen extends Component {
   componentDidMount() {
     this.updateTitle();
@@ -23,7 +24,13 @@ class SearchScreen extends Component {
   }
 
   render() {
-    return <Exemplar />;
+    // return <Exemplar />;
+
+    return (
+      <>
+        <HeatMap />
+      </>
+    );
   }
 }
 
