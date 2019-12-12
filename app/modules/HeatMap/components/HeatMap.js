@@ -4,14 +4,21 @@ import { StyleSheet, ScrollView, View, Text } from "react-native";
 import BubbleButton from "../../_common/components/BubbleButton";
 import geolocationService from "../../../assets/common/geolocationService";
 
+const heatMapColors = {
+  green: "rgba(62,255,84, 0.4)",
+  yellow: "rgba(255,252,36,0.4)",
+  red: "rgba(255,52,82,0.4)"
+};
+
 class HeatMap extends Component {
   state = {
     points: [],
     clickPoint: {
-      latitude: 49.96754078557588,
-      longitude: 19.82071831487766
+      latitude: 50.06754078557588,
+      longitude: 19.94071831487766
     },
-    refreshing: false
+    refreshing: false,
+    location: ""
   };
 
   componentDidMount() {
@@ -31,6 +38,25 @@ class HeatMap extends Component {
     this.getHeatMapPoints();
   };
 
+  mapClickHandle = event => {
+    const coordinates = event.nativeEvent.coordinate;
+
+    geolocationService
+      .fetchNameInfo(coordinates)
+      .then(response => {
+        this.setState({
+          location: response
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    this.setState({
+      clickPoint: event.nativeEvent.coordinate
+    });
+  };
+
   render() {
     const { points } = this.state;
 
@@ -46,21 +72,8 @@ class HeatMap extends Component {
               latitudeDelta: 0.09,
               longitudeDelta: 0.0121
             }}
-            onPress={event => {
-              const coordinates = event.nativeEvent.coordinate;
-              console.log(coordinates);
-              geolocationService
-                .fetchNameInfo(coordinates)
-                .then(re => {
-                  console.log(re);
-                })
-                .catch(error => {
-                  console.log(error);
-                });
-              this.setState({
-                clickPoint: event.nativeEvent.coordinate
-              });
-            }}
+            zoomControlEnabled={true}
+            onPress={this.mapClickHandle}
           >
             {points.length !== 0 &&
               points.map(point => (
@@ -70,16 +83,16 @@ class HeatMap extends Component {
                     latitude: point.latitude,
                     longitude: point.longitude
                   }}
-                  radius={1000}
+                  radius={100 * point.weight}
                   strokeWidth={1}
-                  strokeColor={"rgba(62,255,84, 0.4)"}
-                  fillColor={"rgba(62,255,84, 0.4)"}
+                  strokeColor={heatMapColors.green}
+                  fillColor={heatMapColors.green}
                 />
               ))}
           </MapView>
         </View>
         <View style={styles.mapControlContainer}>
-          <Text>{this.state.clickPoint.latitude}</Text>
+          <Text>{this.state.location}</Text>
           <BubbleButton
             onPress={this.onRefresh}
             icon={{

@@ -11,7 +11,11 @@ class GeolocationService {
 
     const url = `${API_URL}reverse?format=${format}&lat=${latitude}&lon=${longitude}&zoom=${zoom}&addressdetails=1`;
 
-    const rawResponse = await fetch(url);
+    const rawResponse = await fetch(url, {
+      headers: {
+        "User-Agent": "Web/2.0"
+      }
+    });
     return await rawResponse.json();
   }
 
@@ -20,18 +24,22 @@ class GeolocationService {
     const { API_URL, format, zoom } = this;
 
     const url = `${API_URL}reverse?format=${format}&lat=${latitude}&lon=${longitude}&zoom=${zoom}&addressdetails=1`;
-    const rawResponse = await fetch(url);
-    console.log(rawResponse);
+    const rawResponse = await fetch(url, {
+      headers: {
+        "User-Agent": "Web/2.0"
+      }
+    });
     const response = await rawResponse.json();
+
+    console.log(response.address);
 
     if (typeof response.address.city !== "undefined") {
       return response.address.city;
-    } else if (typeof response.address.town !== "undefined") {
-      return response.address.town;
     } else if (typeof response.address.village !== "undefined") {
       return response.address.village;
+    } else {
+      return "";
     }
-    return response.address.display_name;
   }
 }
 
