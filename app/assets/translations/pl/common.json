@@ -9,6 +9,12 @@
   "discard": "Odrzuć",
   "signIn": "Zaloguj się",
   "signUp": "Stwórz konto",
+  "logOut": "Wyloguj się",
+  "logOptions": "Opcje logowania",
+  "email": "Email",
+  "password": "Hasło",
+  "name": "Imie",
+  "login": "Login",
   "languages": {
     "en": "Angielski",
     "pl": "Polski",

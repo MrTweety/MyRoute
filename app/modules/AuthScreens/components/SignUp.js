@@ -7,6 +7,7 @@ import {
   TextInput,
   KeyboardAvoidingView
 } from "react-native";
+import { lightBlue, sadGrey } from "../../../assets/colors";
 import Logo from "../../_common/components/Logo";
 import { REGISTER_SUCCESS } from "../actions/register";
 import { setSaveItem, SAVED_JWT_TOKEN } from "../../../services/secureStorage";
@@ -62,6 +63,11 @@ class SignUp extends Component {
     });
   };
 
+  disableButton = () => {
+    const { login, password, email, name } = this.state;
+    return !(login !== "" && password !== "" && email !== "" && name !== "");
+  };
+
   register = () => {
     this.props
       .register({
@@ -84,26 +90,27 @@ class SignUp extends Component {
   };
 
   render() {
+    const { t } = this.props;
+
     const formData = [
       {
         onChangeText: this.handleEmailChange,
-        placeholder: "email"
+        placeholder: t("common.email")
       },
       {
         onChangeText: this.handleNameChange,
-        placeholder: "Name"
+        placeholder: t("common.name")
       },
       {
         onChangeText: this.handleLoginChange,
-        placeholder: "Login"
+        placeholder: t("common.login")
       },
       {
         onChangeText: this.handlePasswordChange,
-        placeholder: "Hasło"
+        placeholder: t("common.password")
       }
     ];
 
-    const { t } = this.props;
     return (
       <>
         <View style={styles.container}>
@@ -124,7 +131,16 @@ class SignUp extends Component {
                 onSubmitEditing={this.showLogo}
               />
             ))}
-            <TouchableOpacity style={styles.button} onPress={this.register}>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                {
+                  backgroundColor: this.disableButton() ? sadGrey : lightBlue
+                }
+              ]}
+              onPress={this.register}
+              disabled={this.disableButton()}
+            >
               <Text>{t("common.signUp")}</Text>
             </TouchableOpacity>
           </KeyboardAvoidingView>
@@ -140,7 +156,7 @@ class SignUp extends Component {
 const styles = StyleSheet.create({
   button: {
     padding: 10,
-    backgroundColor: "#7bdaff",
+    backgroundColor: lightBlue,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 10

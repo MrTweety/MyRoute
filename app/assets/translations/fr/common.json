@@ -9,6 +9,12 @@
   "discard": "Jeter",
   "signIn": "Sign In",
   "signUp": "Sign Up",
+  "logOut": "Log Out",
+  "logOptions": "Login options",
+  "email": "Email",
+  "password": "Password",
+  "name": "Name",
+  "login": "Login",
   "languages": {
     "en": "Anglais",
     "pl": "Polonais",

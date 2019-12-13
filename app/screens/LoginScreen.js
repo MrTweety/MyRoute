@@ -1,5 +1,6 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import { lightBlue } from "../assets/colors";
 import PropTypes from "prop-types";
 import { withTranslation } from "react-i18next";
 import Logo from "../modules/_common/components/Logo";
@@ -47,7 +48,7 @@ LoginScreen.propTypes = {
 const styles = StyleSheet.create({
   button: {
     padding: 10,
-    backgroundColor: "#7bdaff",
+    backgroundColor: lightBlue,
     borderRadius: 10
   },
   buttonWrapper: {

@@ -1,16 +1,16 @@
 import React from "react";
 import { connect } from "react-redux";
-import { login } from "../actions/login";
-import SignIn from "../components/SignIn";
-import { withTranslation } from "react-i18next";
+import { logout } from "../actions/logout";
+import LogOut from "../components/LogOut";
 import { withNavigation } from "react-navigation";
+import { withTranslation } from "react-i18next";
 
 const mapStateToProps = state => {
   return {};
 };
 
 const mapDispatchToProps = {
-  login
+  logout
 };
 
 export default withTranslation()(
@@ -18,6 +18,6 @@ export default withTranslation()(
     connect(
       mapStateToProps,
       mapDispatchToProps
-    )(SignIn)
+    )(LogOut)
   )
 );

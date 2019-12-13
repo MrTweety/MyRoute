@@ -7,6 +7,7 @@ import {
   TextInput,
   KeyboardAvoidingView
 } from "react-native";
+import { lightBlue, sadGrey } from "../../../assets/colors";
 import { LOGIN_SUCCESS } from "../actions/login";
 import { setSaveItem, SAVED_JWT_TOKEN } from "../../../services/secureStorage";
 import Logo from "../../_common/components/Logo";
@@ -14,7 +15,8 @@ import Logo from "../../_common/components/Logo";
 class SignIn extends Component {
   state = {
     login: "",
-    password: ""
+    password: "",
+    buttonDisabled: true
   };
 
   navigateToLogin = () => {
@@ -37,6 +39,11 @@ class SignIn extends Component {
     });
   };
 
+  disableButton = () => {
+    const { login, password } = this.state;
+    return !(login !== "" && password !== "");
+  };
+
   login = () => {
     this.props
       .login({
@@ -44,9 +51,7 @@ class SignIn extends Component {
         password: this.state.password
       })
       .then(response => {
-        console.log("\n\n\n", response, "\n\n\n");
         if (response.type === LOGIN_SUCCESS) {
-          console.log("zalogowano!!!\n\n\n", response.response);
           setSaveItem(SAVED_JWT_TOKEN, response.response.token);
           this.navigateToMain();
         } else {
@@ -64,15 +69,24 @@ class SignIn extends Component {
           <KeyboardAvoidingView style={styles.form} behavior="padding" enabled>
             <TextInput
               style={styles.inputField}
-              placeholder="Login"
+              placeholder={t("common.login")}
               onChangeText={this.handleLoginChange}
             />
             <TextInput
               style={styles.inputField}
-              placeholder="Hasło"
+              placeholder={t("common.password")}
               onChangeText={this.handlePasswordChange}
             />
-            <TouchableOpacity style={styles.button} onPress={this.login}>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                {
+                  backgroundColor: this.disableButton() ? sadGrey : lightBlue
+                }
+              ]}
+              onPress={this.login}
+              disabled={this.disableButton()}
+            >
               <Text>{t("common.signIn")}</Text>
             </TouchableOpacity>
           </KeyboardAvoidingView>
@@ -88,7 +102,6 @@ class SignIn extends Component {
 const styles = StyleSheet.create({
   button: {
     padding: 10,
-    backgroundColor: "#7bdaff",
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 10

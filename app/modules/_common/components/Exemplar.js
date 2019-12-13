@@ -6,6 +6,10 @@ import PropTypes from "prop-types";
 import { withTranslation } from "react-i18next";
 
 class Exemplar extends Component {
+  componentDidMount() {
+    console.log(this.props.user);
+  }
+
   render() {
     const { setTitle, title, text, setText, t } = this.props;
     return (

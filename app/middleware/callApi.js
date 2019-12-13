@@ -1,10 +1,14 @@
+import { getSavedItem, SAVED_JWT_TOKEN } from "../services/secureStorage";
+
 // const API_ROOT = "https://myroutet.azurewebsites.net";
-const API_ROOT = "http://172.18.0.1:8080";
+const API_ROOT = "http://192.168.2.64:8080";
 
 // Fetches an API response, the result JSON .
-const callApi = (endpoint, data, method = "POST", headers = {}) => {
+const callApi = async (endpoint, data, method = "POST", headers = {}) => {
   const fullUrl =
     endpoint.indexOf(API_ROOT) === -1 ? API_ROOT + endpoint : endpoint;
+
+  const token = await getSavedItem(SAVED_JWT_TOKEN);
 
   console.log("\n\n[callApi]: request url: ", fullUrl);
   console.log("[callApi]: request body: ", data);
@@ -16,7 +20,7 @@ const callApi = (endpoint, data, method = "POST", headers = {}) => {
     body: JSON.stringify(data),
     headers: {
       "Content-Type": "application/json",
-      //token here
+      Authorization: "Bearer " + token,
       ...headers
     }
   }).then(response =>
