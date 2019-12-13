@@ -1,14 +1,24 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import { View, StyleSheet } from "react-native";
+import LogOut from "../modules/AuthScreens/container/LogOut";
 
 class SettingsScreen extends Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <Text>This is the SettingsScreen</Text>
+        <View style={styles.padding}>
+          <LogOut />
+        </View>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  padding: {
+    marginLeft: 10,
+    marginTop: 12
+  }
+});
 
 export default SettingsScreen;

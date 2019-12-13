@@ -1,27 +1,59 @@
-import React, { Component } from "react";
-import { View, StyleSheet, Button, AsyncStorage } from "react-native";
+import React from "react";
+import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import { lightBlue } from "../assets/colors";
+import PropTypes from "prop-types";
+import { withTranslation } from "react-i18next";
+import Logo from "../modules/_common/components/Logo";
 
-export default function LoginScreen(props) {
-  _signInAsync = async () => {
-    await AsyncStorage.setItem("userToken", "abc");
-    props.navigation.navigate("AppNavigator");
+const LoginScreen = ({ navigation, t }) => {
+  const SignIn = () => {
+    navigation.navigate("SignIn");
   };
 
-  _SignUp = () => {
-    props.navigation.navigate("SignUpScreen");
+  const SignUp = () => {
+    navigation.navigate("SignUp");
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center"
-      }}
-    >
-      <Button title="Sign in!" onPress={this._signInAsync} />
-      <Button title="SignUp" color="#f194ff" onPress={this._SignUp} />
-    </View>
+    <>
+      <Logo position="center" />
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center"
+        }}
+      >
+        <View style={styles.buttonWrapper}>
+          <TouchableOpacity style={styles.button} onPress={SignIn}>
+            <Text>{t("common.signIn")}</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.buttonWrapper}>
+          <TouchableOpacity style={styles.button} onPress={SignUp}>
+            <Text>{t("common.signUp")}</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </>
   );
-}
+};
+
+LoginScreen.propTypes = {
+  navigation: PropTypes.object.isRequired,
+  t: PropTypes.func.isRequired
+};
+
+const styles = StyleSheet.create({
+  button: {
+    padding: 10,
+    backgroundColor: lightBlue,
+    borderRadius: 10
+  },
+  buttonWrapper: {
+    padding: 10
+  }
+});
+
+export default withTranslation()(LoginScreen);
