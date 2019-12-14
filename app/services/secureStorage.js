@@ -1,7 +1,7 @@
 import * as SecureStore from "expo-secure-store";
 
 export const SAVED_LANGUAGE = "SAVED_LANGUAGE";
-export const SAVED_JWT_TOKEN = "SAVED_JWT_TOKEN";
+export const SAVED_JWT_TOKEN = "SAVED_JWT_TOKEN22";
 
 export async function getSavedItem(Key) {
   return await SecureStore.getItemAsync(Key).catch(error => {

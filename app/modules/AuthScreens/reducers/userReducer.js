@@ -33,6 +33,6 @@ export default userReducer = (state = {}, action) => {
       return userDetailsReducer(state, action);
 
     default:
-      return {};
+      return state;
   }
 };

@@ -16,15 +16,33 @@ class LoadingScreen extends Component {
     this.checkIfLoggedIn();
   }
 
+  componentDidUpdate() {
+    this.checkIfLoggedIn();
+  }
+
   checkIfLoggedIn = async () => {
     const userToken = await getSavedItem(SAVED_JWT_TOKEN);
+    const { user } = this.props;
     console.log(userToken);
     if (userToken !== null) {
-      this.props.getUserById().catch(error => {
-        console.log("Get user details error - ", error);
-      });
+      if (user) {
+        return this.props.navigation.navigate("AppNavigator");
+      }
+      if (user === undefined) {
+        return this.props.getUserById();
+      }
+      if (user === false) {
+        //TODO:
+        return this.props.getUserById();
+      }
+      if (user === null) {
+        return;
+      }
+
+      // this.props.navigation.navigate("AppNavigator");
+    } else {
+      return this.props.navigation.navigate("Auth");
     }
-    this.props.navigation.navigate(userToken ? "AppNavigator" : "Auth");
   };
 
   render() {
@@ -38,7 +56,9 @@ class LoadingScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    user: state[userStateKey].data
+  };
 };
 
 const mapDispatchToProps = {
