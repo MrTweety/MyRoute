@@ -7,7 +7,7 @@ const myDefaultState = {
   title: ""
 };
 
-export const testReducer = (state = {}, action) => {
+export const testReducer = (state = myDefaultState, action) => {
   switch (action.type) {
     case TEST_ACTION: {
       return action.payload;

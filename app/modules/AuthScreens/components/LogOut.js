@@ -10,7 +10,7 @@ import { LOGOUT_SUCCESS } from "../actions/logout";
 class LogOut extends Component {
   logOut = async () => {
     const token = await getSavedItem(SAVED_JWT_TOKEN);
-    console.log(token);
+    console.log("token", token);
 
     this.props
       .logout({

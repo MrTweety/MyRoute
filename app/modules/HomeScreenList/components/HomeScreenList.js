@@ -9,9 +9,11 @@ import {
   TouchableOpacity
 } from "react-native";
 import { withTranslation } from "react-i18next";
-import CardComponent from "./CardComponent";
+import CardComponent from "../container/CardComponent";
 import PropTypes from "prop-types";
 import isRoute from "../../_common/propTypes/isRoute";
+import ErrorFetchTryAgain from "../../_common/components/ErrorFetchTryAgain";
+import NoData from "../../_common/components/NoData";
 
 class HomeScreenList extends Component {
   state = {
@@ -33,11 +35,7 @@ class HomeScreenList extends Component {
     ) {
       this.props.fetchRoutes();
     }
-    if (
-      prevProps.homeRoutes !== this.props.homeRoutes &&
-      !!this.props.homeRoutes &&
-      this.state.refreshing
-    )
+    if (prevProps.homeRoutes !== this.props.homeRoutes && this.state.refreshing)
       this.setState({ refreshing: false });
   }
 
@@ -50,34 +48,6 @@ class HomeScreenList extends Component {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <ActivityIndicator size="large" />
-      </View>
-    );
-  };
-
-  renderFetchErrorTryAgain = fetchData => {
-    const { t } = this.props;
-    return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <TouchableOpacity onPress={fetchData}>
-          <Text>
-            {t("common.fetchError")}{" "}
-            <Text style={{ color: "blue" }}>{t("common.tryAgain")}</Text>
-          </Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
-  renderNoData = fetchData => {
-    const { t } = this.props;
-    return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <TouchableOpacity onPress={fetchData}>
-          <Text>
-            {t("home.noData")}{" "}
-            <Text style={{ color: "blue" }}>{t("common.tryAgain")}</Text>
-          </Text>
-        </TouchableOpacity>
       </View>
     );
   };
@@ -106,17 +76,18 @@ class HomeScreenList extends Component {
   //******************************************************* */
 
   render() {
-    const { t, homeRoutes, navigation } = this.props;
+    const { t, homeRoutes, navigation, fetchRoutes } = this.props;
     const { refreshing } = this.state;
     const { viewableItemsMap } = this.state;
     if ((homeRoutes === null || homeRoutes === undefined) && !refreshing) {
       return this.renderFetchLoading();
     }
     if (!homeRoutes && !refreshing) {
-      return this.renderFetchErrorTryAgain(this.props.fetchRoutes);
+      console.log("homeRoutes", homeRoutes);
+      return <ErrorFetchTryAgain fetchData={fetchRoutes} />;
     }
     if (homeRoutes && !homeRoutes.length) {
-      return this.renderNoData(this.props.fetchRoutes);
+      return <NoData fetchData={fetchRoutes} infoKey={"home.noData"} />;
     }
 
     return (

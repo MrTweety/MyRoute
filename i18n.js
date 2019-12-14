@@ -9,27 +9,32 @@ import homeScreenFR from "./app/assets/translations/fr/homeScreen";
 import mapScreenPL from "./app/assets/translations/pl/mapScreen";
 import mapScreenEN from "./app/assets/translations/en/mapScreen";
 import mapScreenFR from "./app/assets/translations/fr/mapScreen";
-
+import commentScreenPL from "./app/assets/translations/pl/commentScreen";
+import commentScreenEN from "./app/assets/translations/en/commentScreen";
+import commentScreenFR from "./app/assets/translations/fr/commentScreen";
 const resources = {
   pl: {
     translation: {
       common: { ...commonPL },
       home: { ...homeScreenPL },
-      map: { ...mapScreenPL }
+      map: { ...mapScreenPL },
+      comment: { ...commentScreenPL }
     }
   },
   en: {
     translation: {
       common: { ...commonEN },
       home: { ...homeScreenEN },
-      map: { ...mapScreenEN }
+      map: { ...mapScreenEN },
+      comment: { ...commentScreenEN }
     }
   },
   fr: {
     translation: {
       common: { ...commonFR },
       home: { ...homeScreenFR },
-      map: { ...mapScreenFR }
+      map: { ...mapScreenFR },
+      comment: { ...commentScreenFR }
     }
   }
 };

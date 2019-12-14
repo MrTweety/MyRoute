@@ -24,5 +24,20 @@
   "fetchError": "Błąd pobierania.",
   "tryAgain": "Spróbuj ponownie...",
   "more": "...więcej",
-  "comments": "Komentarze"
+  "comments": "Komentarze",
+  "now": "teraz",
+  "month": {
+    "january": "Styczeń",
+    "february": "Luty",
+    "march": "Marzec",
+    "april": "April",
+    ",may": "Maj",
+    "june": "Czerwiec",
+    "july": "Lipiec",
+    "august": "Sierpień",
+    "september": "Wrzesień",
+    "october": "Październik",
+    "november": "Listopad",
+    "december": "Grudzień"
+  }
 }

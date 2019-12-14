@@ -1,7 +1,10 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
-import Icon from "./Icon";
 import { Tooltip } from "react-native-elements";
+import Icon from "./Icon";
+import dateFormat from "../../../services/dateFormat";
+import isRoute from "../propTypes/isRoute";
 
 class UserItem extends Component {
   renderTooltip = () => (
@@ -20,32 +23,38 @@ class UserItem extends Component {
   );
 
   render() {
+    const { routeEndDate, name, avatar } = this.props;
     return (
       <View style={styles.userBar}>
         <View style={{ flexDirection: "row" }}>
-          <Image
-            style={styles.userPic}
-            source={{ uri: "https://www.w3schools.com/howto/img_avatar2.png" }}
-          />
+          <Image style={styles.userPic} source={{ uri: avatar }} />
           <View style={styles.userNameView}>
-            <Text style={styles.textPrimary}>
-              {this.props.userName || "brunnett"}
-            </Text>
-            <Text style={styles.textSecondary}>Kraków</Text>
+            <Text style={styles.textPrimary}>{name}</Text>
+            <View style={styles.textSecondaryWrap}>
+              <Text style={styles.textSecondary}>Kraków</Text>
+              <Text style={styles.textSecondary}>
+                {dateFormat(routeEndDate)}
+              </Text>
+            </View>
           </View>
+          <View>{this.renderTooltip()}</View>
         </View>
-        {this.renderTooltip()}
       </View>
     );
   }
 }
 
+UserItem.propTypes = {
+  avatar: PropTypes.string, //.isRequired,
+  name: PropTypes.string, //.isRequired,
+  routeEndDate: PropTypes.string //.isRequired,
+};
 export default UserItem;
 
 const styles = StyleSheet.create({
   userBar: {
     alignItems: "center",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
     height: 50,
     // backgroundColor: "red",
     marginHorizontal: 10,
@@ -57,10 +66,11 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20
   },
-
   userNameView: {
+    flex: 1,
     flexDirection: "column",
     marginLeft: 10,
+    marginRight: 10,
     justifyContent: "center"
   },
   textPrimary: {
@@ -69,13 +79,19 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#000000"
   },
+  textSecondaryWrap: {
+    flex: 1,
+    justifyContent: "space-between",
+    flexDirection: "row"
+  },
   textSecondary: {
     fontSize: 12,
-    justifyContent: "flex-start",
     fontWeight: "normal",
     color: "#808080"
   },
   containerStyle: {
-    padding: 0
+    padding: 0,
+    marginHorizontal: 10,
+    alignContent: "center"
   }
 });
