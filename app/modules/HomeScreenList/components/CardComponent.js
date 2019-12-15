@@ -23,7 +23,7 @@ class CardComponent extends Component {
 
     return (
       <View style={styles.container}>
-        <UserItem {...this.props} />
+        {!this.props.withOutUserItem && <UserItem {...this.props} />}
         <DescriptionItem description={description} />
 
         <View style={{ justifyContent: "center", alignItems: "center" }}>

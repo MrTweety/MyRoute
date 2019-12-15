@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import Icon from "./Icon";
 import { Tooltip } from "react-native-elements";
+import { withNavigation } from "react-navigation";
 
 class UserItem extends Component {
   renderTooltip = () => (
@@ -19,17 +20,29 @@ class UserItem extends Component {
     </Tooltip>
   );
 
+  navigateToBasicUserProfile = () => {
+    if (this.props.route.routeAuthor) {
+      this.props.navigation.navigate("BasicUserProfileStack", {
+        id: this.props.route.routeAuthor._id
+      });
+    }
+  };
+
   render() {
     return (
       <View style={styles.userBar}>
         <View style={{ flexDirection: "row" }}>
-          <Image
-            style={styles.userPic}
-            source={{ uri: "https://www.w3schools.com/howto/img_avatar2.png" }}
-          />
+          <TouchableOpacity onPress={this.navigateToBasicUserProfile}>
+            <Image
+              style={styles.userPic}
+              source={{
+                uri: "https://www.w3schools.com/howto/img_avatar2.png"
+              }}
+            />
+          </TouchableOpacity>
           <View style={styles.userNameView}>
             <Text style={styles.textPrimary}>
-              {this.props.userName || "brunnett"}
+              {this.props.name || "brunnett"}
             </Text>
             <Text style={styles.textSecondary}>Kraków</Text>
           </View>
@@ -40,7 +53,7 @@ class UserItem extends Component {
   }
 }
 
-export default UserItem;
+export default withNavigation(UserItem);
 
 const styles = StyleSheet.create({
   userBar: {
