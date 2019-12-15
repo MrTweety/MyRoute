@@ -4,8 +4,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-  TextInput,
-  KeyboardAvoidingView
+  TextInput
 } from "react-native";
 import { lightBlue, sadGrey } from "../../../assets/colors";
 import Logo from "../../_common/components/Logo";
@@ -107,7 +106,8 @@ class SignUp extends Component {
       },
       {
         onChangeText: this.handlePasswordChange,
-        placeholder: t("common.password")
+        placeholder: t("common.password"),
+        secureInput: true
       }
     ];
 
@@ -120,7 +120,7 @@ class SignUp extends Component {
             </View>
           )}
           {this.state.isLogoVisible && <Logo position="top" />}
-          <KeyboardAvoidingView style={styles.form} behavior="padding" enabled>
+          <View style={styles.form}>
             {formData.map(data => (
               <TextInput
                 key={data.placeholder}
@@ -129,6 +129,7 @@ class SignUp extends Component {
                 onChangeText={data.onChangeText}
                 onFocus={this.hideLogo}
                 onSubmitEditing={this.showLogo}
+                secureTextEntry={data.secureInput}
               />
             ))}
             <TouchableOpacity
@@ -143,7 +144,7 @@ class SignUp extends Component {
             >
               <Text>{t("common.signUp")}</Text>
             </TouchableOpacity>
-          </KeyboardAvoidingView>
+          </View>
           <View style={{ marginBottom: 10 }}>
             <Text onPress={this.navigateToSignIn}>Juz mam konto</Text>
           </View>

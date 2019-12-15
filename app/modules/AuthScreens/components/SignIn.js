@@ -4,8 +4,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-  TextInput,
-  KeyboardAvoidingView
+  TextInput
 } from "react-native";
 import { lightBlue, sadGrey } from "../../../assets/colors";
 import { LOGIN_SUCCESS } from "../actions/login";
@@ -66,13 +65,14 @@ class SignIn extends Component {
       <>
         <View style={styles.container}>
           <Logo position="top" />
-          <KeyboardAvoidingView style={styles.form} behavior="padding" enabled>
+          <View style={styles.form}>
             <TextInput
               style={styles.inputField}
               placeholder={t("common.login")}
               onChangeText={this.handleLoginChange}
             />
             <TextInput
+              secureTextEntry
               style={styles.inputField}
               placeholder={t("common.password")}
               onChangeText={this.handlePasswordChange}
@@ -89,7 +89,7 @@ class SignIn extends Component {
             >
               <Text>{t("common.signIn")}</Text>
             </TouchableOpacity>
-          </KeyboardAvoidingView>
+          </View>
           <View style={{ marginBottom: 10 }}>
             <Text onPress={this.navigateToLogin}>Nie mam konta</Text>
           </View>
