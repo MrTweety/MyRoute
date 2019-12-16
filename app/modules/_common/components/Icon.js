@@ -6,7 +6,8 @@ import {
   MaterialIcons,
   Entypo,
   MaterialCommunityIcons,
-  SimpleLineIcons
+  SimpleLineIcons,
+  Feather
 } from "@expo/vector-icons";
 
 const getTypeIcon = type => {
@@ -23,6 +24,8 @@ const getTypeIcon = type => {
       return FontAwesome;
     case "SimpleLineIcons":
       return SimpleLineIcons;
+    case "Feather":
+      return Feather;
     default:
       return MaterialIcons;
   }

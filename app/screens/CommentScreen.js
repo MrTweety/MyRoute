@@ -1,30 +1,23 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import CommentList from "../modules/CommentList/container/HomeCommentList";
 
 export default class CommentScreen extends Component {
   render() {
     const { navigation } = this.props;
-    const routeId = navigation.getParam("_id", 0);
-    const comments = navigation.getParam("comments", []);
-    const description = navigation.getParam("description", "");
+    const route = navigation.getParam("route", null);
 
-    if (!routeId) {
+    if (!route) {
       navigation.navigate("HomeStack");
     }
 
     return (
-      <View
-        style={{
-          flex: 1,
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center"
-        }}
-      >
-        <Text style={{ fontSize: 20, fontWeight: "bold", paddingBottom: 20 }}>
-          {routeId}
-        </Text>
-      </View>
+      <CommentList
+        routeId={route._id}
+        description={route.name}
+        routeEndDate={route.endDate}
+        routeAuthor={route.routeAuthor}
+        {...this.props}
+      />
     );
   }
 }

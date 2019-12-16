@@ -6,6 +6,7 @@ import {
   getUserById,
   userStateKey
 } from "../modules/AuthScreens/actions/getUserById";
+import { returnUser } from "../modules/AuthScreens/selectors/user";
 import { injectReducer } from "../redux/store";
 import userReducer from "../modules/AuthScreens/reducers/userReducer";
 
@@ -53,7 +54,7 @@ class LoadingScreen extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state[userStateKey].data
+    user: returnUser(state)
   };
 };
 

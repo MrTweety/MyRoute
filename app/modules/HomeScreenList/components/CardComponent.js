@@ -9,60 +9,67 @@ import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import isRoute from "../../_common/propTypes/isRoute";
 
-const { width, height } = Dimensions.get("window");
+const CardComponent = ({
+  t,
+  route,
+  shouldAnimation,
+  navigation,
+  likeRoute,
+  dislikeRoute,
+  user
+}) => {
+  const { coords, routeAuthor, likes } = route;
+  const description = route.name;
+  const routeEndDate = route.endDate;
+  const heart = !!likes.find(userId => userId === user._id);
+  console.log("heart", heart);
 
-class CardComponent extends Component {
-  state = {
-    cardImgHeight: width
+  const clickLike = () => {
+    if (heart) {
+      dislikeRoute({ userId: user._id }, { routeId: route._id });
+    } else {
+      likeRoute({ userId: user._id }, { routeId: route._id });
+    }
   };
 
-  render() {
-    const { t, route, shouldAnimation, navigation } = this.props;
-    const { _id, comments, coords } = route;
-    const description = route.name;
+  return (
+    <View style={styles.container}>
+      {!this.props.withOutUserItem && (
+        <UserItem {...routeAuthor} routeEndDate={routeEndDate} />
+      )}
+      <DescriptionItem description={description} />
 
-    return (
-      <View style={styles.container}>
-        {!this.props.withOutUserItem && <UserItem {...this.props} />}
-        <DescriptionItem description={description} />
-
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <SimpleMap
-            coords={coords}
-            nrRoute={this.props.imageNr}
-            shouldAnimation={shouldAnimation}
-          />
-        </View>
-        <View style={styles.icons}>
-          <Icon
-            type="entypo"
-            name={this.props.heart || "heart-outlined"}
-            size={30}
-            color={this.props.heart ? "red" : "black"}
-            style={styles.icon}
-          />
-          <Icon
-            type="SimpleLineIcons"
-            name="bubble"
-            size={30}
-            color="black"
-            style={styles.icon}
-            onPress={() =>
-              navigation.navigate("CommentStack", {
-                _id,
-                comments,
-                description
-              })
-            }
-          />
-        </View>
-        <View style={{ marginLeft: 10 }}>
-          <Text>101 likes</Text>
-        </View>
+      <View style={{ justifyContent: "center", alignItems: "center" }}>
+        <SimpleMap coords={coords} shouldAnimation={shouldAnimation} />
       </View>
-    );
-  }
-}
+      <View style={styles.icons}>
+        <Icon
+          type="entypo"
+          name={heart ? "heart" : "heart-outlined"}
+          size={30}
+          color={heart ? "red" : "black"}
+          style={styles.icon}
+          onPress={clickLike}
+        />
+        <Icon
+          type="SimpleLineIcons"
+          name="bubble"
+          size={30}
+          color="black"
+          style={styles.icon}
+          onPress={() =>
+            navigation.navigate("CommentStack", {
+              route
+            })
+          }
+        />
+      </View>
+      <View style={{ marginLeft: 10 }}>
+        <Text>{likes.length} likes</Text>
+      </View>
+    </View>
+  );
+};
 
 export default withTranslation()(CardComponent);
 

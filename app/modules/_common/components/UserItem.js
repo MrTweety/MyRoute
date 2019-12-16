@@ -1,7 +1,17 @@
 import React, { Component } from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import Icon from "./Icon";
+import PropTypes from "prop-types";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity
+} from "react-native";
 import { Tooltip } from "react-native-elements";
+import Icon from "./Icon";
+import dateFormat from "../../../services/dateFormat";
+import isRoute from "../propTypes/isRoute";
 import { withNavigation } from "react-navigation";
 
 class UserItem extends Component {
@@ -29,36 +39,41 @@ class UserItem extends Component {
   };
 
   render() {
+    const { routeEndDate, name, avatar } = this.props;
     return (
       <View style={styles.userBar}>
         <View style={{ flexDirection: "row" }}>
           <TouchableOpacity onPress={this.navigateToBasicUserProfile}>
-            <Image
-              style={styles.userPic}
-              source={{
-                uri: "https://www.w3schools.com/howto/img_avatar2.png"
-              }}
-            />
+            <Image style={styles.userPic} source={{ uri: avatar }} />
           </TouchableOpacity>
           <View style={styles.userNameView}>
-            <Text style={styles.textPrimary}>
-              {this.props.name || "brunnett"}
-            </Text>
-            <Text style={styles.textSecondary}>Kraków</Text>
+            <Text style={styles.textPrimary}>{name}</Text>
+            <View style={styles.textSecondaryWrap}>
+              <Text style={styles.textSecondary}>Kraków</Text>
+              <Text style={styles.textSecondary}>
+                {dateFormat(routeEndDate)}
+              </Text>
+            </View>
           </View>
+          <View>{this.renderTooltip()}</View>
         </View>
-        {this.renderTooltip()}
       </View>
     );
   }
 }
+
+UserItem.propTypes = {
+  avatar: PropTypes.string, //.isRequired,
+  name: PropTypes.string, //.isRequired,
+  routeEndDate: PropTypes.string //.isRequired,
+};
 
 export default withNavigation(UserItem);
 
 const styles = StyleSheet.create({
   userBar: {
     alignItems: "center",
-    justifyContent: "space-between",
+    // justifyContent: "space-between",
     height: 50,
     // backgroundColor: "red",
     marginHorizontal: 10,
@@ -70,10 +85,11 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20
   },
-
   userNameView: {
+    flex: 1,
     flexDirection: "column",
     marginLeft: 10,
+    marginRight: 10,
     justifyContent: "center"
   },
   textPrimary: {
@@ -82,13 +98,19 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#000000"
   },
+  textSecondaryWrap: {
+    flex: 1,
+    justifyContent: "space-between",
+    flexDirection: "row"
+  },
   textSecondary: {
     fontSize: 12,
-    justifyContent: "flex-start",
     fontWeight: "normal",
     color: "#808080"
   },
   containerStyle: {
-    padding: 0
+    padding: 0,
+    marginHorizontal: 10,
+    alignContent: "center"
   }
 });

@@ -3,9 +3,14 @@ import { getSavedItem, SAVED_JWT_TOKEN } from "../services/secureStorage";
 // const API_ROOT = "https://myroutet.azurewebsites.net";
 const API_ROOT = "http://192.168.2.64:8080";
 
+const queryString = params =>
+  Object.keys(params)
+    .map(key => key + "=" + params[key])
+    .join("&");
+
 // Fetches an API response, the result JSON .
 const callApi = async (endpoint, data, method = "POST", headers = {}) => {
-  const fullUrl =
+  let fullUrl =
     endpoint.indexOf(API_ROOT) === -1 ? API_ROOT + endpoint : endpoint;
 
   const token = await getSavedItem(SAVED_JWT_TOKEN);
@@ -13,17 +18,35 @@ const callApi = async (endpoint, data, method = "POST", headers = {}) => {
   console.log("\n\n[callApi]: request url: ", fullUrl);
   console.log("[callApi]: request body: ", data);
   console.log("[callApi]: request method: ", method);
-  console.log("[callApi]: request headers: ", headers, "\n\n");
+  console.log("[callApi]: request headers: ", headers);
+  console.log("[callApi]: request token: ", token, "\n\n");
 
-  return fetch(fullUrl, {
-    method,
-    body: JSON.stringify(data),
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
-      ...headers
+  let fetchData;
+  if (method.toUpperCase() === "GET") {
+    if (data) {
+      fullUrl = fullUrl + "?" + queryString(data);
     }
-  }).then(response =>
+    fetchData = fetch(fullUrl, {
+      method,
+      headers: {
+        Authorization: "Bearer " + token,
+        ...headers
+      }
+    });
+  } else {
+    fetchData = fetch(fullUrl, {
+      method,
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+
+        ...headers
+      }
+    });
+  }
+
+  return fetchData.then(response =>
     response.json().then(json => {
       if (!response.ok) {
         return Promise.reject(json);
@@ -45,8 +68,8 @@ export default store => next => action => {
   if (typeof callAPI === "undefined") {
     return next(action);
   }
-
-  let { data, endpoint, method, headers } = callAPI;
+  // actionParams - dodawane do akcji, nie wysyłane w zapytaniu
+  let { data, endpoint, method, headers, actionParams } = callAPI;
   const { types } = callAPI;
 
   if (typeof endpoint === "function") {
@@ -69,7 +92,13 @@ export default store => next => action => {
   }
 
   const actionWith = payload => {
-    const finalAction = Object.assign({}, action, payload);
+    const finalAction = Object.assign(
+      {},
+      action,
+      payload,
+      { actionParams },
+      data
+    );
     delete finalAction[CALL_API];
     return finalAction;
   };

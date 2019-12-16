@@ -7,7 +7,7 @@ import { withTranslation } from "react-i18next";
 
 class Exemplar extends Component {
   componentDidMount() {
-    console.log(this.props.user);
+    console.log("Exemplar User", this.props.user);
   }
 
   render() {

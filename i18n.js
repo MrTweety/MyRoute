@@ -12,6 +12,9 @@ import mapScreenFR from "./app/assets/translations/fr/mapScreen";
 import profileScreenFR from "./app/assets/translations/fr/profileScreen";
 import profileScreenEN from "./app/assets/translations/en/profileScreen";
 import profileScreenPL from "./app/assets/translations/pl/profileScreen";
+import commentScreenPL from "./app/assets/translations/pl/commentScreen";
+import commentScreenEN from "./app/assets/translations/en/commentScreen";
+import commentScreenFR from "./app/assets/translations/fr/commentScreen";
 
 const resources = {
   pl: {
@@ -19,6 +22,7 @@ const resources = {
       common: { ...commonPL },
       home: { ...homeScreenPL },
       map: { ...mapScreenPL },
+      comment: { ...commentScreenPL },
       profile: { ...profileScreenPL }
     }
   },
@@ -27,6 +31,7 @@ const resources = {
       common: { ...commonEN },
       home: { ...homeScreenEN },
       map: { ...mapScreenEN },
+      comment: { ...commentScreenEN },
       profile: { ...profileScreenEN }
     }
   },
@@ -35,6 +40,7 @@ const resources = {
       common: { ...commonFR },
       home: { ...homeScreenFR },
       map: { ...mapScreenFR },
+      comment: { ...commentScreenFR },
       profile: { ...profileScreenFR }
     }
   }
