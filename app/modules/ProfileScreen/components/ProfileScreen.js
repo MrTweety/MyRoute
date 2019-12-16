@@ -9,7 +9,7 @@ import {
   StyleSheet
 } from "react-native";
 import ProfileInfo from "../../_common/components/ProfileInfo";
-import CardComponent from "../../HomeScreenList/components/CardComponent";
+import CardComponent from "../../HomeScreenList/container/CardComponent";
 
 class ProfileScreen extends Component {
   state = {

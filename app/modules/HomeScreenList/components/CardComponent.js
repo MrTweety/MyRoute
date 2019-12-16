@@ -4,8 +4,6 @@ import Icon from "../../_common/components/Icon";
 import SimpleMap from "../../_common/components/SimpleMap";
 import UserItem from "../../_common/components/UserItem";
 import DescriptionItem from "../../_common/components/DescriptionItem";
-
-import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import isRoute from "../../_common/propTypes/isRoute";
 
@@ -16,7 +14,8 @@ const CardComponent = ({
   navigation,
   likeRoute,
   dislikeRoute,
-  user
+  user,
+  withOutUserItem
 }) => {
   const { coords, routeAuthor, likes } = route;
   const description = route.name;
@@ -34,7 +33,7 @@ const CardComponent = ({
 
   return (
     <View style={styles.container}>
-      {!this.props.withOutUserItem && (
+      {!withOutUserItem && (
         <UserItem {...routeAuthor} routeEndDate={routeEndDate} />
       )}
       <DescriptionItem description={description} />
@@ -71,16 +70,18 @@ const CardComponent = ({
   );
 };
 
-export default withTranslation()(CardComponent);
+export default CardComponent;
 
 CardComponent.defaultProps = {
-  shouldAnimation: false
+  shouldAnimation: false,
+  withOutUserItem: false
 };
 
 CardComponent.propTypes = {
   t: PropTypes.func.isRequired,
   route: isRoute.isRequired,
-  shouldAnimation: PropTypes.bool
+  shouldAnimation: PropTypes.bool,
+  withOutUserItem: PropTypes.bool
 };
 
 const styles = StyleSheet.create({

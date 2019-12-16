@@ -31,9 +31,9 @@ class UserItem extends Component {
   );
 
   navigateToBasicUserProfile = () => {
-    if (this.props.route.routeAuthor) {
+    if (this.props._id) {
       this.props.navigation.navigate("BasicUserProfileStack", {
-        id: this.props.route.routeAuthor._id
+        id: this.props._id
       });
     }
   };
