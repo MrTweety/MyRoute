@@ -1,7 +1,7 @@
 import { getSavedItem, SAVED_JWT_TOKEN } from "../services/secureStorage";
 
 // const API_ROOT = "https://myroutet.azurewebsites.net";
-const API_ROOT = "http://192.168.1.10:8080";
+const API_ROOT = "http://192.168.43.3:8080";
 
 // Fetches an API response, the result JSON .
 const callApi = async (endpoint, data, method = "POST", headers = {}) => {
