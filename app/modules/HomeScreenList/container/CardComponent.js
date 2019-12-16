@@ -6,6 +6,7 @@ import { likeRoute } from "../actions/likeRoute";
 import { dislikeRoute } from "../actions/dislikeRoute";
 
 import { returnUser } from "../../AuthScreens/selectors/user";
+import { withTranslation } from "react-i18next";
 
 const mapStateToProps = state => ({
   user: returnUser(state)
@@ -16,7 +17,9 @@ const mapDispatchToProps = {
   dislikeRoute
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CardComponent);
+export default withTranslation()(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(CardComponent)
+);

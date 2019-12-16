@@ -13,6 +13,7 @@ import MapScreen from "../screens/MapScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import CommentScreen from "../screens/CommentScreen";
+import UserProfileScreen from "../screens/UserProfileScreen";
 import i18next from "i18next";
 
 const HomeScreenStack = createStackNavigator(
@@ -66,6 +67,13 @@ const HomeScreenStack = createStackNavigator(
       screen: CommentScreen,
       navigationOptions: () => ({
         headerTitle: i18next.t("common.comments")
+      }),
+      headerLayoutPreset: "center"
+    },
+    BasicUserProfileStack: {
+      screen: UserProfileScreen,
+      navigationOptions: () => ({
+        title: i18next.t("profile.title")
       }),
       headerLayoutPreset: "center"
     }

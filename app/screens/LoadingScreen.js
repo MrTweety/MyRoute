@@ -39,8 +39,6 @@ class LoadingScreen extends Component {
       if (user === null) {
         return;
       }
-
-      // this.props.navigation.navigate("AppNavigator");
     } else {
       return this.props.navigation.navigate("Auth");
     }

@@ -1,10 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity
+} from "react-native";
 import { Tooltip } from "react-native-elements";
 import Icon from "./Icon";
 import dateFormat from "../../../services/dateFormat";
 import isRoute from "../propTypes/isRoute";
+import { withNavigation } from "react-navigation";
 
 class UserItem extends Component {
   renderTooltip = () => (
@@ -22,12 +30,22 @@ class UserItem extends Component {
     </Tooltip>
   );
 
+  navigateToBasicUserProfile = () => {
+    if (this.props._id) {
+      this.props.navigation.navigate("BasicUserProfileStack", {
+        id: this.props._id
+      });
+    }
+  };
+
   render() {
     const { routeEndDate, name, avatar } = this.props;
     return (
       <View style={styles.userBar}>
         <View style={{ flexDirection: "row" }}>
-          <Image style={styles.userPic} source={{ uri: avatar }} />
+          <TouchableOpacity onPress={this.navigateToBasicUserProfile}>
+            <Image style={styles.userPic} source={{ uri: avatar }} />
+          </TouchableOpacity>
           <View style={styles.userNameView}>
             <Text style={styles.textPrimary}>{name}</Text>
             <View style={styles.textSecondaryWrap}>
@@ -49,7 +67,8 @@ UserItem.propTypes = {
   name: PropTypes.string, //.isRequired,
   routeEndDate: PropTypes.string //.isRequired,
 };
-export default UserItem;
+
+export default withNavigation(UserItem);
 
 const styles = StyleSheet.create({
   userBar: {
