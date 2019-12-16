@@ -17,6 +17,10 @@ class LoadingScreen extends Component {
     this.checkIfLoggedIn();
   }
 
+  componentDidUpdate() {
+    this.checkIfLoggedIn();
+  }
+
   checkIfLoggedIn = async () => {
     const userToken = await getSavedItem(SAVED_JWT_TOKEN);
     const { user } = this.props;
@@ -26,13 +30,11 @@ class LoadingScreen extends Component {
         return this.props.navigation.navigate("AppNavigator");
       }
       if (user === undefined) {
-        this.props.getUserById();
-        return this.props.navigation.navigate("AppNavigator");
+        return this.props.getUserById();
       }
       if (user === false) {
         //TODO:
-        this.props.getUserById();
-        return this.props.navigation.navigate("AppNavigator");
+        return this.props.getUserById();
       }
       if (user === null) {
         return;
