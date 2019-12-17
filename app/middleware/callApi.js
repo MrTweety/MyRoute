@@ -1,7 +1,7 @@
 import { getSavedItem, SAVED_JWT_TOKEN } from "../services/secureStorage";
 
 // const API_ROOT = "https://myroutet.azurewebsites.net";
-const API_ROOT = "http://192.168.2.64:8080";
+const API_ROOT = "http://192.168.1.16:8080";
 
 const queryString = params =>
   Object.keys(params)

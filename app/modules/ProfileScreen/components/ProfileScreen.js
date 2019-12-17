@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import ProfileInfo from "../../_common/components/ProfileInfo";
 import CardComponent from "../../HomeScreenList/container/CardComponent";
+import NoData from "../../_common/components/NoData";
 
 class ProfileScreen extends Component {
   state = {
@@ -54,23 +55,17 @@ class ProfileScreen extends Component {
   };
 
   renderNoData = fetchData => {
-    const { t, userRoutes } = this.props;
+    const { t, userRoutes, user } = this.props;
     return (
       <View style={styles.container}>
         <ProfileInfo
-          userName={this.props.user.name}
+          user={user}
           routesNumber={userRoutes ? userRoutes.length : 0}
-          folowersNumber={10}
-          folowedByNumber={500}
         />
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <TouchableOpacity onPress={fetchData}>
-            <Text>
-              {t("home.noData")}{" "}
-              <Text style={{ color: "blue" }}>{t("common.tryAgain")}</Text>
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <NoData
+          fetchData={() => this.props.getRoutes(this.props.user._id)}
+          infoKey={"home.noData"}
+        />
       </View>
     );
   };
@@ -93,12 +88,13 @@ class ProfileScreen extends Component {
   };
 
   render() {
-    const { t, userRoutes, navigation } = this.props;
+    const { t, userRoutes, navigation, user } = this.props;
     const { refreshing } = this.state;
     const { viewableItemsMap } = this.state;
     if ((userRoutes === null || userRoutes === undefined) && !refreshing) {
       return this.renderFetchLoading();
     }
+    //TODO: ErrorFetchTryAgain
     if (userRoutes && !userRoutes.length) {
       return this.renderNoData(() => this.props.getRoutes(this.props.user._id));
     }
@@ -128,10 +124,8 @@ class ProfileScreen extends Component {
           onViewableItemsChanged={this.onClippingListViewableChanged}
           ListHeaderComponent={
             <ProfileInfo
-              userName={this.props.user.name}
+              user={user}
               routesNumber={userRoutes ? userRoutes.length : 0}
-              folowersNumber={10}
-              folowedByNumber={500}
             />
           }
         />
@@ -139,6 +133,8 @@ class ProfileScreen extends Component {
     );
   }
 }
+
+//TODO: PropsTypes
 
 const styles = StyleSheet.create({
   container: {

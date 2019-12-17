@@ -9,6 +9,7 @@ import { injectReducer } from "../../../redux/store";
 import basicUserProfileScreenReducer from "../reducers/basicUserProfileScreen";
 import { withTranslation } from "react-i18next";
 import { withNavigation } from "react-navigation";
+import { returnUser } from "../../AuthScreens/selectors/user";
 
 injectReducer(basicUserStateKey, basicUserProfileScreenReducer);
 
