@@ -1,74 +1,72 @@
 import React, { Component } from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { withTranslation } from "react-i18next";
+import Follows from "../../ProfileScreen/constainer/Follows";
 
-class ProfileInfo extends Component {
-  render() {
-    const { t } = this.props;
-    return (
-      <View style={styles.userBar}>
-        <View style={{ flexDirection: "row" }}>
-          <View style={{ flexDirection: "column", alignItems: "center" }}>
-            <Image
-              style={styles.userPic}
-              source={{
-                uri: "https://www.w3schools.com/howto/img_avatar2.png"
-              }}
-            />
-
-            <View
-              style={[styles.item, { flexDirection: "column", marginTop: 5 }]}
-            >
-              <Text style={styles.textPrimary}>
-                {this.props.userName || "brunnett"}
-              </Text>
-              <Text style={styles.textSecondary}>Kraków</Text>
-            </View>
+const ProfileInfo = ({ t, user, routesNumber }) => {
+  return (
+    <View style={styles.userBar}>
+      <View style={{ flexDirection: "row", flex: 1, flexWrap: "wrap" }}>
+        <View style={{ flexDirection: "column", alignItems: "center" }}>
+          <Image
+            style={styles.userPic}
+            source={{
+              uri: user.avatar
+            }}
+          />
+        </View>
+        <View
+          style={{
+            flexDirection: "column",
+            alignItems: "flex-start",
+            marginLeft: 10
+          }}
+        >
+          <View style={styles.item}>
+            <Text style={styles.textPrimary}>{t("profile.routes")}</Text>
+            <Text style={styles.textSecondary}>{routesNumber}</Text>
           </View>
 
-          <View
-            style={{
-              flexDirection: "column",
-              alignItems: "flex-start",
-              marginLeft: 10
-            }}
-          >
-            <View style={styles.item}>
-              <Text style={styles.textPrimary}>{t("profile.routes")}</Text>
-              <Text style={styles.textSecondary}>
-                {this.props.routesNumber}
-              </Text>
-            </View>
+          <View style={styles.item}>
+            <Text style={styles.textPrimary}>{t("profile.follows")}</Text>
+            <Text style={styles.textSecondary}>{user.followed.length}</Text>
+          </View>
 
-            <View style={styles.item}>
-              <Text style={styles.textPrimary}>{t("profile.follows")}</Text>
-              <Text style={styles.textSecondary}>
-                {this.props.folowersNumber}
-              </Text>
-            </View>
-
-            <View style={styles.item}>
-              <Text style={styles.textPrimary}>{t("profile.followedBy")}</Text>
-              <Text style={styles.textSecondary}>
-                {this.props.folowedByNumber}
-              </Text>
-            </View>
+          <View style={styles.item}>
+            <Text style={styles.textPrimary}>{t("profile.followedBy")}</Text>
+            <Text style={styles.textSecondary}>{user.followers.length}</Text>
           </View>
         </View>
+        <View
+          style={{
+            flexGrow: 1,
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <Follows user={user} />
+        </View>
       </View>
-    );
-  }
-}
 
+      <View style={[styles.item, { flexDirection: "column", marginTop: 5 }]}>
+        <Text style={styles.textPrimary}>{user.name}</Text>
+        <Text style={styles.textSecondary}>Kraków</Text>
+      </View>
+    </View>
+  );
+};
+
+//TODO: propsTypes
 export default withTranslation()(ProfileInfo);
 
 const styles = StyleSheet.create({
   userBar: {
     marginTop: 8,
-    height: 140,
+    minHeight: 120,
     marginHorizontal: 10,
     borderBottomColor: "grey",
-    alignItems: "flex-start"
+    alignItems: "flex-start",
+    flexDirection: "column"
   },
   userPic: {
     width: 80,

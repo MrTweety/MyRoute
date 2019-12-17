@@ -25,7 +25,7 @@ class UserProfileScreen extends Component {
       });
     }
   }
-
+  //TODO: user === false
   render() {
     return (
       <>
