@@ -3,7 +3,7 @@ import { View, Text, Image, StyleSheet } from "react-native";
 import { withTranslation } from "react-i18next";
 import Follows from "../../ProfileScreen/constainer/Follows";
 
-const ProfileInfo = ({ t, user, routesNumber }) => {
+const ProfileInfo = ({ t, user, routesNumber, textSecondary }) => {
   return (
     <View style={styles.userBar}>
       <View style={{ flexDirection: "row", flex: 1, flexWrap: "wrap" }}>
@@ -50,13 +50,18 @@ const ProfileInfo = ({ t, user, routesNumber }) => {
 
       <View style={[styles.item, { flexDirection: "column", marginTop: 5 }]}>
         <Text style={styles.textPrimary}>{user.name}</Text>
-        <Text style={styles.textSecondary}>Kraków</Text>
+        <Text style={styles.textSecondary}>{textSecondary}</Text>
       </View>
     </View>
   );
 };
 
+ProfileInfo.defaultProps = {
+  textSecondary: null
+};
+
 //TODO: propsTypes
+
 export default withTranslation()(ProfileInfo);
 
 const styles = StyleSheet.create({

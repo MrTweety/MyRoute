@@ -15,12 +15,6 @@ const callApi = async (endpoint, data, method = "POST", headers = {}) => {
 
   const token = await getSavedItem(SAVED_JWT_TOKEN);
 
-  console.log("\n\n[callApi]: request url: ", fullUrl);
-  console.log("[callApi]: request body: ", data);
-  console.log("[callApi]: request method: ", method);
-  console.log("[callApi]: request headers: ", headers);
-  console.log("[callApi]: request token: ", token, "\n\n");
-
   let fetchData;
   if (method.toUpperCase() === "GET") {
     if (data) {
@@ -103,7 +97,7 @@ export default store => next => action => {
     return finalAction;
   };
   const [requestType, successType, failureType] = types;
-
+  //TODO: Error shape
   next(actionWith({ type: requestType }));
   return callApi(endpoint, data, method, headers)
     .then(

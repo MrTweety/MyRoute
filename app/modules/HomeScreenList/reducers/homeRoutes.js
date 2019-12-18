@@ -22,7 +22,6 @@ export const makeLikeReducer = (state, action) => {
   if (action.type !== LIKE_ROUTE_SUCCESS) {
     return state;
   }
-  console.log("makeLikeReducer", state);
 
   const stateData = state.data.map(route => {
     if (route._id === action.actionParams.routeId) {
@@ -44,7 +43,7 @@ export const makeDisLikeReducer = (state, action) => {
   if (action.type !== DISLIKE_ROUTE_SUCCESS) {
     return state;
   }
-  console.log("makeDisLikeReducer", state);
+
   const stateData = state.data.map(route => {
     if (route._id === action.actionParams.routeId) {
       const likes = route.likes;
@@ -58,8 +57,6 @@ export const makeDisLikeReducer = (state, action) => {
 };
 
 export default homeRoutesReducer = (state = {}, action) => {
-  console.log("homeRoutesReducer", state);
-
   switch (action.type) {
     case LIKE_ROUTE_SUCCESS:
     case LIKE_ROUTE_REQUEST: {

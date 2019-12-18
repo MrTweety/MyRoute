@@ -207,6 +207,7 @@ export default class MapScreen extends React.Component {
   }
 
   async stopLocationSave() {
+    const { saveRoute, user } = this.props;
     const {
       savedLocations,
       trackName,
@@ -217,13 +218,14 @@ export default class MapScreen extends React.Component {
 
     if (savedLocations && savedLocations.length > 1) {
       //TODO: zrobić zapis jak bedzie serwer gotowy :)
-      this.props.saveRoute({
+      saveRoute({
         name: trackName,
         startDate: startTime,
         endDate: new Date().getTime(),
         coords: savedLocations,
         distance,
-        timerDuration
+        timerDuration,
+        routeAuthor: user._id
       });
     }
   }

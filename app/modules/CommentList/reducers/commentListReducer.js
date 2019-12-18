@@ -28,7 +28,6 @@ export default commentListReducer = (state = {}, action) => {
 
     case ADD_COMMENT_SUCCESS: {
       const commentState = state[action.routeId];
-      console.log("action", action);
 
       let newObject = {
         ...action.response,
