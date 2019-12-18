@@ -21,7 +21,6 @@ const CardComponent = ({
   const description = route.name;
   const routeEndDate = route.endDate;
   const heart = !!likes.find(userId => userId === user._id);
-  console.log("heart", heart);
 
   const clickLike = () => {
     if (heart) {

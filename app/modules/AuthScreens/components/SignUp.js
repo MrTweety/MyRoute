@@ -76,7 +76,6 @@ class SignUp extends Component {
         mail: this.state.email
       })
       .then(response => {
-        console.log("response", response);
         if (response.type !== REGISTER_SUCCESS) {
           this.setState({
             registerState: response.message

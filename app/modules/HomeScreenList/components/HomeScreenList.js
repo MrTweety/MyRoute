@@ -83,7 +83,6 @@ class HomeScreenList extends Component {
       return this.renderFetchLoading();
     }
     if (!homeRoutes && !refreshing) {
-      console.log("homeRoutes", homeRoutes);
       return <ErrorFetchTryAgain fetchData={fetchRoutes} />;
     }
     if (homeRoutes && !homeRoutes.length) {

@@ -18,7 +18,11 @@ const logger = createLogger({
 
 const returnMiddleware = () =>
   composeWithDevTools(
-    applyMiddleware(thunk, callApi, logger)
+    applyMiddleware(
+      thunk,
+      callApi
+      // logger
+    )
     // other store enhancers if any
   );
 
