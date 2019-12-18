@@ -1,7 +1,6 @@
 import React, { Component } from "react";
+import SearchScreenList from "../modules/HomeScreenList/container/SearchScreenList";
 import { withTranslation } from "react-i18next";
-
-import Exemplar from "../modules/_common/container/Exemplar";
 
 class SearchScreen extends Component {
   componentDidMount() {
@@ -24,8 +23,7 @@ class SearchScreen extends Component {
   }
 
   render() {
-    return <Exemplar />;
+    return <SearchScreenList {...this.props} />;
   }
 }
-
 export default withTranslation()(SearchScreen);
