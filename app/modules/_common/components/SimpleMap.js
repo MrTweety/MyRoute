@@ -4,13 +4,18 @@ import PropTypes from "prop-types";
 
 import MapView from "react-native-maps";
 import AnimatingPolyline from "./AnimatingPolyline";
+import haversine from "../../../services/haversine";
+import getRegionForCoordinates from "../../../services/getRegionForCoordinates";
 
 const { width } = Dimensions.get("window");
 
 export default class SimpleMap extends Component {
   animatedValue = new Animated.Value(0);
 
-  state = { imgSrc: false };
+  state = {
+    imgSrc: false,
+    regionForCoordinates: getRegionForCoordinates(this.props.coords)
+  };
 
   setImgSrc = imgSrc => {
     this.setState({ imgSrc });
@@ -84,22 +89,37 @@ export default class SimpleMap extends Component {
   }
 
   centerMap = () => {
-    const { coords } = this.props;
+    const { regionForCoordinates } = this.state;
     const mapView = this.mapViewRef.current;
     if (mapView) {
-      mapView.animateCamera({
-        center: {
-          ...coords[Math.trunc(coords.length / 2 - 1)]
-        },
-        ...coords[Math.trunc(coords.length / 2 - 1)],
-        zoom: 15
-      });
+      mapView.animateToRegion(regionForCoordinates);
     }
   };
 
   render() {
     const { coords, shouldAnimation } = this.props;
-    const { imgSrc } = this.state;
+    const { imgSrc, regionForCoordinates } = this.state;
+
+    const deltaLat = haversine(
+      regionForCoordinates,
+      {
+        ...regionForCoordinates,
+        latitude:
+          regionForCoordinates.latitude + regionForCoordinates.latitudeDelta
+      },
+      { unit: "meter" }
+    );
+
+    const deltaLon = haversine(
+      regionForCoordinates,
+      {
+        ...regionForCoordinates,
+        longitude:
+          regionForCoordinates.longitude + regionForCoordinates.longitudeDelta
+      },
+      { unit: "meter" }
+    );
+    const radius = Math.round((deltaLat + deltaLon) / 2 / 20);
 
     return (
       <View style={{ flex: 1 }}>
@@ -111,7 +131,7 @@ export default class SimpleMap extends Component {
         >
           <MapView.Circle
             center={coords[1]}
-            radius={20}
+            radius={radius}
             strokeColor={"#484848"}
             strokeWidth={5}
             fillColor={"#fff"}
@@ -119,7 +139,7 @@ export default class SimpleMap extends Component {
           />
           <MapView.Circle
             center={coords[coords.length - 1]}
-            radius={20}
+            radius={radius}
             strokeColor={"#484848"}
             strokeWidth={5}
             fillColor={"#fff"}
