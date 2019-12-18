@@ -17,6 +17,14 @@ import UserProfileScreen from "../screens/UserProfileScreen";
 import CameraScreen from "../screens/CameraScreen";
 import i18next from "i18next";
 
+const CommentStack = {
+  screen: CommentScreen,
+  navigationOptions: () => ({
+    headerTitle: i18next.t("common.comments")
+  }),
+  headerLayoutPreset: "center"
+};
+
 const HomeScreenStack = createStackNavigator(
   {
     HomeStack: {
@@ -64,13 +72,7 @@ const HomeScreenStack = createStackNavigator(
         };
       }
     },
-    CommentStack: {
-      screen: CommentScreen,
-      navigationOptions: () => ({
-        headerTitle: i18next.t("common.comments")
-      }),
-      headerLayoutPreset: "center"
-    },
+    CommentStack: CommentStack,
     BasicUserProfileStack: {
       screen: UserProfileScreen,
       navigationOptions: () => ({
@@ -112,7 +114,8 @@ const SearchScreenStack = createStackNavigator(
           title: navigation.getParam("title")
         };
       }
-    }
+    },
+    CommentStack: CommentStack
   },
   { headerLayoutPreset: "center" }
 );
@@ -189,6 +192,7 @@ const ProfileScreenStack = createStackNavigator(
         };
       }
     },
+    CommentStack: CommentStack,
     SettingsStack: {
       screen: SettingsScreenTopTabNavigator,
       navigationOptions: {

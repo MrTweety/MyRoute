@@ -10,8 +10,8 @@ export const fetchRoutes = () => {
   return {
     [CALL_API]: {
       types: [HOME_ROUTES_REQUEST, HOME_ROUTES_SUCCESS, HOME_ROUTES_FAILURE],
-      endpoint: "/routes",
-      method: "GET"
+      endpoint: "/routes/home",
+      method: "POST"
     }
   };
 };

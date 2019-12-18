@@ -47,7 +47,7 @@ class UserItem extends Component {
               </Text>
             </View>
           </View>
-          <View>{this.renderTooltip()}</View>
+          {/* <View>{this.renderTooltip()}</View> */}
         </View>
       </View>
     );
