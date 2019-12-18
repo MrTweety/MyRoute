@@ -89,9 +89,9 @@ export default class SimpleMap extends Component {
     if (mapView) {
       mapView.animateCamera({
         center: {
-          ...coords[coords.length / 2 - 1]
+          ...coords[Math.trunc(coords.length / 2 - 1)]
         },
-        ...coords[coords.length / 2 - 1],
+        ...coords[Math.trunc(coords.length / 2 - 1)],
         zoom: 15
       });
     }
