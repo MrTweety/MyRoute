@@ -34,8 +34,10 @@ export default class MapPanel extends Component {
       isTracking,
       isPause,
       onCenterMap,
+      onFilterChange,
       togglePause,
       toggleTracking,
+      filter,
       t
     } = this.props;
 
@@ -49,7 +51,20 @@ export default class MapPanel extends Component {
 
     return (
       <View style={styles.buttons} pointerEvents="box-none">
-        <View style={styles.topButtons}></View>
+        <View style={styles.topButtons}>
+          <View></View>
+          {/*nie chce mi sie styli budowac */}
+          <BubbleButton
+            onPress={onFilterChange}
+            icon={{
+              name: "photo-filter",
+              type: "material",
+              size: 25,
+              color: filter === "kalman" ? "blue" : "gray"
+            }}
+            iconLeft
+          />
+        </View>
         <View style={styles.buttonsColumn}>
           <View style={styles.bottomButtons}>
             <BubbleButton
@@ -192,6 +207,7 @@ export default class MapPanel extends Component {
 MapPanel.propTypes = {
   distance: PropTypes.number.isRequired,
   onCenterMap: PropTypes.func.isRequired,
+  onFilterChange: PropTypes.func.isRequired,
   centerStates: PropTypes.shape({
     isCenter: PropTypes.bool.isRequired,
     pitch: PropTypes.number.isRequired
@@ -200,6 +216,7 @@ MapPanel.propTypes = {
   isTracking: PropTypes.bool.isRequired,
   togglePause: PropTypes.func.isRequired,
   toggleTracking: PropTypes.func.isRequired,
+  filter: PropTypes.string.isRequired,
   t: PropTypes.func.isRequired
 };
 
@@ -217,7 +234,8 @@ const styles = StyleSheet.create({
   },
   topButtons: {
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    paddingTop: 25
   },
   bottomButtons: {
     flexDirection: "row",

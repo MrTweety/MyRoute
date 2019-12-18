@@ -3,7 +3,14 @@
  * (nowy task) DialogInput (Dialog -> Redux -> osoby plik, powinno sie dac łatwo (zrobić ogólną obsługę PopUp'ow))
  */
 import React from "react";
-import { StyleSheet, Text, View, AsyncStorage, AppState } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  AsyncStorage,
+  AppState,
+  Slider
+} from "react-native";
 import MapView from "react-native-maps";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
@@ -13,6 +20,7 @@ import * as FileSystem from "expo-file-system";
 
 import MapPanel from "../../_common/components/MapPanel";
 import DialogInput from "../../_common/components/MyDialogImputs";
+import runKalmanOnLocations from "../../../services/kalman";
 
 import { locationEventsEmitter, taskEventName } from "../locationEventsEmitter";
 import backgroundTask from "../backgroundTask";
@@ -44,6 +52,11 @@ const locationAccuracyStates = {
   [Location.Accuracy.BestForNavigation]: Location.Accuracy.Lowest
 };
 
+const kalmanFilterStates = {
+  rawData: "kalman",
+  kalman: "rawData"
+};
+
 Number.prototype.round = function(place) {
   return +(Math.round(this + "e+" + place) + "e-" + place);
 };
@@ -57,6 +70,11 @@ export default class MapScreen extends React.Component {
   mapPanelRef = React.createRef();
 
   initialState = {
+    selectedOption: "rawData",
+    kalmanConstant: 300,
+    accuracyConstant: 100,
+    naiveSolution: true,
+    dataToDisplay: [],
     accuracy: Location.Accuracy.Highest,
     isTracking: false,
     isPause: false,
@@ -86,6 +104,17 @@ export default class MapScreen extends React.Component {
       this.keepAwakeDeactivate();
     }
     this.getLocationAsync();
+    this.filterData();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.selectedOption !== this.state.selectedOption ||
+      prevState.savedLocations !== this.state.savedLocations ||
+      prevState.kalmanConstant !== this.state.kalmanConstant
+    ) {
+      this.filterData();
+    }
   }
 
   componentWillUnmount() {
@@ -220,6 +249,7 @@ export default class MapScreen extends React.Component {
     const { saveRoute, user } = this.props;
     const {
       savedLocations,
+      dataToDisplay,
       trackName,
       distance,
       startTime,
@@ -264,7 +294,8 @@ export default class MapScreen extends React.Component {
         name: trackName,
         startDate: startTime,
         endDate: new Date().getTime(),
-        coords: savedLocations,
+        coords: dataToDisplay,
+        // coordsOrigin: savedLocations,
         distance,
         timerDuration,
         routeAuthor: user._id,
@@ -358,6 +389,24 @@ export default class MapScreen extends React.Component {
     } catch (error) {
       console.log("Error: ", error.message);
     }
+    const {
+      savedTime,
+      isPause,
+      timerStart,
+      timerDuration,
+      timerDurationNew
+    } = this.state;
+
+    await AsyncStorage.setItem(
+      STORAGE_KEY_USER_TIME,
+      JSON.stringify({
+        savedTime,
+        isPause,
+        timerStart,
+        timerDuration: timerDuration,
+        timerDurationNew: timerDurationNew
+      })
+    );
   };
 
   onAccuracyChange = () => {
@@ -369,6 +418,45 @@ export default class MapScreen extends React.Component {
       this.startLocationUpdates(accuracy);
     }
   };
+
+  onFilterChange = () => {
+    const selectedOption = kalmanFilterStates[this.state.selectedOption];
+    this.setState({ selectedOption });
+  };
+
+  filterData() {
+    const {
+      savedLocations,
+      selectedOption,
+      kalmanConstant,
+      naiveSolution,
+      accuracyConstant
+    } = this.state;
+
+    if (savedLocations && savedLocations.length === 0) {
+      return null;
+    }
+
+    let dataToDisplay = [];
+
+    if (naiveSolution) {
+      dataToDisplay = savedLocations.filter(l => l.accuracy < accuracyConstant);
+    } else {
+      dataToDisplay = savedLocations;
+    }
+
+    if (selectedOption === "kalman") {
+      const kalmanSolution = runKalmanOnLocations(
+        dataToDisplay,
+        kalmanConstant
+      );
+      kalmanSolution.push(dataToDisplay[dataToDisplay.length - 1]);
+      dataToDisplay = kalmanSolution;
+    }
+    // console.log(dataToDisplay.length, savedLocations.length);
+
+    this.setState({ dataToDisplay: dataToDisplay });
+  }
 
   handlerSetCenter = (pitch = 0) => {
     const { centerStates } = this.state;
@@ -447,17 +535,30 @@ export default class MapScreen extends React.Component {
   };
 
   renderPolyline() {
-    const { savedLocations } = this.state;
+    const { dataToDisplay, savedLocations } = this.state;
+    // console.log("MG-log: renderPolyline -> selectedOption", selectedOption);
 
-    if (savedLocations && savedLocations.length === 0) {
-      return null;
-    }
+    // if (dataToDisplay && dataToDisplay.length === 0) {
+    //   return null;
+    // }
+
     return (
-      <MapView.Polyline
-        coordinates={savedLocations}
-        strokeWidth={3}
-        strokeColor={"#4630ec"}
-      />
+      <>
+        {!(dataToDisplay && dataToDisplay.length === 0) && (
+          <MapView.Polyline
+            coordinates={dataToDisplay}
+            strokeWidth={5}
+            strokeColor={"#4630ec"}
+          />
+        )}
+        {!(savedLocations && savedLocations.length === 0) && (
+          <MapView.Polyline
+            coordinates={savedLocations}
+            strokeWidth={3}
+            strokeColor={"red"}
+          />
+        )}
+      </>
     );
   }
 
@@ -499,10 +600,60 @@ export default class MapScreen extends React.Component {
             {this.renderPolyline()}
           </MapView>
         )}
+        <View style={styles.bottons}>
+          {/* <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+            <Text>Naive Solution:</Text>
+            <Switch
+              onValueChange={naiveSolution => {
+                this.setState({ naiveSolution });
+              }}
+              value={this.state.naiveSolution}
+            />
+          </View>
+          {this.state.naiveSolution && (
+            <View>
+              <Text>Accuracy Constant: {this.state.accuracyConstant}</Text>
+              <Slider
+                step={10}
+                maximumValue={500}
+                onValueChange={accuracyConstant => {
+                  this.setState({
+                    accuracyConstant: parseFloat(accuracyConstant)
+                  });
+                }}
+                value={this.state.accuracyConstant}
+              />
+            </View>
+          )} */}
+
+          {this.state.selectedOption === "kalman" && (
+            <View
+              style={{
+                flexDirection: "column"
+              }}
+            >
+              <View
+                style={{ flexDirection: "row", justifyContent: "flex-end" }}
+              ></View>
+              <Text>Kalman Constant: {this.state.kalmanConstant}</Text>
+              <Slider
+                step={100}
+                maximumValue={2000}
+                onValueChange={kalmanConstant => {
+                  this.setState({
+                    kalmanConstant: parseFloat(kalmanConstant)
+                  });
+                }}
+                value={this.state.kalmanConstant}
+              />
+            </View>
+          )}
+        </View>
 
         <MapPanel
           ref={this.mapPanelRef}
           onCenterMap={this.handlerSetCenter}
+          onFilterChange={() => this.onFilterChange(this.state.selectedOption)}
           togglePause={this.togglePause}
           toggleTracking={this.toggleTracking}
           centerStates={this.state.centerStates}
@@ -510,6 +661,7 @@ export default class MapScreen extends React.Component {
           isTracking={this.state.isTracking}
           distance={this.state.distance}
           handleCameraButton={this.handleCameraButton}
+          filter={this.state.selectedOption}
           t={t}
         />
 
@@ -558,11 +710,22 @@ TaskManager.defineTask(LOCATION_TASK_NAME, backgroundTask);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0
   },
   errorText: {
     fontSize: 15,
     color: "rgba(0,0,0,0.7)",
     margin: 20
+  },
+  bottons: {
+    position: "absolute",
+    top: 50,
+    left: 0,
+    right: 0
+    // bottom: 14
   }
 });

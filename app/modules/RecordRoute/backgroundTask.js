@@ -22,14 +22,11 @@ export default async ({ data: { locations }, error }) => {
       );
 
       const newLocations = locations.map(({ coords, timestamp }) => ({
-        latitude: coords.latitude,
-        longitude: coords.longitude,
-        altitude: coords.altitude,
-        heading: coords.heading,
+        ...coords,
         timestamp: timestamp
       }));
-      if (__DEV__)
-        console.log(`Received new locations at ${new Date()}:`, locations);
+      // if (__DEV__)
+      // console.log(`Received new locations at ${new Date()}:`, locations);
 
       endElement = savedLocations[savedLocations.length - 1]; // for distance
 
@@ -42,11 +39,7 @@ export default async ({ data: { locations }, error }) => {
         if (!map.has(item.timestamp)) {
           map.set(item.timestamp, true); // set any value to Map
           newUniqueLocations.push({
-            latitude: item.latitude,
-            longitude: item.longitude,
-            altitude: item.altitude,
-            heading: item.heading,
-            timestamp: item.timestamp
+            ...item
           });
         }
       }
