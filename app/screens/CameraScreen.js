@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { withTranslation } from "react-i18next";
 
-import Exemplar from "../modules/_common/container/Exemplar";
 import MyCamera from "./Camera";
 
 class SearchScreen extends Component {
@@ -25,7 +24,11 @@ class SearchScreen extends Component {
   }
 
   render() {
-    return <Exemplar />;
+    return (
+      <>
+        <MyCamera />
+      </>
+    );
   }
 }
 

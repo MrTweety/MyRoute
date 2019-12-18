@@ -14,6 +14,7 @@ import * as FileSystem from "expo-file-system";
 import { Camera } from "expo-camera";
 import Constants from "expo-constants";
 import isIPhoneX from "react-native-is-iphonex";
+import { withNavigation } from "react-navigation";
 import {
   Ionicons,
   MaterialIcons,
@@ -23,6 +24,12 @@ import {
 } from "@expo/vector-icons";
 
 import GalleryScreen from "./GalleryScreen";
+import {
+  addItemToKey,
+  getSavedItem,
+  deleteSavedItem,
+  ROUTES_PHOTOS
+} from "../services/secureStorage";
 import { face, landmarks } from "./elo/face";
 
 const flashModeOrder = {
@@ -59,7 +66,7 @@ const wbIcons = {
 
 const photos = [];
 
-export default class CameraScreen extends React.Component {
+class MyCamera extends React.Component {
   state = {
     flash: "off",
     zoom: 0,
@@ -77,7 +84,8 @@ export default class CameraScreen extends React.Component {
     pictureSizes: [],
     pictureSizeId: 0,
     showGallery: false,
-    showMoreOptions: false
+    showMoreOptions: false,
+    point: {}
   };
 
   async componentDidMount() {
@@ -85,12 +93,17 @@ export default class CameraScreen extends React.Component {
       return;
     }
 
+    this.toggleNavigation();
+
+    const point = this.props.navigation.getParam("point", []);
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({
       permission: status,
-      permissionsGranted: status === "granted"
+      permissionsGranted: status === "granted",
+      point: point
     });
 
+    console.log("POINT  ", this.state.point);
     try {
       await FileSystem.makeDirectoryAsync(
         FileSystem.documentDirectory + "photos"
@@ -100,6 +113,16 @@ export default class CameraScreen extends React.Component {
       console.log(error, "Directory exists");
     }
   }
+
+  componentWillUnmount() {
+    this.toggleNavigation();
+  }
+
+  toggleNavigation = () => {
+    const { getParam, setParams } = this.props.navigation;
+    const prevTabBarVisible = getParam("tabBarVisible");
+    setParams({ tabBarVisible: false });
+  };
 
   getRatios = async () => this.camera.getSupportedRatiosAsync();
 
@@ -151,14 +174,26 @@ export default class CameraScreen extends React.Component {
   handleMountError = ({ message }) => console.error(message);
 
   onPictureSaved = async photo => {
+    const dateNow = Date.now();
     if (Platform.OS === "web") {
       photos.push(photo);
     } else {
       await FileSystem.moveAsync({
         from: photo.uri,
-        to: `${FileSystem.documentDirectory}photos/${Date.now()}.jpg`
+        to: `${FileSystem.documentDirectory}photos/${dateNow}.jpg`
       });
     }
+    await addItemToKey(ROUTES_PHOTOS, {
+      point: this.state.point,
+      date: dateNow
+    });
+    const test = await getSavedItem(ROUTES_PHOTOS);
+    console.log(
+      "SAVED? ",
+      JSON.parse(test),
+      "\n\n",
+      FileSystem.documentDirectory
+    );
     this.setState({ newPhotos: true });
   };
 
@@ -504,3 +539,5 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   }
 });
+
+export default withNavigation(MyCamera);

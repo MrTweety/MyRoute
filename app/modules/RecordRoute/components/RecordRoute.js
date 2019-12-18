@@ -9,6 +9,7 @@ import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import * as TaskManager from "expo-task-manager";
 import { activateKeepAwake, deactivateKeepAwake } from "expo-keep-awake";
+import * as FileSystem from "expo-file-system";
 
 import MapPanel from "../../_common/components/MapPanel";
 import DialogInput from "../../_common/components/MyDialogImputs";
@@ -18,13 +19,20 @@ import backgroundTask from "../backgroundTask";
 import enableNetworkProviderAsync from "../enableNetworkProviderAsync";
 
 import {
-  getSavedItem,
+  getSavedItemNotSecure,
   STORAGE_KEY_USER_COORDS,
   STORAGE_KEY_USER_DISTANCE,
   STORAGE_KEY_USER_TIME
 } from "../../../services/storage";
+import {
+  deleteSavedItem,
+  getSavedItem,
+  ROUTES_PHOTOS
+} from "../../../services/secureStorage";
 
 const LOCATION_TASK_NAME = "background-location-task2";
+
+const PHOTOS_DIR = FileSystem.documentDirectory + "photos";
 
 // TODO: przenieść do ustawień gdy bedą robione
 const locationAccuracyStates = {
@@ -132,8 +140,10 @@ export default class MapScreen extends React.Component {
       ({ taskName }) => taskName === LOCATION_TASK_NAME
     );
 
-    const savedLocations = await getSavedItem(STORAGE_KEY_USER_COORDS);
-    const savedDistance = await getSavedItem(STORAGE_KEY_USER_DISTANCE);
+    const savedLocations = await getSavedItemNotSecure(STORAGE_KEY_USER_COORDS);
+    const savedDistance = await getSavedItemNotSecure(
+      STORAGE_KEY_USER_DISTANCE
+    );
 
     if (savedDistance == null || savedDistance.length == 0) {
       distance = 0;
@@ -215,6 +225,10 @@ export default class MapScreen extends React.Component {
       timerDuration
     } = this.state;
 
+    const photos = await FileSystem.readDirectoryAsync(PHOTOS_DIR);
+    const photosCords = await getSavedItem(ROUTES_PHOTOS);
+    console.log("\n", photos, "\n\n", photosCords, "\n\n\n");
+
     if (savedLocations && savedLocations.length > 1) {
       //TODO: zrobić zapis jak bedzie serwer gotowy :)
       this.props.saveRoute({
@@ -271,6 +285,7 @@ export default class MapScreen extends React.Component {
     await AsyncStorage.removeItem(STORAGE_KEY_USER_COORDS);
     await AsyncStorage.removeItem(STORAGE_KEY_USER_TIME);
     await AsyncStorage.removeItem(STORAGE_KEY_USER_DISTANCE);
+    await deleteSavedItem(ROUTES_PHOTOS);
     this.setState({ ...this.initialState });
   };
 
@@ -408,6 +423,13 @@ export default class MapScreen extends React.Component {
     );
   }
 
+  handleCameraButton = () => {
+    const lastPoint = this.state.savedLocations.slice(-1).pop();
+    this.props.navigation.navigate("CameraStack", {
+      point: lastPoint
+    });
+  };
+
   render() {
     const { t } = this.props;
     return (
@@ -449,6 +471,7 @@ export default class MapScreen extends React.Component {
           isPause={this.state.isPause}
           isTracking={this.state.isTracking}
           distance={this.state.distance}
+          handleCameraButton={this.handleCameraButton}
           t={t}
         />
 
