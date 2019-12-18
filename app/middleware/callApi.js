@@ -97,7 +97,7 @@ export default store => next => action => {
     return finalAction;
   };
   const [requestType, successType, failureType] = types;
-
+  //TODO: Error shape
   next(actionWith({ type: requestType }));
   return callApi(endpoint, data, method, headers)
     .then(

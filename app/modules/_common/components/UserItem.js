@@ -1,17 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity
-} from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Tooltip } from "react-native-elements";
 import Icon from "./Icon";
 import dateFormat from "../../../services/dateFormat";
-import isRoute from "../propTypes/isRoute";
 import { withNavigation } from "react-navigation";
 
 class UserItem extends Component {
@@ -39,7 +31,7 @@ class UserItem extends Component {
   };
 
   render() {
-    const { routeEndDate, name, avatar } = this.props;
+    const { routeEndDate, name, avatar, textSecondary } = this.props;
     return (
       <View style={styles.userBar}>
         <View style={{ flexDirection: "row" }}>
@@ -49,7 +41,7 @@ class UserItem extends Component {
           <View style={styles.userNameView}>
             <Text style={styles.textPrimary}>{name}</Text>
             <View style={styles.textSecondaryWrap}>
-              <Text style={styles.textSecondary}>Kraków</Text>
+              <Text style={styles.textSecondary}>{textSecondary}</Text>
               <Text style={styles.textSecondary}>
                 {dateFormat(routeEndDate)}
               </Text>
@@ -61,6 +53,10 @@ class UserItem extends Component {
     );
   }
 }
+
+UserItem.defaultProps = {
+  textSecondary: null
+};
 
 UserItem.propTypes = {
   avatar: PropTypes.string, //.isRequired,

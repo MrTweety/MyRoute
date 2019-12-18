@@ -6,6 +6,7 @@ import UserItem from "../../_common/components/UserItem";
 import DescriptionItem from "../../_common/components/DescriptionItem";
 import PropTypes from "prop-types";
 import isRoute from "../../_common/propTypes/isRoute";
+import dateFormat from "../../../services/dateFormat";
 
 const CardComponent = ({
   t,
@@ -40,27 +41,32 @@ const CardComponent = ({
       <View style={{ justifyContent: "center", alignItems: "center" }}>
         <SimpleMap coords={coords} shouldAnimation={shouldAnimation} />
       </View>
-      <View style={styles.icons}>
-        <Icon
-          type="entypo"
-          name={heart ? "heart" : "heart-outlined"}
-          size={30}
-          color={heart ? "red" : "black"}
-          style={styles.icon}
-          onPress={clickLike}
-        />
-        <Icon
-          type="SimpleLineIcons"
-          name="bubble"
-          size={30}
-          color="black"
-          style={styles.icon}
-          onPress={() =>
-            navigation.navigate("CommentStack", {
-              route
-            })
-          }
-        />
+      <View style={styles.bottomPanel}>
+        <View style={styles.icons}>
+          <Icon
+            type="entypo"
+            name={heart ? "heart" : "heart-outlined"}
+            size={30}
+            color={heart ? "red" : "black"}
+            style={styles.icon}
+            onPress={clickLike}
+          />
+          <Icon
+            type="SimpleLineIcons"
+            name="bubble"
+            size={30}
+            color="black"
+            style={styles.icon}
+            onPress={() =>
+              navigation.navigate("CommentStack", {
+                route
+              })
+            }
+          />
+        </View>
+        {withOutUserItem && (
+          <Text style={styles.textSecondary}>{dateFormat(routeEndDate)}</Text>
+        )}
       </View>
       <View style={{ marginLeft: 10 }}>
         <Text>{likes.length} likes</Text>
@@ -90,11 +96,21 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderBottomColor: "grey"
   },
-  icons: {
+  bottomPanel: {
     flexDirection: "row",
-    marginVertical: 10
+    justifyContent: "space-between",
+    marginVertical: 10,
+    marginRight: 10
+  },
+  icons: {
+    flexDirection: "row"
   },
   icon: {
     marginLeft: 10
+  },
+  textSecondary: {
+    fontSize: 12,
+    fontWeight: "normal",
+    color: "#808080"
   }
 });

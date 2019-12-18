@@ -14,8 +14,6 @@ import {
   GET_USER_FAILURE
 } from "../actions/getUserById";
 import userDetailsReducer from "../reducers/UderDetails";
-import { LIKE_ROUTE_SUCCESS } from "../../HomeScreenList/actions/likeRoute";
-import { DISLIKE_ROUTE_SUCCESS } from "../../HomeScreenList/actions/dislikeRoute";
 import { UNFOLLOW_USER_SUCCESS } from "../../ProfileScreen/actions/unFollow";
 import { FOLLOW_USER_SUCCESS } from "../../ProfileScreen/actions/follow";
 
