@@ -40,6 +40,17 @@ const HomeScreenStack = createStackNavigator(
               </CookieText>
             </>
           ),
+          // headerTitle: (
+          //   <CookieText
+          //     style={{
+          //       fontSize: 40,
+          //       paddingLeft: 0,
+          //       margin: 0
+          //     }}
+          //   >
+          //     My Route
+          //   </CookieText>
+          // ),
           headerRight: (
             <Icon
               type="ionicons"

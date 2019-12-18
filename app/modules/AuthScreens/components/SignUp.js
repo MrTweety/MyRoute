@@ -77,7 +77,7 @@ class SignUp extends Component {
         mail: this.state.email
       })
       .then(response => {
-        console.log(response);
+        console.log("response", response);
         if (response.type !== REGISTER_SUCCESS) {
           this.setState({
             registerState: response.message
@@ -120,7 +120,7 @@ class SignUp extends Component {
             </View>
           )}
           {this.state.isLogoVisible && <Logo position="top" />}
-          <KeyboardAvoidingView style={styles.form} behavior="padding" enabled>
+          <View style={styles.form}>
             {formData.map(data => (
               <TextInput
                 key={data.placeholder}
@@ -143,7 +143,7 @@ class SignUp extends Component {
             >
               <Text>{t("common.signUp")}</Text>
             </TouchableOpacity>
-          </KeyboardAvoidingView>
+          </View>
           <View style={{ marginBottom: 10 }}>
             <Text onPress={this.navigateToSignIn}>Juz mam konto</Text>
           </View>

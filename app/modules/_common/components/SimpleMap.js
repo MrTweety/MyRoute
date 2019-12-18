@@ -76,32 +76,26 @@ export default class SimpleMap extends Component {
   mapViewRef = React.createRef();
 
   componentDidMount() {
-    const { coords } = this.props;
-    const mapView = this.mapViewRef.current;
-    if (mapView) {
-      mapView.animateCamera({
-        center: {
-          ...coords[parseInt(coords.length / 2) - 2]
-        },
-        ...coords[parseInt(coords.length / 2) - 2],
-        zoom: 15
-      });
-    }
+    this.centerMap();
   }
 
   componentDidUpdate() {
+    this.centerMap();
+  }
+
+  centerMap = () => {
     const { coords } = this.props;
     const mapView = this.mapViewRef.current;
     if (mapView) {
       mapView.animateCamera({
         center: {
-          ...coords[parseInt(coords.length / 2) - 2]
+          ...coords[coords.length / 2 - 1]
         },
-        ...coords[parseInt(coords.length / 2) - 2],
+        ...coords[coords.length / 2 - 1],
         zoom: 15
       });
     }
-  }
+  };
 
   render() {
     const { coords, shouldAnimation } = this.props;
