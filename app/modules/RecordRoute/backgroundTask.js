@@ -24,12 +24,28 @@ export default async ({ data: { locations }, error }) => {
         heading: coords.heading,
         timestamp: timestamp
       }));
-      if (__DEV__ && 0)
+      if (__DEV__)
         console.log(`Received new locations at ${new Date()}:`, locations);
 
       endElement = savedLocations[savedLocations.length - 1]; // for distance
 
       savedLocations.push(...newLocations);
+
+      //TODO: wydajniejszy algorytm
+      const newUniqueLocations = [];
+      const map = new Map();
+      for (const item of savedLocations) {
+        if (!map.has(item.timestamp)) {
+          map.set(item.timestamp, true); // set any value to Map
+          newUniqueLocations.push({
+            latitude: item.latitude,
+            longitude: item.longitude,
+            altitude: item.altitude,
+            heading: item.heading,
+            timestamp: item.timestamp
+          });
+        }
+      }
 
       const locationsForDistance = endElement
         ? [endElement, ...newLocations]
@@ -49,7 +65,7 @@ export default async ({ data: { locations }, error }) => {
 
       await AsyncStorage.setItem(
         STORAGE_KEY_USER_COORDS,
-        JSON.stringify(savedLocations)
+        JSON.stringify(newUniqueLocations)
       ).catch(e => console.log("Error: ", e.message));
 
       await AsyncStorage.setItem(
@@ -58,7 +74,7 @@ export default async ({ data: { locations }, error }) => {
       ).catch(e => console.log("Error: ", e.message));
 
       locationEventsEmitter.emit(taskEventName, {
-        savedLocations: savedLocations,
+        savedLocations: newUniqueLocations,
         distance: distance
       });
     }
