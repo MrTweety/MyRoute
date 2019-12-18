@@ -4,8 +4,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-  TextInput,
-  KeyboardAvoidingView
+  TextInput
 } from "react-native";
 import { lightBlue, sadGrey } from "../../../assets/colors";
 import Logo from "../../_common/components/Logo";
@@ -77,7 +76,6 @@ class SignUp extends Component {
         mail: this.state.email
       })
       .then(response => {
-        console.log("response", response);
         if (response.type !== REGISTER_SUCCESS) {
           this.setState({
             registerState: response.message
@@ -107,7 +105,8 @@ class SignUp extends Component {
       },
       {
         onChangeText: this.handlePasswordChange,
-        placeholder: t("common.password")
+        placeholder: t("common.password"),
+        secureInput: true
       }
     ];
 
@@ -129,6 +128,7 @@ class SignUp extends Component {
                 onChangeText={data.onChangeText}
                 onFocus={this.hideLogo}
                 onSubmitEditing={this.showLogo}
+                secureTextEntry={data.secureInput}
               />
             ))}
             <TouchableOpacity

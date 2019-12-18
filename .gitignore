@@ -343,3 +343,4 @@ typings/
 node_modules/**/*
 .expo/*
 npm-debug.*
+/.vscode/launch.json

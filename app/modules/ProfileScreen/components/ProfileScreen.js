@@ -2,40 +2,42 @@ import React, { Component } from "react";
 import {
   View,
   Text,
-  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
   SafeAreaView,
   FlatList,
-  ActivityIndicator,
-  TouchableOpacity
+  StyleSheet
 } from "react-native";
-import { withTranslation } from "react-i18next";
-import CardComponent from "../container/CardComponent";
-import PropTypes from "prop-types";
-import isRoute from "../../_common/propTypes/isRoute";
-import ErrorFetchTryAgain from "../../_common/components/ErrorFetchTryAgain";
+import ProfileInfo from "../../_common/components/ProfileInfo";
+import CardComponent from "../../HomeScreenList/container/CardComponent";
 import NoData from "../../_common/components/NoData";
 
-class HomeScreenList extends Component {
+class ProfileScreen extends Component {
   state = {
     viewableItemsMap: new Map(),
     refreshing: false
   };
 
   componentDidMount() {
-    if (this.props.fetchRoutes) {
-      this.props.fetchRoutes();
+    console.log(this.props.user);
+    if (this.props.getRoutes) {
+      this.props.getRoutes(this.props.user._id);
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (
-      this.props.fetchRoutes &&
+      this.props.getRoutes &&
       prevState.refreshing !== this.state.refreshing &&
       this.state.refreshing
     ) {
-      this.props.fetchRoutes();
+      this.props.getRoutes(this.props.user._id);
     }
-    if (prevProps.homeRoutes !== this.props.homeRoutes && this.state.refreshing)
+    if (
+      prevProps.userRoutes !== this.props.userRoutes &&
+      !!this.props.userRoutes &&
+      this.state.refreshing
+    )
       this.setState({ refreshing: false });
   }
 
@@ -52,8 +54,21 @@ class HomeScreenList extends Component {
     );
   };
 
-  //******************************************************* */
-  //**************ListViewabilityConfig******************** */
+  renderNoData = fetchData => {
+    const { t, userRoutes, user } = this.props;
+    return (
+      <View style={styles.container}>
+        <ProfileInfo
+          user={user}
+          routesNumber={userRoutes ? userRoutes.length : 0}
+        />
+        <NoData
+          fetchData={() => this.props.getRoutes(this.props.user._id)}
+          infoKey={"home.noData"}
+        />
+      </View>
+    );
+  };
 
   clippingListViewabilityConfig = {
     waitForInteraction: false,
@@ -72,28 +87,23 @@ class HomeScreenList extends Component {
     });
   };
 
-  //******************************************************* */
-  //******************************************************* */
-
   render() {
-    const { t, homeRoutes, navigation, fetchRoutes } = this.props;
+    const { t, userRoutes, navigation, user } = this.props;
     const { refreshing } = this.state;
     const { viewableItemsMap } = this.state;
-    if ((homeRoutes === null || homeRoutes === undefined) && !refreshing) {
+    if ((userRoutes === null || userRoutes === undefined) && !refreshing) {
       return this.renderFetchLoading();
     }
-    if (!homeRoutes && !refreshing) {
-      return <ErrorFetchTryAgain fetchData={fetchRoutes} />;
-    }
-    if (homeRoutes && !homeRoutes.length) {
-      return <NoData fetchData={fetchRoutes} infoKey={"home.noData"} />;
+    //TODO: ErrorFetchTryAgain
+    if (userRoutes && !userRoutes.length) {
+      return this.renderNoData(() => this.props.getRoutes(this.props.user._id));
     }
 
     return (
       <SafeAreaView style={styles.container}>
         <FlatList
           viewabilityConfig={this.clippingListViewabilityConfig}
-          data={homeRoutes}
+          data={userRoutes}
           keyExtractor={item => item._id}
           extraData={viewableItemsMap}
           refreshing={refreshing}
@@ -106,26 +116,25 @@ class HomeScreenList extends Component {
                 route={item}
                 imageNr={0}
                 navigation={navigation}
+                user={this.props.user}
+                withOutUserItem
               />
             );
           }}
           onViewableItemsChanged={this.onClippingListViewableChanged}
+          ListHeaderComponent={
+            <ProfileInfo
+              user={user}
+              routesNumber={userRoutes ? userRoutes.length : 0}
+            />
+          }
         />
       </SafeAreaView>
     );
   }
 }
 
-export default withTranslation()(HomeScreenList);
-
-HomeScreenList.propTypes = {
-  t: PropTypes.func.isRequired,
-  fetchRoutes: PropTypes.func.isRequired,
-  homeRoutes: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.arrayOf(isRoute).isRequired
-  ])
-};
+//TODO: PropsTypes
 
 const styles = StyleSheet.create({
   container: {
@@ -133,3 +142,5 @@ const styles = StyleSheet.create({
     backgroundColor: "white"
   }
 });
+
+export default ProfileScreen;

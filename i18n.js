@@ -9,16 +9,21 @@ import homeScreenFR from "./app/assets/translations/fr/homeScreen";
 import mapScreenPL from "./app/assets/translations/pl/mapScreen";
 import mapScreenEN from "./app/assets/translations/en/mapScreen";
 import mapScreenFR from "./app/assets/translations/fr/mapScreen";
+import profileScreenFR from "./app/assets/translations/fr/profileScreen";
+import profileScreenEN from "./app/assets/translations/en/profileScreen";
+import profileScreenPL from "./app/assets/translations/pl/profileScreen";
 import commentScreenPL from "./app/assets/translations/pl/commentScreen";
 import commentScreenEN from "./app/assets/translations/en/commentScreen";
 import commentScreenFR from "./app/assets/translations/fr/commentScreen";
+
 const resources = {
   pl: {
     translation: {
       common: { ...commonPL },
       home: { ...homeScreenPL },
       map: { ...mapScreenPL },
-      comment: { ...commentScreenPL }
+      comment: { ...commentScreenPL },
+      profile: { ...profileScreenPL }
     }
   },
   en: {
@@ -26,7 +31,8 @@ const resources = {
       common: { ...commonEN },
       home: { ...homeScreenEN },
       map: { ...mapScreenEN },
-      comment: { ...commentScreenEN }
+      comment: { ...commentScreenEN },
+      profile: { ...profileScreenEN }
     }
   },
   fr: {
@@ -34,7 +40,8 @@ const resources = {
       common: { ...commonFR },
       home: { ...homeScreenFR },
       map: { ...mapScreenFR },
-      comment: { ...commentScreenFR }
+      comment: { ...commentScreenFR },
+      profile: { ...profileScreenFR }
     }
   }
 };

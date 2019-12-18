@@ -4,8 +4,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-  TextInput,
-  KeyboardAvoidingView
+  TextInput
 } from "react-native";
 import { lightBlue, sadGrey } from "../../../assets/colors";
 import { LOGIN_SUCCESS } from "../actions/login";
@@ -73,6 +72,7 @@ class SignIn extends Component {
               onChangeText={this.handleLoginChange}
             />
             <TextInput
+              secureTextEntry
               style={styles.inputField}
               placeholder={t("common.password")}
               onChangeText={this.handlePasswordChange}

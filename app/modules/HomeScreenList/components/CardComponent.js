@@ -4,10 +4,9 @@ import Icon from "../../_common/components/Icon";
 import SimpleMap from "../../_common/components/SimpleMap";
 import UserItem from "../../_common/components/UserItem";
 import DescriptionItem from "../../_common/components/DescriptionItem";
-
-import { withTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import isRoute from "../../_common/propTypes/isRoute";
+import dateFormat from "../../../services/dateFormat";
 
 const CardComponent = ({
   t,
@@ -16,13 +15,13 @@ const CardComponent = ({
   navigation,
   likeRoute,
   dislikeRoute,
-  user
+  user,
+  withOutUserItem
 }) => {
   const { coords, routeAuthor, likes } = route;
   const description = route.name;
   const routeEndDate = route.endDate;
   const heart = !!likes.find(userId => userId === user._id);
-  console.log("heart", heart);
 
   const clickLike = () => {
     if (heart) {
@@ -34,33 +33,40 @@ const CardComponent = ({
 
   return (
     <View style={styles.container}>
-      <UserItem {...routeAuthor} routeEndDate={routeEndDate} />
+      {!withOutUserItem && (
+        <UserItem {...routeAuthor} routeEndDate={routeEndDate} />
+      )}
       <DescriptionItem description={description} />
 
       <View style={{ justifyContent: "center", alignItems: "center" }}>
         <SimpleMap coords={coords} shouldAnimation={shouldAnimation} />
       </View>
-      <View style={styles.icons}>
-        <Icon
-          type="entypo"
-          name={heart ? "heart" : "heart-outlined"}
-          size={30}
-          color={heart ? "red" : "black"}
-          style={styles.icon}
-          onPress={clickLike}
-        />
-        <Icon
-          type="SimpleLineIcons"
-          name="bubble"
-          size={30}
-          color="black"
-          style={styles.icon}
-          onPress={() =>
-            navigation.navigate("CommentStack", {
-              route
-            })
-          }
-        />
+      <View style={styles.bottomPanel}>
+        <View style={styles.icons}>
+          <Icon
+            type="entypo"
+            name={heart ? "heart" : "heart-outlined"}
+            size={30}
+            color={heart ? "red" : "black"}
+            style={styles.icon}
+            onPress={clickLike}
+          />
+          <Icon
+            type="SimpleLineIcons"
+            name="bubble"
+            size={30}
+            color="black"
+            style={styles.icon}
+            onPress={() =>
+              navigation.navigate("CommentStack", {
+                route
+              })
+            }
+          />
+        </View>
+        {withOutUserItem && (
+          <Text style={styles.textSecondary}>{dateFormat(routeEndDate)}</Text>
+        )}
       </View>
       <View style={{ marginLeft: 10 }}>
         <Text>{likes.length} likes</Text>
@@ -69,16 +75,18 @@ const CardComponent = ({
   );
 };
 
-export default withTranslation()(CardComponent);
+export default CardComponent;
 
 CardComponent.defaultProps = {
-  shouldAnimation: false
+  shouldAnimation: false,
+  withOutUserItem: false
 };
 
 CardComponent.propTypes = {
   t: PropTypes.func.isRequired,
   route: isRoute.isRequired,
-  shouldAnimation: PropTypes.bool
+  shouldAnimation: PropTypes.bool,
+  withOutUserItem: PropTypes.bool
 };
 
 const styles = StyleSheet.create({
@@ -88,11 +96,21 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderBottomColor: "grey"
   },
-  icons: {
+  bottomPanel: {
     flexDirection: "row",
-    marginVertical: 10
+    justifyContent: "space-between",
+    marginVertical: 10,
+    marginRight: 10
+  },
+  icons: {
+    flexDirection: "row"
   },
   icon: {
     marginLeft: 10
+  },
+  textSecondary: {
+    fontSize: 12,
+    fontWeight: "normal",
+    color: "#808080"
   }
 });
