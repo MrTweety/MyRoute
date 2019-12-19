@@ -14,7 +14,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import CommentScreen from "../screens/CommentScreen";
 import UserProfileScreen from "../screens/UserProfileScreen";
-import Camera from "../screens/Camera";
+import CameraScreen from "../screens/CameraScreen";
 import i18next from "i18next";
 
 const HomeScreenStack = createStackNavigator(
@@ -89,24 +89,17 @@ const MapScreenStack = createStackNavigator(
   {
     MapStack: {
       screen: MapScreen,
-      navigationOptions: () => {
-        return {
-          headerTitle: "MAP"
-        };
-      }
+      navigationOptions: () => ({
+        header: null
+      })
     },
     CameraStack: {
-      screen: Camera,
-      navigationOptions: () => ({
-        headerTitle: "Camera"
-      }),
-      headerLayoutPreset: "center",
-      tabBarVisible: false //?
+      screen: CameraScreen,
+      headerLayoutPreset: "center"
     }
   },
   {
-    initialRouteName: "MapStack",
-    headerLayoutPreset: "center"
+    initialRouteName: "MapStack"
   }
 );
 
@@ -250,7 +243,6 @@ const MainTabNavigator = createMaterialBottomTabNavigator(
           tabBarVisible = false;
         }
         return {
-          tabBarLabel: "Map",
           tabBarIcon: ({ tintColor }) => (
             <Icon type="ionicons" name="md-map" size={26} color={tintColor} />
           ),

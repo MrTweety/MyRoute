@@ -226,9 +226,37 @@ export default class MapScreen extends React.Component {
       timerDuration
     } = this.state;
 
+    let returnPhotos = [];
+
     const photos = await FileSystem.readDirectoryAsync(PHOTOS_DIR);
-    const photosCords = await getSavedItem(ROUTES_PHOTOS);
-    console.log("\n", photos, "\n\n", photosCords, "\n\n\n");
+    const photosCords = JSON.parse(await getSavedItem(ROUTES_PHOTOS));
+
+    if (photosCords !== null) {
+      photos.map(async fileName => {
+        let date = fileName.split(".")[0];
+        let point = photosCords.find(data => data.date == date); // Ma być ==
+        console.log(
+          "Type: \n\n",
+          typeof photosCords[0].date,
+          "\n",
+          typeof date,
+          "\n\n"
+        );
+        if (point !== undefined) {
+          let photoFile = await FileSystem.readAsStringAsync(
+            `${PHOTOS_DIR}/${fileName}`,
+            { encoding: FileSystem.EncodingType.Base64 }
+          );
+
+          returnPhotos.push({
+            photoBase64: photoFile,
+            latitude: point.point.latitude,
+            longitude: point.point.longitude,
+            pointTimestamp: point.point.timestamp
+          });
+        }
+      });
+    }
 
     if (savedLocations && savedLocations.length > 1) {
       //TODO: zrobić zapis jak bedzie serwer gotowy :)
@@ -239,10 +267,18 @@ export default class MapScreen extends React.Component {
         coords: savedLocations,
         distance,
         timerDuration,
-        routeAuthor: user._id
+        routeAuthor: user._id,
+        photos: returnPhotos
       });
     }
+    this.clearPhotosFromGallery(photos);
   }
+
+  clearPhotosFromGallery = photos => {
+    photos.map(async photo => {
+      await FileSystem.deleteAsync(`${PHOTOS_DIR}/${photo}`);
+    });
+  };
 
   clearLocations = async () => {
     await AsyncStorage.setItem(

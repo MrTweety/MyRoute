@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Image,
   StyleSheet,
   View,
   TouchableOpacity,
@@ -8,10 +7,9 @@ import {
   ScrollView
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import Photo from "./Photo";
+import Photo from "../../../../screens/Photo";
 
 import * as MediaLibrary from "expo-media-library";
-import * as FaceDetector from "expo-face-detector";
 import * as Permissions from "expo-permissions";
 import * as FileSystem from "expo-file-system";
 
@@ -27,15 +25,7 @@ export default class GalleryScreen extends React.Component {
 
   componentDidMount = async () => {
     const photos = await FileSystem.readDirectoryAsync(PHOTOS_DIR);
-    console.log("PHO", photos);
     this.setState({ photos });
-  };
-
-  componentDidUpdate = async (prevProps, prevState, snapshot) => {
-    if (prevState !== this.state) {
-      const photos = await FileSystem.readDirectoryAsync(PHOTOS_DIR);
-      this.setState({ photos });
-    }
   };
 
   toggleSelection = (uri, isSelected) => {
@@ -69,27 +59,6 @@ export default class GalleryScreen extends React.Component {
     }
   };
 
-  deleteSelected = () => {
-    let { selected, photos } = this.state;
-
-    if (selected.length !== 0) {
-      selected.map(item => {
-        FileSystem.deleteAsync(item)
-          .then()
-          .catch(error =>
-            console.log("[Photo gallery]: delete error - ", error)
-          );
-
-        photos.filter(photo => photo !== item.split("/").slice(-1));
-      });
-
-      this.setState({
-        selected: [],
-        photos: photos
-      });
-    }
-  };
-
   renderPhoto = fileName => (
     <Photo
       key={fileName}
@@ -104,9 +73,6 @@ export default class GalleryScreen extends React.Component {
         <View style={styles.navbar}>
           <TouchableOpacity style={styles.button} onPress={this.props.onPress}>
             <MaterialIcons name="arrow-back" size={25} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={this.deleteSelected}>
-            <Text style={styles.whiteText}>Delete</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={this.saveToGallery}>
             <Text style={styles.whiteText}>Save selected to gallery</Text>

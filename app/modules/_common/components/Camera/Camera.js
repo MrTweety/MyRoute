@@ -22,15 +22,12 @@ import {
   MaterialCommunityIcons,
   Octicons
 } from "@expo/vector-icons";
-
-import GalleryScreen from "./GalleryScreen";
 import {
   addItemToKey,
-  getSavedItem,
-  deleteSavedItem,
   ROUTES_PHOTOS
-} from "../services/secureStorage";
-import { face, landmarks } from "./elo/face";
+} from "../../../../services/secureStorage";
+import { face, landmarks } from "./Landmarks/face";
+import GalleryScreen from "./GalleryScreen";
 
 const flashModeOrder = {
   off: "on",
@@ -85,15 +82,14 @@ class MyCamera extends React.Component {
     pictureSizeId: 0,
     showGallery: false,
     showMoreOptions: false,
-    point: {}
+    point: {},
+    prevPoint: {}
   };
 
   async componentDidMount() {
     if (Platform.OS === "web") {
       return;
     }
-
-    this.toggleNavigation();
 
     const point = this.props.navigation.getParam("point", []);
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
@@ -103,7 +99,6 @@ class MyCamera extends React.Component {
       point: point
     });
 
-    console.log("POINT  ", this.state.point);
     try {
       await FileSystem.makeDirectoryAsync(
         FileSystem.documentDirectory + "photos"
@@ -113,16 +108,6 @@ class MyCamera extends React.Component {
       console.log(error, "Directory exists");
     }
   }
-
-  componentWillUnmount() {
-    this.toggleNavigation();
-  }
-
-  toggleNavigation = () => {
-    const { getParam, setParams } = this.props.navigation;
-    const prevTabBarVisible = getParam("tabBarVisible");
-    setParams({ tabBarVisible: false });
-  };
 
   getRatios = async () => this.camera.getSupportedRatiosAsync();
 
@@ -175,6 +160,8 @@ class MyCamera extends React.Component {
 
   onPictureSaved = async photo => {
     const dateNow = Date.now();
+    const { point } = this.state;
+
     if (Platform.OS === "web") {
       photos.push(photo);
     } else {
@@ -183,18 +170,16 @@ class MyCamera extends React.Component {
         to: `${FileSystem.documentDirectory}photos/${dateNow}.jpg`
       });
     }
-    await addItemToKey(ROUTES_PHOTOS, {
-      point: this.state.point,
-      date: dateNow
+    if (this.state.prevPoint !== point && point !== undefined) {
+      await addItemToKey(ROUTES_PHOTOS, {
+        point: point,
+        date: dateNow
+      });
+    }
+    this.setState({
+      newPhotos: true,
+      prevPoint: point
     });
-    const test = await getSavedItem(ROUTES_PHOTOS);
-    console.log(
-      "SAVED? ",
-      JSON.parse(test),
-      "\n\n",
-      FileSystem.documentDirectory
-    );
-    this.setState({ newPhotos: true });
   };
 
   onBarCodeScanned = code => {
@@ -212,11 +197,9 @@ class MyCamera extends React.Component {
       );
       let pictureSizeId = 0;
       if (Platform.OS === "ios") {
-        pictureSizeId = pictureSizes.indexOf("High");
-      } else {
-        // returned array is sorted in ascending order - default size is the largest one
-        pictureSizeId = pictureSizes.length - 1;
+        pictureSizeId = pictureSizes.indexOf("Low");
       }
+
       this.setState({
         pictureSizes,
         pictureSizeId,
