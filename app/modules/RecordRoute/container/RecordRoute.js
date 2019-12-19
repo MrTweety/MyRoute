@@ -8,6 +8,7 @@ import saveRouteReducer from "../reducers/saveRoute";
 import { returnUser } from "../../AuthScreens/selectors/user";
 
 import { injectReducer } from "../../../redux/store";
+import { withNavigation } from "react-navigation";
 
 injectReducer(stateKey, saveRouteReducer);
 
@@ -22,8 +23,10 @@ const mapDispatchToProps = {
 };
 
 export default withTranslation()(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(RecordRoute)
+  withNavigation(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(RecordRoute)
+  )
 );

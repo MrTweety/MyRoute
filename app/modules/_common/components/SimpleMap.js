@@ -71,7 +71,7 @@ export default class SimpleMap extends Component {
             width={width}
             height={width}
             resizeMode="contain"
-            source={{ uri: imgSrc }}
+            source={{ uri: `data:image/png;base64,${imgSrc}` }}
           />
         </Animated.View>
       </Animated.View>

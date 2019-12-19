@@ -53,6 +53,19 @@ export default class MapPanel extends Component {
         <View style={styles.buttonsColumn}>
           <View style={styles.bottomButtons}>
             <BubbleButton
+              onPress={this.props.handleCameraButton}
+              icon={{
+                name: "camera-enhance",
+                type: "material",
+                size: 25,
+                color: isTracking ? "blue" : "gray"
+              }}
+              iconLeft
+              disabled={!isTracking}
+            />
+          </View>
+          <View style={styles.bottomButtons}>
+            <BubbleButton
               onPress={() =>
                 onCenterMap(
                   centerStates.isCenter && !centerStates.pitch ? 60 : 0

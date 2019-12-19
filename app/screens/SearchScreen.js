@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withTranslation } from "react-i18next";
 
 import Exemplar from "../modules/_common/container/Exemplar";
+
 class SearchScreen extends Component {
   componentDidMount() {
     this.updateTitle();

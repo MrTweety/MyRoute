@@ -14,6 +14,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import CommentScreen from "../screens/CommentScreen";
 import UserProfileScreen from "../screens/UserProfileScreen";
+import CameraScreen from "../screens/CameraScreen";
 import i18next from "i18next";
 
 const HomeScreenStack = createStackNavigator(
@@ -81,6 +82,24 @@ const HomeScreenStack = createStackNavigator(
   {
     initialRouteName: "HomeStack",
     headerLayoutPreset: "center"
+  }
+);
+
+const MapScreenStack = createStackNavigator(
+  {
+    MapStack: {
+      screen: MapScreen,
+      navigationOptions: () => ({
+        header: null
+      })
+    },
+    CameraStack: {
+      screen: CameraScreen,
+      headerLayoutPreset: "center"
+    }
+  },
+  {
+    initialRouteName: "MapStack"
   }
 );
 
@@ -214,12 +233,21 @@ const MainTabNavigator = createMaterialBottomTabNavigator(
       }
     },
     Map: {
-      screen: MapScreen,
-      navigationOptions: {
-        tabBarLabel: "Map",
-        tabBarIcon: ({ tintColor }) => (
-          <Icon type="ionicons" name="md-map" size={26} color={tintColor} />
-        )
+      screen: MapScreenStack,
+      navigationOptions: ({ navigation }) => {
+        const currentRoute = navigation.state.routes[navigation.state.index];
+        const { routeName } = currentRoute;
+
+        let tabBarVisible = true;
+        if (routeName === "CameraStack") {
+          tabBarVisible = false;
+        }
+        return {
+          tabBarIcon: ({ tintColor }) => (
+            <Icon type="ionicons" name="md-map" size={26} color={tintColor} />
+          ),
+          tabBarVisible: tabBarVisible
+        };
       }
     },
     Profile: {

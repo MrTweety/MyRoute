@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { View, Text, AsyncStorage } from "react-native";
 import PropTypes from "prop-types";
-import { getSavedItem, STORAGE_KEY_USER_TIME } from "../../../services/storage";
+import {
+  getSavedItemNotSecure,
+  STORAGE_KEY_USER_TIME
+} from "../../../services/storage";
 
 export default class TimerView extends Component {
   time = 0;
@@ -20,7 +23,7 @@ export default class TimerView extends Component {
   componentDidMount = async () => {
     try {
       if (!this.props.duration) {
-        const startTime = await getSavedItem(STORAGE_KEY_USER_TIME);
+        const startTime = await getSavedItemNotSecure(STORAGE_KEY_USER_TIME);
         this.setState({ ...startTime });
       }
     } catch (error) {

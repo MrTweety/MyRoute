@@ -5,7 +5,7 @@ export const STORAGE_KEY_USER_COORDS = "BACKGROUND_LOCATION_USER_COORDS1";
 export const STORAGE_KEY_USER_DISTANCE = "BACKGROUND_LOCATION_USER_DISTANCE1";
 export const STORAGE_KEY_USER_TIME = "BACKGROUND_LOCATION_USER_TIME1";
 
-export async function getSavedItem(Key, nullIfEmpty = false) {
+export async function getSavedItemNotSecure(Key, nullIfEmpty = false) {
   try {
     const item = await AsyncStorage.getItem(Key);
     return item ? JSON.parse(item) : nullIfEmpty ? null : [];

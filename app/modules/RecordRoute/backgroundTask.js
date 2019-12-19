@@ -2,7 +2,7 @@ import { AsyncStorage } from "react-native";
 import { locationEventsEmitter, taskEventName } from "./locationEventsEmitter";
 import haversine from "../../services/haversine";
 import {
-  getSavedItem,
+  getSavedItemNotSecure,
   STORAGE_KEY_USER_COORDS,
   STORAGE_KEY_USER_DISTANCE
 } from "../../services/storage";
@@ -14,8 +14,12 @@ export default async ({ data: { locations }, error }) => {
   }
   try {
     if (locations && locations.length > 0) {
-      const savedLocations = await getSavedItem(STORAGE_KEY_USER_COORDS);
-      const savedDistance = await getSavedItem(STORAGE_KEY_USER_DISTANCE);
+      const savedLocations = await getSavedItemNotSecure(
+        STORAGE_KEY_USER_COORDS
+      );
+      const savedDistance = await getSavedItemNotSecure(
+        STORAGE_KEY_USER_DISTANCE
+      );
 
       const newLocations = locations.map(({ coords, timestamp }) => ({
         latitude: coords.latitude,
