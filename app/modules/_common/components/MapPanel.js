@@ -54,31 +54,9 @@ export default class MapPanel extends Component {
         <View style={styles.topButtons}>
           <View></View>
           {/*nie chce mi sie styli budowac */}
-          <BubbleButton
-            onPress={onFilterChange}
-            icon={{
-              name: "photo-filter",
-              type: "material",
-              size: 25,
-              color: filter === "kalman" ? "blue" : "gray"
-            }}
-            iconLeft
-          />
         </View>
         <View style={styles.buttonsColumn}>
-          <View style={styles.bottomButtons}>
-            <BubbleButton
-              onPress={this.props.handleCameraButton}
-              icon={{
-                name: "camera-enhance",
-                type: "material",
-                size: 25,
-                color: isTracking ? "blue" : "gray"
-              }}
-              iconLeft
-              disabled={!isTracking}
-            />
-          </View>
+          <View style={styles.bottomButtons}></View>
           <View style={styles.bottomButtons}>
             <BubbleButton
               onPress={() =>
@@ -129,7 +107,13 @@ export default class MapPanel extends Component {
                     }}
                     {...this.props}
                   />
-                  <Text style={{ fontSize: 14, textAlign: "center" }}>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color: "#DCDCDC",
+                      textAlign: "center"
+                    }}
+                  >
                     {t("map.duration")}
                   </Text>
                 </View>
@@ -146,7 +130,13 @@ export default class MapPanel extends Component {
                       : distance.round(2).toFixed(2)}{" "}
                     km
                   </Text>
-                  <Text style={{ fontSize: 14, textAlign: "center" }}>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color: "#DCDCDC",
+                      textAlign: "center"
+                    }}
+                  >
                     {t("map.distance")}
                   </Text>
                 </View>

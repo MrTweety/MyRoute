@@ -4,7 +4,8 @@ import {
   View,
   TouchableOpacity,
   Text,
-  ScrollView
+  ScrollView,
+  StatusBar
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Photo from "../../../../screens/Photo";
@@ -91,14 +92,14 @@ export default class GalleryScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
+    paddingTop: StatusBar.currentHeight,
     backgroundColor: "white"
   },
   navbar: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "#4630EB"
+    backgroundColor: "#BDBDBD"
   },
   pictures: {
     flex: 1,

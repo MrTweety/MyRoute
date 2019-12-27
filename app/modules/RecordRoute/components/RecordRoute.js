@@ -551,7 +551,7 @@ export default class MapScreen extends React.Component {
             strokeColor={"#4630ec"}
           />
         )}
-        {!(savedLocations && savedLocations.length === 0) && (
+        {!(1 || (savedLocations && savedLocations.length === 0)) && (
           <MapView.Polyline
             coordinates={savedLocations}
             strokeWidth={3}
