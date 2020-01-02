@@ -16,7 +16,7 @@ const types = [
 
 const makeBasicUserReducer = makeContentReducer(types, basicUserstateKey);
 
-export default basicUserReducer = (state = {}, action) => {
+const basicUserReducer = (state = {}, action) => {
   switch (action.type) {
     case FOLLOW_USER_SUCCESS: {
       const stateData = state.data;
@@ -47,3 +47,5 @@ export default basicUserReducer = (state = {}, action) => {
       return makeBasicUserReducer(state, action);
   }
 };
+
+export default basicUserReducer;

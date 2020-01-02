@@ -8,7 +8,7 @@ import {
   stateKey
 } from "../actions/getCommentsByRouteId";
 
-export default commentListReducer = (state = {}, action) => {
+const commentListReducer = (state = {}, action) => {
   switch (action.type) {
     case COMMENTS_REQUEST: {
       return {
@@ -45,3 +45,4 @@ export default commentListReducer = (state = {}, action) => {
       return state;
   }
 };
+export default commentListReducer;

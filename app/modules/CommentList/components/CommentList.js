@@ -21,7 +21,7 @@ import AddNewComment from "../container/AddNewComment";
 import ErrorFetchTryAgain from "../../_common/components/ErrorFetchTryAgain";
 import NoData from "../../_common/components/NoData";
 
-export default CommentList = ({
+const CommentList = ({
   t,
   routeId,
   description,
@@ -153,6 +153,7 @@ export default CommentList = ({
   );
 };
 
+export default CommentList;
 //routeAuthor: isUser.isRequired
 const styles = StyleSheet.create({
   container: {

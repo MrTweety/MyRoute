@@ -31,7 +31,7 @@ const getTypeIcon = type => {
   }
 };
 
-export default Icon = ({ type, ...props }) => {
+const Icon = ({ type, ...props }) => {
   const IconComponent = getTypeIcon(type);
 
   return <IconComponent {...props} />;
@@ -44,3 +44,4 @@ Icon.defaultProps = {
 Icon.propTypes = {
   type: PropTypes.string
 };
+export default Icon;

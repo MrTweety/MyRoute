@@ -43,7 +43,9 @@ class LoadingScreen extends Component {
         return this.props.navigation.navigate("AppNavigator");
       }
       if (user === undefined) {
-        return this.props.getUserById();
+        const aa = await this.props.getUserById();
+        console.log("aa", aa);
+        return;
       }
       if (user === false) {
         //TODO:

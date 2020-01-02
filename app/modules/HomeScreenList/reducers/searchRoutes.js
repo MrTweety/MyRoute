@@ -60,7 +60,7 @@ export const makeDisLikeReducer = (state, action) => {
   return { ...state, data: [...stateData.reverse()] };
 };
 
-export default searchRoutesReducer = (state = {}, action) => {
+const searchRoutesReducer = (state = {}, action) => {
   switch (action.type) {
     case LIKE_ROUTE_SUCCESS:
     case LIKE_ROUTE_REQUEST: {
@@ -75,3 +75,4 @@ export default searchRoutesReducer = (state = {}, action) => {
       return makeSearchRoutesReducer(state, action);
   }
 };
+export default searchRoutesReducer;

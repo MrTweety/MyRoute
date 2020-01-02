@@ -23,7 +23,7 @@ const makeBasicUserProfileScreenReducer = makeContentReducer(
   basicUserStateKey
 );
 
-export default basicUserProfileScreenReducer = (state = {}, action) => {
+const basicUserProfileScreenReducer = (state = {}, action) => {
   switch (action.type) {
     case LIKE_ROUTE_SUCCESS: {
       // case LIKE_ROUTE_REQUEST: {
@@ -39,3 +39,4 @@ export default basicUserProfileScreenReducer = (state = {}, action) => {
       return makeBasicUserProfileScreenReducer(state, action);
   }
 };
+export default basicUserProfileScreenReducer;

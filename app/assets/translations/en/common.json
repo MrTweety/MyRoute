@@ -6,6 +6,12 @@
   "Language": "Language",
   "Settings": "Settings",
   "profile": "Profile",
+  "CommentStack": "Comment",
+  "SearchStack": "Search",
+  "ProfileStack": "Profile",
+  "SettingsStack": "Settings",
+  "HomeStack": "Home",
+
   "cancel": "Cancel",
   "discard": "Discard",
   "signIn": "Sign In",

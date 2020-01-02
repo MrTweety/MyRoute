@@ -56,7 +56,7 @@ export const makeDisLikeReducer = (state, action) => {
   return { ...state, data: [...stateData.reverse()] };
 };
 
-export default homeRoutesReducer = (state = {}, action) => {
+const homeRoutesReducer = (state = {}, action) => {
   switch (action.type) {
     case LIKE_ROUTE_SUCCESS:
     case LIKE_ROUTE_REQUEST: {
@@ -71,3 +71,5 @@ export default homeRoutesReducer = (state = {}, action) => {
       return makeHomeRoutesReducer(state, action);
   }
 };
+
+export default homeRoutesReducer;

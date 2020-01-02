@@ -20,8 +20,8 @@ export default function haversine(startCoordinates, endCoordinates, options) {
     meter: 6371000
   };
 
-  option = options || {};
-  Radius =
+  let option = options || {};
+  let Radius =
     option.unit in earthRadius ? earthRadius[option.unit] : earthRadius.km;
 
   const start = startCoordinates;

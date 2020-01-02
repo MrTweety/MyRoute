@@ -17,7 +17,7 @@ import userDetailsReducer from "../reducers/UderDetails";
 import { UNFOLLOW_USER_SUCCESS } from "../../ProfileScreen/actions/unFollow";
 import { FOLLOW_USER_SUCCESS } from "../../ProfileScreen/actions/follow";
 
-export default userReducer = (state = {}, action) => {
+const userReducer = (state = {}, action) => {
   switch (action.type) {
     case LOGIN_REQUEST:
     case LOGIN_SUCCESS:
@@ -57,3 +57,4 @@ export default userReducer = (state = {}, action) => {
       return state;
   }
 };
+export default userReducer;

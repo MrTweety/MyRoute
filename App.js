@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AppLoading } from "expo";
 import i18n from "i18next";
 import { Asset } from "expo-asset";
@@ -18,22 +18,44 @@ import { Provider } from "react-redux";
 import store from "./app/redux/store";
 import "./i18n";
 
-if (__DEV__) {
-  global.XMLHttpRequest = global.originalXMLHttpRequest
-    ? global.originalXMLHttpRequest
-    : global.XMLHttpRequest;
-  global.FormData = global.originalFormData
-    ? global.originalFormData
-    : global.FormData;
-  global.Blob = global.originalBlob ? global.originalBlob : global.Blob;
-  global.FileReader = global.originalFileReader
-    ? global.originalFileReader
-    : global.FileReader;
-}
+// if (__DEV__) {
+//   global.XMLHttpRequest = global.originalXMLHttpRequest
+//     ? global.originalXMLHttpRequest
+//     : global.XMLHttpRequest;
+//   global.FormData = global.originalFormData
+//     ? global.originalFormData
+//     : global.FormData;
+//   global.Blob = global.originalBlob ? global.originalBlob : global.Blob;
+//   global.FileReader = global.originalFileReader
+//     ? global.originalFileReader
+//     : global.FileReader;
+// }
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
+  // const script = document.createElement("script");
+  // script.async = true;
+  // script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyC5HxR2IAiiLhXIuCQxctsKq7AVp1CaGmI";
+  // //For head
+  // // document.head.appendChild(script);
 
+  // // For body
+  // document.body.appendChild(script);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+
+    script.src =
+      "https://maps.googleapis.com/maps/api/js?key=AIzaSyC5HxR2IAiiLhXIuCQxctsKq7AVp1CaGmI";
+    script.async = false;
+    document.head.appendChild(script);
+
+    document.body.appendChild(script);
+
+    // return () => {
+    //   document.body.removeChild(script);
+    // }
+  }, []);
   const loading = () => (
     <AppLoading
       startAsync={loadResourcesAsync}
@@ -57,6 +79,7 @@ export default function App(props) {
   );
 
   const renderLoading = () => {
+    console.log("aaaaaaa");
     language();
     if (!isLoadingComplete && !props.skipLoadingScreen) {
       return loading();

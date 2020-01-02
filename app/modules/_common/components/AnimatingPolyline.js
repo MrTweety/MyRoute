@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import MapView from "react-native-maps";
+import MapView from "react-native-web-maps";
 
 export default class AnimatingPolyline extends Component {
   state = {
@@ -40,7 +40,7 @@ export default class AnimatingPolyline extends Component {
         if (newCoords && newCoords.image) {
           this.props.showImage(newCoords.image);
         }
-
+        console.log(this.props.coords.length);
         const polylinePath = [...this.state.polylinePath, { ...newCoords }];
         this.setState({ polylinePath });
       } else {
@@ -54,16 +54,34 @@ export default class AnimatingPolyline extends Component {
       <Fragment>
         {this.state.polylinePath.length > 0 && (
           <MapView.Polyline
-            coordinates={this.state.polylinePath}
+            path={this.state.polylinePath.map(coordinates => ({
+              lat: coordinates.latitude,
+              lng: coordinates.longitude
+            }))}
+            //  coordinates={this.state.polylinePath}
             strokeColor="white"
             strokeWidth={9}
+            options={{
+              strokeColor: "#fffffff",
+              strokeOpacity: 0.75,
+              strokeWidth: 9
+            }}
           />
         )}
         {this.state.polylinePath.length > 0 && (
           <MapView.Polyline
-            coordinates={this.state.polylinePath}
-            strokeColor="#484848"
-            strokeWidth={5}
+            path={this.state.polylinePath.map(coordinates => ({
+              lat: coordinates.latitude,
+              lng: coordinates.longitude
+            }))}
+            //  coordinates={this.state.polylinePath}
+            //  strokeColor="#484848"
+            //  strokeWidth={5}
+            options={{
+              strokeColor: "#484848",
+              strokeOpacity: 0.75,
+              strokeWidth: 5
+            }}
           />
         )}
       </Fragment>
