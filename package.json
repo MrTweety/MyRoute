@@ -1,11 +1,14 @@
 {
+  "homepage": "http://mrtweety.github.io/MyRoute",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start --web",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "deploy": "gh-pages -d web-build",
+    "predeploy": "expo build:web"
   },
   "dependencies": {
     "@react-navigation/web": "^1.0.0-alpha.9",
@@ -58,6 +61,7 @@
     "expo-barcode-scanner": "^8.0.0",
     "expo-camera": "^8.0.0",
     "expo-face-detector": "^8.0.0",
+    "gh-pages": "^2.1.1",
     "husky": "^3.0.8",
     "prettier": "^1.18.2",
     "pretty-quick": "^1.11.1"
