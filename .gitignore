@@ -343,3 +343,5 @@ node_modules/**/*
 .expo/*
 npm-debug.*
 /.vscode/launch.json
+
+web-build

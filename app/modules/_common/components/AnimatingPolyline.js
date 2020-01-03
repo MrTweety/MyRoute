@@ -52,7 +52,7 @@ export default class AnimatingPolyline extends Component {
   render() {
     return (
       <Fragment>
-        {this.state.polylinePath.length > 0 && (
+        {/* {this.state.polylinePath.length > 0 && (
           <MapView.Polyline
             path={this.state.polylinePath.map(coordinates => ({
               lat: coordinates.latitude,
@@ -60,14 +60,14 @@ export default class AnimatingPolyline extends Component {
             }))}
             //  coordinates={this.state.polylinePath}
             strokeColor="white"
-            strokeWidth={9}
+            strokeWidth={3}
             options={{
-              strokeColor: "#fffffff",
-              strokeOpacity: 0.75,
-              strokeWidth: 9
+              strokeColor: "#3300cc",
+              strokeOpacity: 1,
+              strokeWidth: 3
             }}
           />
-        )}
+        )} */}
         {this.state.polylinePath.length > 0 && (
           <MapView.Polyline
             path={this.state.polylinePath.map(coordinates => ({
@@ -76,11 +76,11 @@ export default class AnimatingPolyline extends Component {
             }))}
             //  coordinates={this.state.polylinePath}
             //  strokeColor="#484848"
-            //  strokeWidth={5}
+            strokeWeight={2}
             options={{
-              strokeColor: "#484848",
-              strokeOpacity: 0.75,
-              strokeWidth: 5
+              strokeColor: "#3300cc",
+              strokeOpacity: 1,
+              strokeWeight: 2
             }}
           />
         )}
