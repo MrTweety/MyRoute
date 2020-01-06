@@ -21,7 +21,7 @@ const types = [
 
 const makeProfileScreenReducer = makeContentReducer(types, stateKey);
 
-export default profileScreenReducer = (state = {}, action) => {
+const profileScreenReducer = (state = {}, action) => {
   switch (action.type) {
     case LIKE_ROUTE_SUCCESS: {
       return makeLikeReducer(state, action);
@@ -48,3 +48,5 @@ export default profileScreenReducer = (state = {}, action) => {
       return makeProfileScreenReducer(state, action);
   }
 };
+
+export default profileScreenReducer;

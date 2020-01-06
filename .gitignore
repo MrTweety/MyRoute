@@ -2,7 +2,6 @@
 # Created by https://www.gitignore.io/api/reactnative,intellij,android,osx,xcode
 
 # Log Files
-*.web.js
 ### Android ###
 # Built application files
 *.apk
@@ -344,3 +343,5 @@ node_modules/**/*
 .expo/*
 npm-debug.*
 /.vscode/launch.json
+
+web-build

@@ -9,7 +9,7 @@ import {
 import PropTypes from "prop-types";
 import Icon from "./Icon";
 
-export default BubbleButton = ({
+const BubbleButton = ({
   children,
   onPress,
   loading,
@@ -68,7 +68,7 @@ BubbleButton.propTypes = {
   title: PropTypes.string,
   titleStyle: ViewPropTypes.style
 };
-
+export default BubbleButton;
 const styles = StyleSheet.create({
   bubble: {
     backgroundColor: "rgba(255,255,255,0.9)",

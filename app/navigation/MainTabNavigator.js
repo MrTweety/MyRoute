@@ -97,11 +97,14 @@ const MapScreenStack = createStackNavigator(
     },
     CameraStack: {
       screen: CameraScreen,
-      headerLayoutPreset: "center"
+      headerLayoutPreset: "center",
+      header: null,
+      headerMode: "none"
     }
   },
   {
-    initialRouteName: "MapStack"
+    initialRouteName: "MapStack",
+    headerMode: "none"
   }
 );
 

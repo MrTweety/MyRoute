@@ -8,6 +8,8 @@ import PropTypes from "prop-types";
 import isRoute from "../../_common/propTypes/isRoute";
 import dateFormat from "../../../services/dateFormat";
 
+const { width } = Dimensions.get("window");
+
 const CardComponent = ({
   t,
   route,
@@ -22,7 +24,7 @@ const CardComponent = ({
   const description = route.name;
   const routeEndDate = route.endDate;
   const heart = !!likes.find(userId => userId === user._id);
-
+  console.log(width);
   const clickLike = () => {
     if (heart) {
       dislikeRoute({ userId: user._id }, { routeId: route._id });
@@ -33,15 +35,21 @@ const CardComponent = ({
 
   return (
     <View style={styles.container}>
-      {!withOutUserItem && (
-        <UserItem {...routeAuthor} routeEndDate={routeEndDate} />
-      )}
-      <DescriptionItem description={description} />
-
+      <View style={{ paddingLeft: width > 1024 ? (width - width / 4) / 2 : 0 }}>
+        {!withOutUserItem && (
+          <UserItem {...routeAuthor} routeEndDate={routeEndDate} />
+        )}
+        <DescriptionItem description={description} />
+      </View>
       <View style={{ justifyContent: "center", alignItems: "center" }}>
         <SimpleMap coords={coords} shouldAnimation={shouldAnimation} />
       </View>
-      <View style={styles.bottomPanel}>
+      <View
+        style={[
+          styles.bottomPanel,
+          { paddingLeft: width > 1024 ? (width - width / 4) / 2 : 0 }
+        ]}
+      >
         <View style={styles.icons}>
           <Icon
             type="entypo"
@@ -68,7 +76,12 @@ const CardComponent = ({
           <Text style={styles.textSecondary}>{dateFormat(routeEndDate)}</Text>
         )}
       </View>
-      <View style={{ marginLeft: 10 }}>
+      <View
+        style={{
+          marginLeft: 10,
+          paddingLeft: width > 1024 ? (width - width / 4) / 2 : 0
+        }}
+      >
         <Text>{likes.length} likes</Text>
       </View>
     </View>

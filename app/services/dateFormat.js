@@ -20,7 +20,7 @@ const monthNames = [
 
 import i18next from "i18next";
 
-export default dateFormat = (date, options = {}) => {
+const dateFormat = (date, options = {}) => {
   if (!date) return "";
   const newDate = new Date(date);
   const now = new Date();
@@ -54,3 +54,4 @@ export default dateFormat = (date, options = {}) => {
       }
   }
 };
+export default dateFormat;

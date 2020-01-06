@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, View, Image, Dimensions, Animated } from "react-native";
 import PropTypes from "prop-types";
 
-import MapView from "react-native-maps";
+import MapView from "react-native-web-maps";
 import AnimatingPolyline from "./AnimatingPolyline";
 import haversine from "../../../services/haversine";
 import getRegionForCoordinates from "../../../services/getRegionForCoordinates";
@@ -16,6 +16,7 @@ export default class SimpleMap extends Component {
     imgSrc: false,
     regionForCoordinates: getRegionForCoordinates(this.props.coords)
   };
+  F;
 
   setImgSrc = imgSrc => {
     this.setState({ imgSrc });
@@ -62,38 +63,30 @@ export default class SimpleMap extends Component {
     const animatedStyle = {
       backgroundColor: bgColor
     };
-
     return (
       <Animated.View style={[styles.overlay, animatedStyle]}>
-        <Animated.View style={{ ...imageStyles }}>
+        <Animated.View
+          style={{
+            ...imageStyles,
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+        >
           <Image
-            style={{ width: width }}
-            width={width}
-            height={width}
+            style={{
+              width: width > 1024 ? width / 4 : width,
+              height: width > 1024 ? width / 4 : width,
+              alignItems: "center",
+              justifyContent: "center"
+            }}
+            width={width > 1024 ? width / 4 : width}
+            height={width > 1024 ? width / 4 : width}
             resizeMode="contain"
             source={{ uri: `data:image/png;base64,${imgSrc}` }}
           />
         </Animated.View>
       </Animated.View>
     );
-  };
-
-  mapViewRef = React.createRef();
-
-  componentDidMount() {
-    this.centerMap();
-  }
-
-  componentDidUpdate() {
-    this.centerMap();
-  }
-
-  centerMap = () => {
-    const { regionForCoordinates } = this.state;
-    const mapView = this.mapViewRef.current;
-    if (mapView) {
-      mapView.animateToRegion(regionForCoordinates);
-    }
   };
 
   render() {
@@ -123,13 +116,25 @@ export default class SimpleMap extends Component {
 
     return (
       <View style={{ flex: 1 }}>
+        {/* <MapView region={{ latitude: 48.88, longitude: 2.32 }}
+        style={{ width: width/4, height: width/4 }}>
+          <MapView.Marker
+            title="BAM"
+            description="Shape the future of mobile with us"
+            coordinate={{ latitude: 48.8828463, longitude: 2.3229091 }}
+          />
+        </MapView> */}
         <MapView
-          ref={this.mapViewRef}
-          style={{ width: width, height: width }}
-          provider="google"
-          liteMode
+          region={{
+            latitude: regionForCoordinates.latitude,
+            longitude: regionForCoordinates.longitude
+          }}
+          style={{
+            width: width > 1024 ? width / 4 : width,
+            height: width > 1024 ? width / 4 : width
+          }}
         >
-          <MapView.Circle
+          {/* <MapView.Circle
             center={coords[1]}
             radius={radius}
             strokeColor={"#484848"}
@@ -144,7 +149,7 @@ export default class SimpleMap extends Component {
             strokeWidth={5}
             fillColor={"#fff"}
             zIndex={1}
-          />
+          />*/}
           {coords &&
             coords.map(coord => {
               if (coord.image) {
@@ -159,7 +164,10 @@ export default class SimpleMap extends Component {
           />
 
           <MapView.Polyline
-            coordinates={coords}
+            path={coords.map(coordinates => ({
+              lat: coordinates.latitude,
+              lng: coordinates.longitude
+            }))}
             strokeWidth={2}
             strokeColor={"#666"}
           />
@@ -171,8 +179,8 @@ export default class SimpleMap extends Component {
 }
 
 SimpleMap.propTypes = {
-  coords: PropTypes.arrayOf(PropTypes.object).isRequired,
-  shouldAnimation: PropTypes.bool
+  // coords: PropTypes.arrayOf(PropTypes.object).isRequired,
+  // shouldAnimation: PropTypes.bool
 };
 
 const styles = StyleSheet.create({

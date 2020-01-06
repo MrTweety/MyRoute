@@ -7,16 +7,19 @@ import SignInScreen from "../screens/SignInScreen";
 const AuthStackNavigator = createStackNavigator(
   {
     Login: {
-      screen: LoginScreen
+      screen: LoginScreen,
+      path: ""
       // navigationOptions: () => ({
       //     header:null,
       // }),
     },
     SignUp: {
-      screen: SignUpScreen
+      screen: SignUpScreen,
+      path: ""
     },
     SignIn: {
-      screen: SignInScreen
+      screen: SignInScreen,
+      path: ""
     }
   },
   {

@@ -8,36 +8,34 @@ export default function haversine(startCoordinates, endCoordinates, options) {
 
     return 0;
   }
-  var earthRadius = {
-    km: 6371,
-    mile: 3960,
-    meter: 6371000
-  };
 
   //  to radians
   Number.prototype.toRad = function() {
     return (this * Math.PI) / 180;
   };
 
-  option = options || {};
-  Radius =
+  const earthRadius = {
+    km: 6371,
+    mile: 3960,
+    meter: 6371000
+  };
+
+  let option = options || {};
+  let Radius =
     option.unit in earthRadius ? earthRadius[option.unit] : earthRadius.km;
 
-  var start = startCoordinates;
-  var end = endCoordinates;
+  const start = startCoordinates;
+  const end = endCoordinates;
 
-  var x1 = end.latitude - start.latitude;
-  var dLat = x1.toRad();
-  var x2 = end.longitude - start.longitude;
-  var dLon = x2.toRad();
-  lat1 = start.latitude.toRad();
-  lat2 = end.latitude.toRad();
-  var a =
+  const dLat = (end.latitude - start.latitude).toRad();
+  const dLon = (end.longitude - start.longitude).toRad();
+  const lat1 = start.latitude.toRad();
+  const lat2 = end.latitude.toRad();
+  const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  var d = Radius * c;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const d = Radius * c; // Radius: km: 6371, meter: 6371000, mile: 3960
 
   return isNaN(d) ? 0 : d;
 }

@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   FlatList,
   ActivityIndicator,
+  ScrollView,
   TouchableOpacity
 } from "react-native";
 import { withTranslation } from "react-i18next";

@@ -24,6 +24,8 @@ const callApi = async (endpoint, data, method = "POST", headers = {}) => {
     fetchData = fetch(fullUrl, {
       method,
       headers: {
+        // mode: 'no-cors', // no-cors, *cors, same-origin
+
         Authorization: "Bearer " + token,
         ...headers
       }
@@ -33,6 +35,7 @@ const callApi = async (endpoint, data, method = "POST", headers = {}) => {
       method,
       body: JSON.stringify(data),
       headers: {
+        // mode: 'no-cors', //
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
 
