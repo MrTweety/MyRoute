@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "MyRoute",
-    "slug": "MyRoute",
+    "name": "MyRoute-09",
+    "slug": "MyRoute-09",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": ["ios", "android", "web"],
-    "version": "1.0.0",
+    "version": "0.9.0",
     "orientation": "portrait",
-    "icon": "./app/assets/icon.png",
+    "icon": "./app/assets/icons/trekking100.png",
     "splash": {
-      "image": "./app/assets/splash.png",
+      "image": "./app/assets/splash2.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -18,7 +18,22 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.gaczorek.myroute",
+      "infoPlist": {
+        "UIBackgroundModes": ["location", "fetch"]
+      },
+      "config": {
+        "googleMapsApiKey": "***"
+      }
+    },
+    "android": {
+      "package": "com.gaczorek.myroute",
+      "config": {
+        "googleMaps": {
+          "apiKey": "***"
+        }
+      }
     }
   }
 }
