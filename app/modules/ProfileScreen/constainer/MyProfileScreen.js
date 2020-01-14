@@ -12,7 +12,9 @@ injectReducer(stateKey, profileScreenReducer);
 
 const mapStateToProps = state => {
   return {
-    userRoutes: state[stateKey].data,
+    userRoutes: state[stateKey].data
+      ? state[stateKey].data.reverse()
+      : state[stateKey].data,
     user: returnUser(state)
   };
 };

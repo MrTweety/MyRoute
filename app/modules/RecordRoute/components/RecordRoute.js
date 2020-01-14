@@ -551,13 +551,13 @@ export default class MapScreen extends React.Component {
             strokeColor={"#4630ec"}
           />
         )}
-        {!(savedLocations && savedLocations.length === 0) && (
+        {/* {!(savedLocations && savedLocations.length === 0) && (
           <MapView.Polyline
             coordinates={savedLocations}
             strokeWidth={3}
             strokeColor={"red"}
           />
-        )}
+        )} */}
       </>
     );
   }
@@ -670,7 +670,7 @@ export default class MapScreen extends React.Component {
           title={t("map.stopSave")}
           message={t("map.trackName")}
           hintInput={t("map.trackName")}
-          initValueTextInput={t("map.trackName")}
+          initValueTextInput=""
           submitInput={inputText => {
             this.stopAndSaveDialog(inputText);
           }}

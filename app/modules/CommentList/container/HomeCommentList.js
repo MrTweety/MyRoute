@@ -16,8 +16,7 @@ injectReducer(stateKey, commentListReducer);
 const mapStateToProps = (state, ownProps) => {
   const allComments = state[stateKey];
   return {
-    comments:
-      allComments[ownProps.routeId] && allComments[ownProps.routeId].data
+    comments: allComments && allComments.data
   };
 };
 

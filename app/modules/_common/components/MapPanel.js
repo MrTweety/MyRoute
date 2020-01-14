@@ -54,30 +54,46 @@ export default class MapPanel extends Component {
         <View style={styles.topButtons}>
           <View></View>
           {/*nie chce mi sie styli budowac */}
-          <BubbleButton
-            onPress={onFilterChange}
-            icon={{
-              name: "photo-filter",
-              type: "material",
-              size: 25,
-              color: filter === "kalman" ? "blue" : "gray"
+          <Animated.View
+            style={{
+              flexDirection: "row",
+              opacity: fadeAnim,
+              transform: [{ translateX }]
             }}
-            iconLeft
-          />
+          >
+            <BubbleButton
+              onPress={onFilterChange}
+              icon={{
+                name: "photo-filter",
+                type: "material",
+                size: 25,
+                color: filter === "kalman" ? "blue" : "gray"
+              }}
+              iconLeft
+            />
+          </Animated.View>
         </View>
         <View style={styles.buttonsColumn}>
           <View style={styles.bottomButtons}>
-            <BubbleButton
-              onPress={this.props.handleCameraButton}
-              icon={{
-                name: "camera-enhance",
-                type: "material",
-                size: 25,
-                color: isTracking ? "blue" : "gray"
+            <Animated.View
+              style={{
+                flexDirection: "row",
+                opacity: fadeAnim,
+                transform: [{ translateX }]
               }}
-              iconLeft
-              disabled={!isTracking}
-            />
+            >
+              <BubbleButton
+                onPress={this.props.handleCameraButton}
+                icon={{
+                  name: "camera-enhance",
+                  type: "material",
+                  size: 25,
+                  color: isTracking ? "blue" : "gray"
+                }}
+                iconLeft
+                disabled={!isTracking}
+              />
+            </Animated.View>
           </View>
           <View style={styles.bottomButtons}>
             <BubbleButton

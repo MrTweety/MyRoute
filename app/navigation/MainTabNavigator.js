@@ -1,4 +1,5 @@
 import React from "react";
+import { SearchBar } from "react-native-elements";
 
 import { createStackNavigator } from "react-navigation-stack";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
@@ -97,7 +98,10 @@ const MapScreenStack = createStackNavigator(
     },
     CameraStack: {
       screen: CameraScreen,
-      headerLayoutPreset: "center"
+      // headerLayoutPreset: "center",
+      navigationOptions: () => ({
+        header: null
+      })
     }
   },
   {
@@ -111,7 +115,26 @@ const SearchScreenStack = createStackNavigator(
       screen: SearchScreen,
       navigationOptions: ({ navigation }) => {
         return {
-          title: navigation.getParam("title")
+          // title: navigation.getParam("title")
+          headerTitle: () => (
+            <SearchBar
+              lightTheme
+              round
+              placeholder={navigation.getParam("title")}
+              inputStyle={{ backgroundColor: "white" }}
+              containerStyle={{
+                backgroundColor: "white",
+                flex: 1,
+                width: 100,
+                alignContent: "center",
+                justifyContent: "center"
+              }}
+              backgroundColor="white"
+              // placeholderTextColor='#g5g5g5'
+              // onChangeText={this.updateSearch}
+              // value={search}
+            />
+          )
         };
       }
     },
@@ -162,7 +185,7 @@ const SettingsScreenTopTabNavigator = createMaterialTopTabNavigator(
       showLabel: false,
       inactiveTintColor: "grey",
       activeTintColor: "#222",
-      indicatorStyle: { backgroundColor: "blue" },
+      indicatorStyle: { backgroundColor: "#222" },
 
       style: {
         backgroundColor: "#f2f2f2",

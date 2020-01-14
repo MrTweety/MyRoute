@@ -20,8 +20,8 @@ export default function getRegionForCoordinates(points) {
 
   const midX = (minX + maxX) / 2;
   const midY = (minY + maxY) / 2;
-  const deltaX = (maxX - minX) * 2;
-  const deltaY = (maxY - minY) * 2;
+  const deltaX = (maxX - minX) / 1.2;
+  const deltaY = (maxY - minY) / 1.2;
 
   return {
     latitude: midX,

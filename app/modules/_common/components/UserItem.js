@@ -39,9 +39,10 @@ class UserItem extends Component {
             <Image style={styles.userPic} source={{ uri: avatar }} />
           </TouchableOpacity>
           <View style={styles.userNameView}>
-            <Text style={styles.textPrimary}>{name}</Text>
+            {/* <Text style={styles.textPrimary}>{name}</Text> */}
             <View style={styles.textSecondaryWrap}>
-              <Text style={styles.textSecondary}>{textSecondary}</Text>
+              <Text style={styles.textPrimary}>{name}</Text>
+              {/* <Text style={styles.textSecondary}>{textSecondary}</Text> */}
               <Text style={styles.textSecondary}>
                 {dateFormat(routeEndDate)}
               </Text>
@@ -97,7 +98,9 @@ const styles = StyleSheet.create({
   textSecondaryWrap: {
     flex: 1,
     justifyContent: "space-between",
-    flexDirection: "row"
+    flexDirection: "row",
+    alignContent: "center",
+    alignItems: "center"
   },
   textSecondary: {
     fontSize: 12,

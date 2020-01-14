@@ -8,40 +8,28 @@ import {
   stateKey
 } from "../actions/getCommentsByRouteId";
 
+import { makeContentReducer } from "../../_common/reducers/makeContentReducer";
+
+const types = [COMMENTS_REQUEST, COMMENTS_SUCCESS, COMMENTS_FAILURE];
+
+const makeCommentListReducer = makeContentReducer(types, stateKey);
+
 export default commentListReducer = (state = {}, action) => {
   switch (action.type) {
-    case COMMENTS_REQUEST: {
-      return {
-        [action.routeId]: { data: null, error: null }
-      };
-    }
-    case COMMENTS_SUCCESS: {
-      return {
-        [action.routeId]: { data: action.response, error: null }
-      };
-    }
-    case COMMENTS_FAILURE: {
-      return {
-        [action.routeId]: { data: false, error: action.message }
-      };
-    }
-
     case ADD_COMMENT_SUCCESS: {
-      const commentState = state[action.routeId];
+      const commentState = state;
 
       let newObject = {
         ...action.response,
         author: { ...action.actionParams.user }
       };
       return {
-        [action.routeId]: {
-          data: [...commentState.data, newObject],
-          error: null
-        }
+        data: [...commentState.data, newObject],
+        error: null
       };
     }
 
     default:
-      return state;
+      return makeCommentListReducer(state, action);
   }
 };

@@ -62,9 +62,11 @@ const wbIcons = {
 };
 
 const photos = [];
+const faceAndBarCode = false;
 
 class MyCamera extends React.Component {
   state = {
+    faceAndBarCode: faceAndBarCode,
     flash: "off",
     zoom: 0,
     autoFocus: "on",
@@ -322,23 +324,24 @@ class MyCamera extends React.Component {
 
   renderMoreOptions = () => (
     <View style={styles.options}>
-      <View style={styles.detectors}>
-        <TouchableOpacity onPress={this.toggleFaceDetection}>
-          <MaterialIcons
-            name="tag-faces"
-            size={32}
-            color={this.state.faceDetecting ? "white" : "#858585"}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={this.toggleBarcodeScanning}>
-          <MaterialCommunityIcons
-            name="barcode-scan"
-            size={32}
-            color={this.state.barcodeScanning ? "white" : "#858585"}
-          />
-        </TouchableOpacity>
-      </View>
-
+      {this.state.faceAndBarCode && (
+        <View style={styles.detectors}>
+          <TouchableOpacity onPress={this.toggleFaceDetection}>
+            <MaterialIcons
+              name="tag-faces"
+              size={32}
+              color={this.state.faceDetecting ? "white" : "#858585"}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.toggleBarcodeScanning}>
+            <MaterialCommunityIcons
+              name="barcode-scan"
+              size={32}
+              color={this.state.barcodeScanning ? "white" : "#858585"}
+            />
+          </TouchableOpacity>
+        </View>
+      )}
       <View style={styles.pictureSizeContainer}>
         <Text style={styles.pictureQualityLabel}>Picture quality</Text>
         <View style={styles.pictureSizeChooser}>
@@ -480,7 +483,7 @@ const styles = StyleSheet.create({
     bottom: 80,
     left: 30,
     width: 200,
-    height: 160,
+    height: faceAndBarCode ? 160 : 90,
     backgroundColor: "#000000BA",
     borderRadius: 4,
     padding: 10
