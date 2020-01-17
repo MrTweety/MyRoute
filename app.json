@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "MyRoute-09",
-    "slug": "MyRoute-09",
+    "name": "MyRoute-090-ios",
+    "slug": "MyRoute-090-ios",
     "privacy": "public",
     "sdkVersion": "35.0.0",
-    "platforms": ["ios", "android", "web"],
+    "platforms": ["ios", "android"],
     "version": "0.9.0",
     "orientation": "portrait",
     "icon": "./app/assets/icons/trekking100.png",

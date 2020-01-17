@@ -60,7 +60,11 @@ export default CommentList = ({
   };
 
   const renderDescription = () => (
-    <>
+    <View
+      tyle={{
+        flex: 1
+      }}
+    >
       <Comment
         comment={{
           _id: "description",
@@ -79,7 +83,7 @@ export default CommentList = ({
           elevation: 5
         }}
       />
-    </>
+    </View>
   );
 
   const renderCommentsList = () => (
